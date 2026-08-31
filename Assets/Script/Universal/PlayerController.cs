@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,9 +11,10 @@ public enum PlayerState
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Reference")]
     [SerializeField] private Camera playerCam;
     [SerializeField] private Transform playerHold;
+    [SerializeField] private InputActionReference moveAction;
+    [SerializeField] private InputActionReference sprintAction;
 
     private float walkSpeed = 3f;
     private float runSpeed = 5f;
@@ -26,9 +28,9 @@ public class PlayerController : MonoBehaviour
     private float normalFieldOfView = 60f;
     private float runFieldOfView = 65f;
 
+    private bool isCrouched = false;
     private float rotationX = 0f;
     private float velocityY = -1f;
-    private Vector2 move = new Vector2(0f, 0f);
 
     private PlayerState state = PlayerState.Idle;
     private float camBobbingT = 0f;
@@ -37,6 +39,18 @@ public class PlayerController : MonoBehaviour
 
     private AudioSource playerAd;
     private CharacterController controller;
+
+    private void OnEnable()
+    {
+        moveAction.action.Enable();
+        sprintAction.action.Enable();
+    }
+
+    private void OnDisable()
+    {
+        moveAction.action.Disable();
+        sprintAction.action.Disable();
+    }
 
     private void Start()
     {
@@ -57,6 +71,9 @@ public class PlayerController : MonoBehaviour
         }
 
         if (MainManager.instance.gameState != GameState.Normal) return;
+
+        MovePlayer();
+
     }
 
     private void UpdateCamera()
@@ -81,5 +98,20 @@ public class PlayerController : MonoBehaviour
 
         if (state == PlayerState.Run) playerCam.fieldOfView = Mathf.MoveTowards(playerCam.fieldOfView, runFieldOfView, Mathf.Abs(runFieldOfView - normalFieldOfView) * Time.deltaTime / transitionLength);
         else playerCam.fieldOfView = Mathf.MoveTowards(playerCam.fieldOfView, normalFieldOfView, Mathf.Abs(runFieldOfView - normalFieldOfView) * Time.deltaTime / transitionLength);
+    }
+
+    private void MovePlayer()
+    {
+        float speed = walkSpeed;
+        if (sprintAction.action.IsPressed()) speed = runSpeed;
+        if (isCrouched) speed = crouchSpeed;
+
+        if (controller.isGrounded) velocityY = -1f;
+        else velocityY += gravity * Time.deltaTime;
+
+        Vector2 moveInput = moveAction.action.ReadValue<Vector2>();
+        Vector3 move = (transform.right * moveInput.x + transform.forward * moveInput.y).normalized * speed + transform.up * velocityY;
+
+        controller.Move(move * Time.deltaTime);
     }
 }
