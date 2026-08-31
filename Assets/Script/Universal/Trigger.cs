@@ -2,7 +2,7 @@ using UnityEngine;
 
 public enum TriggerType
 {
-    DisplayDialogue,
+    Dialogue,
     ChangeScreen,
     Wait,
 }
@@ -14,18 +14,21 @@ public class Trigger
 
     [SerializeField] private string dialogueSpeaker;
     [SerializeField] private string dialogueContent;
+    [SerializeField] private bool dialogueSkippable;
+    [SerializeField] private bool dialogueFlash;
 
-    [SerializeField] private Color startScreenColor;
-    [SerializeField] private Color endScreenColor;
+    [SerializeField] private Color changeScreenStartColor;
+    [SerializeField] private Color changeScreenEndColor;
     [SerializeField] private float changeScreenLength;
 
     [SerializeField] private float waitLength;
+    [SerializeField] private bool waitFlash;
 
     public void ExecuteTrigger()
     {
         switch (type)
         {
-            case TriggerType.DisplayDialogue:
+            case TriggerType.Dialogue:
                 break;
             case TriggerType.ChangeScreen:
                 break;
