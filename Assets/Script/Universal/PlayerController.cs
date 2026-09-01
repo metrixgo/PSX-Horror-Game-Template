@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public enum PlayerState
 {
@@ -14,7 +13,6 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Camera playerCam;
     [SerializeField] private Transform playerHold;
-    [SerializeField] private InputActionAsset playerInput;
 
     private float walkSpeed = 3f;
     private float sprintSpeed = 5f;
@@ -27,7 +25,7 @@ public class PlayerController : MonoBehaviour
     private float reachRange = 1.5f;
     private float normalFieldOfView = 60f;
     private float sprintFieldOfView = 65f;
-    private float sensitivity = 1f;
+    private float sensitivity = 5f;
 
     private bool isCrouched = false;
     private float rotationX = 0f;
@@ -41,34 +39,15 @@ public class PlayerController : MonoBehaviour
     private AudioSource playerAd;
     private CharacterController controller;
 
-    private InputActionMap playerMap;
-    private InputAction moveAction;
-    private InputAction lookAction;
-    private InputAction sprintAction;
-    private InputAction crouchAction;
-
     private void Awake()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         playerAd = GetComponent<AudioSource>();
         controller = GetComponent<CharacterController>();
 
-        playerMap = playerInput.FindActionMap("Player");
-        moveAction = playerMap.FindAction("Move");
-        lookAction = playerMap.FindAction("Look");
-        sprintAction = playerMap.FindAction("Sprint");
-        crouchAction = playerMap.FindAction("Crouch");
-
         weights[(int)state] = 1f;
-    }
-
-    private void OnEnable()
-    {
-        playerMap.Enable();
-    }
-
-    private void OnDisable()
-    {
-        playerMap.Disable();
     }
 
     private void Update()
@@ -84,10 +63,10 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateState()
     {
-        if (moveAction.IsPressed())
+        if (Input.GetAxisRaw("Horizontal") > 0.01f || Input.GetAxisRaw("Vertical") > 0.01f)
         {
             if (isCrouched) state = PlayerState.CrouchWalk;
-            else if (sprintAction.IsPressed()) state = PlayerState.Sprint;
+            else if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) state = PlayerState.Sprint;
             else state = PlayerState.Walk;
         }
         else
@@ -99,14 +78,7 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateCamera()
     {
-        Vector2 lookInput = lookAction.ReadValue<Vector2>();
-
-        /*transform.Rotate(Vector3.up * lookInput.x * sensitivity);
-        rotationX = Mathf.Clamp(rotationX - lookInput.y * sensitivity, -90.0f, 90.0f);
-        playerCam.transform.localRotation = Quaternion.Euler(rotationX, 0f, 0f);*/
-
         rotationX -= Input.GetAxis("Mouse Y") * sensitivity;
-        if (rotationX > 180.0f) rotationX -= 360.0f;
         rotationX = Mathf.Clamp(rotationX, -90.0f, 90.0f);
         playerCam.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
         transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
@@ -138,15 +110,13 @@ public class PlayerController : MonoBehaviour
     private void MovePlayer()
     {
         float speed = walkSpeed;
-        if (sprintAction.IsPressed()) speed = sprintSpeed;
+        if (state == PlayerState.Sprint) speed = sprintSpeed;
         if (isCrouched) speed = crouchSpeed;
 
         if (controller.isGrounded) velocityY = -1f;
         else velocityY += gravity * Time.deltaTime;
 
-        Vector2 moveInput = moveAction.ReadValue<Vector2>();
-        Vector3 move = (transform.right * moveInput.x + transform.forward * moveInput.y).normalized * speed + transform.up * velocityY;
-
-        controller.Move(move * Time.deltaTime);
+        Vector3 move = (transform.right * Input.GetAxisRaw("Horizontal") + transform.forward * Input.GetAxisRaw("Vertical")).normalized * speed;
+        controller.Move((move + Vector3.up * velocityY) * Time.deltaTime);
     }
 }
