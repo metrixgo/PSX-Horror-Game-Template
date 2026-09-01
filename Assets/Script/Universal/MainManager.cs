@@ -14,7 +14,7 @@ public class MainManager : MonoBehaviour
 {
     public static MainManager instance;
 
-    public GameState gameState { get; private set; } = GameState.Executing;
+    public GameState gameState { get; private set; } = GameState.Normal;
 
     private List<Trigger> triggers = new List<Trigger>();
     private List<string> tasks = new List<string>();
