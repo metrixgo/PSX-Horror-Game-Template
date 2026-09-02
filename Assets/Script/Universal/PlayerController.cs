@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public enum PlayerState
@@ -34,8 +35,8 @@ public class PlayerController : MonoBehaviour
     private float crouchHeight = 0.6f;
     private float standCamHeight = 1.75f;
     private float crouchCamHeight = 0.4f;
-
-    private float crouchTransitionLength = 0.6f;
+    private float crouchTransitionLength = 0.4f;
+    private float crouchProgress = 0f;
 
     private float jumpStrength = 6f;
     private float gravity = -12f;
@@ -77,6 +78,7 @@ public class PlayerController : MonoBehaviour
         if (MainManager.instance.gameState != GameState.Normal) return;
 
         UpdateState();
+        UpdateVelocity();
 
         if (canDo.Look) CameraLook();
         if (canDo.Crouch) HandleCrouch();
@@ -130,6 +132,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void UpdateVelocity()
+    {
+        move = Vector3.zero;
+
+        if (controller.isGrounded) velocityY = groundGravity;
+        else velocityY += gravity * Time.deltaTime;
+    }
+
     private void CameraLook()
     {
         rotationX -= Input.GetAxis("Mouse Y") * sensitivity;
@@ -140,37 +150,41 @@ public class PlayerController : MonoBehaviour
 
     private void HandleCrouch()
     {
-        if (Input.GetKeyDown(KeyCode.C) && controller.isGrounded) isCrouched = !isCrouched;
+        if (Input.GetKeyDown(KeyCode.C) && controller.isGrounded)
+        {
+            if (!isCrouched) isCrouched = true;
+            else
+            {
+                bool hasCeiling = Physics.CapsuleCast(
+                    transform.position + controller.center - Vector3.up * (controller.height / 2 - controller.radius),
+                    transform.position + controller.center + Vector3.up * (controller.height / 2 - controller.radius),
+                    controller.radius,
+                    Vector3.up,
+                    standHeight - crouchHeight
+                );
 
-        float goalHeight = isCrouched ? crouchHeight : standHeight;
-        controller.height = Mathf.MoveTowards(controller.height, goalHeight, Mathf.Abs(standHeight - crouchHeight) * Time.deltaTime / crouchTransitionLength);
+                if (!hasCeiling) isCrouched = false;
+            }
+        }
+
+        float goalProgress = isCrouched ? 1f : 0f;
+        crouchProgress = Mathf.MoveTowards(crouchProgress, goalProgress, Time.deltaTime / crouchTransitionLength);
+
+        controller.height = Mathf.Lerp(standHeight, crouchHeight, crouchProgress);
         controller.center = Vector3.up * controller.height * 0.5f;
 
-        float goalCamHeight = isCrouched ? crouchCamHeight : standCamHeight;
-        camHeight = Mathf.MoveTowards(camHeight, goalCamHeight, Mathf.Abs(standCamHeight - crouchCamHeight) * Time.deltaTime / crouchTransitionLength);
-
-
+        camHeight = Mathf.Lerp(standCamHeight, crouchCamHeight, crouchProgress);
     }
 
     private void HandleJump()
     {
-        if (controller.isGrounded)
-        {
-            Debug.Log("!!!");
-            if (Input.GetKeyDown(KeyCode.Space) && !isCrouched) velocityY = jumpStrength;
-            else velocityY = groundGravity;
-        }
-        else
-        {
-            velocityY += gravity * Time.deltaTime;
-        }
+        if (controller.isGrounded && Input.GetKeyDown(KeyCode.Space) && !isCrouched) velocityY = jumpStrength;
     }
 
     private void HandleMove()
     {
-        float speed = walkSpeed;
-        if (state == PlayerState.Sprint) speed = sprintSpeed;
-        if (isCrouched) speed = crouchSpeed;
+        float speed = state == PlayerState.Sprint ? sprintSpeed : walkSpeed;
+        speed = Mathf.Lerp(speed, crouchSpeed, crouchProgress);
 
         move = (transform.right * Input.GetAxisRaw("Horizontal") + transform.forward * Input.GetAxisRaw("Vertical")).normalized * speed;
     }
