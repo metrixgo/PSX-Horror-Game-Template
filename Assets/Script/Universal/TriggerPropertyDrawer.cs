@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 [CustomPropertyDrawer(typeof(Trigger))]
 public class TriggerPropertyDrawer : PropertyDrawer
 {
@@ -74,3 +75,4 @@ public class TriggerPropertyDrawer : PropertyDrawer
         }
     }
 }
+#endif
