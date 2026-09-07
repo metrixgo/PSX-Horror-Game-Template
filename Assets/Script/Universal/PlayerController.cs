@@ -32,9 +32,9 @@ public class PlayerController : MonoBehaviour
 
     private float camHeight = 1.75f;
     private float standHeight = 2f;
-    private float crouchHeight = 0.6f;
+    private float crouchHeight = 0.8f;
     private float standCamHeight = 1.75f;
-    private float crouchCamHeight = 0.4f;
+    private float crouchCamHeight = 0.6f;
     private float crouchTransitionLength = 0.4f;
     private float crouchProgress = 0f;
 
@@ -150,22 +150,21 @@ public class PlayerController : MonoBehaviour
 
     private void HandleCrouch()
     {
+        bool hasCeiling = Physics.CapsuleCast(
+                    transform.position + controller.center - Vector3.up * (controller.height / 2 - controller.radius),
+                    transform.position + controller.center + Vector3.up * (controller.height / 2 - controller.radius),
+                    controller.radius + controller.skinWidth,
+                    Vector3.up,
+                    standHeight - controller.height - controller.skinWidth
+                );
+
         if (Input.GetKeyDown(KeyCode.C) && controller.isGrounded)
         {
             if (!isCrouched) isCrouched = true;
-            else
-            {
-                bool hasCeiling = Physics.CapsuleCast(
-                    transform.position + controller.center - Vector3.up * (controller.height / 2 - controller.radius),
-                    transform.position + controller.center + Vector3.up * (controller.height / 2 - controller.radius),
-                    controller.radius,
-                    Vector3.up,
-                    standHeight - crouchHeight
-                );
-
-                if (!hasCeiling) isCrouched = false;
-            }
+            else if (!hasCeiling) isCrouched = false;
         }
+
+        if (hasCeiling && !isCrouched) isCrouched = true;
 
         float goalProgress = isCrouched ? 1f : 0f;
         crouchProgress = Mathf.MoveTowards(crouchProgress, goalProgress, Time.deltaTime / crouchTransitionLength);
