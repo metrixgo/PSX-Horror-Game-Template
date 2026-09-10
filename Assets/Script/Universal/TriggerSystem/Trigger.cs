@@ -23,7 +23,7 @@ public enum ManageTasksType
 {
     AddTask,
     RemoveTask,
-    ClearAllTasks,
+    ClearTasks,
 }
 
 public enum PlayerCanDoType
@@ -73,9 +73,11 @@ public class Trigger
     public float WaitLength => waitLength;
 
     [SerializeField] private string displayPromptPrompt;
+    [SerializeField] private Color displayPromptColor;
     [SerializeField] private bool displayPromptSub;
     [SerializeField] private bool displayPromptFlash;
     public string DisplayPromptPrompt => displayPromptPrompt;
+    public Color DisplayPromptColor => displayPromptColor;
     public bool DisplayPromptSub => displayPromptSub;
     public bool DisplayPromptFlash => displayPromptFlash;
 

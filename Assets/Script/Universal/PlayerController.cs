@@ -188,6 +188,20 @@ public class PlayerController : MonoBehaviour
         if ((flags & CollisionFlags.Above) != 0 && velocityY > 0f) velocityY = groundGravity;
     }
 
+    public void Move(Vector3 dir)
+    {
+        controller.enabled = false;
+        transform.position += dir;
+        controller.enabled = true;
+    }
+
+    public void SetPosition(Vector3 pos)
+    {
+        controller.enabled = false;
+        transform.position = pos;
+        controller.enabled = true;
+    }
+
     public void CanLook(bool can)
     {
         canLook = can;

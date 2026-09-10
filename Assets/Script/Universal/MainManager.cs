@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -127,28 +128,60 @@ public class MainManager : MonoBehaviour
         triggers.Add(trigger);
     }
 
-    public void SetPrompt(string prompt, bool sub)
-    {
-        SetPrompt(prompt, sub, false);
-    }
-
-    public void SetPrompt(string prompt, bool sub, bool flash)
-    {
-        if (sub) subprompt.text = prompt;
-        else this.prompt.text = prompt;
-
-        if (sub) flashSubprompt = flash;
-        else flashPrompt = flash;
-
-        if (sub) flashSubpromptT = 0;
-        else flashPromptT = 0;
-    }
-
     public string Translate(string s)
     {
         if (language == "English") return s;
         if (translations.ContainsKey(s)) return translations[s];
         return s;
+    }
+
+    public void SetPrompt(string prompt, Color color, bool sub, bool flash)
+    {
+        prompt = Translate(prompt);
+
+        if (sub)
+        {
+            subprompt.text = prompt;
+            subpromptColor = color;
+            flashSubprompt = flash;
+            flashSubpromptT = 0;
+        }
+        else
+        {
+            this.prompt.text = prompt;
+            promptColor = color;
+            flashPrompt = flash;
+            flashPromptT = 0;
+        }
+    }
+
+    public void AddTask(string s)
+    {
+        if (tasks.Contains(s)) return;
+        tasks.Add(s);
+        UpdateTask();
+    }
+
+    public void RemoveTask(string s)
+    {
+        tasks.Remove(s);
+        UpdateTask();
+    }
+
+    public void ClearTasks()
+    {
+        tasks.Clear();
+        UpdateTask();
+    }
+
+    public void UpdateTask()
+    {
+        string s = "";
+        foreach (string task in tasks)
+        {
+            s += "- " + Translate(task) + "\n";
+        }
+        tasksPrompt.text = s;
     }
 
     private IEnumerator ExecuteTriggers()
@@ -189,7 +222,64 @@ public class MainManager : MonoBehaviour
                     break;
 
                 case TriggerType.DisplayPrompt:
-                    SetPrompt(trig.DisplayPromptPrompt, trig.DisplayPromptSub, trig.DisplayPromptFlash);
+                    SetPrompt(trig.DisplayPromptPrompt, trig.DisplayPromptColor, trig.DisplayPromptSub, trig.DisplayPromptFlash);
+                    break;
+
+                case TriggerType.ManageTasks:
+                    switch (trig.ManageTasksType)
+                    {
+                        case ManageTasksType.AddTask:
+                            AddTask(trig.ManageTasksTask);
+                            break;
+                        case ManageTasksType.RemoveTask:
+                            RemoveTask(trig.ManageTasksTask);
+                            break;
+                        case ManageTasksType.ClearTasks:
+                            ClearTasks();
+                            break;
+                        default:
+                            Debug.LogWarning("Unimplemented Manage Tasks Type: " + trig.ManageTasksType);
+                            break;
+                    }
+                    break;
+
+                case TriggerType.PlayerCanDo:
+                    switch (trig.PlayerCanDoType)
+                    {
+                        case PlayerCanDoType.Look:
+                            player.CanLook(trig.PlayerCanDoCanDo);
+                            break;
+                        case PlayerCanDoType.Move:
+                            player.CanMove(trig.PlayerCanDoCanDo);
+                            break;
+                        case PlayerCanDoType.Run:
+                            player.CanRun(trig.PlayerCanDoCanDo);
+                            break;
+                        case PlayerCanDoType.Jump:
+                            player.CanJump(trig.PlayerCanDoCanDo);
+                            break;
+                        case PlayerCanDoType.Crouch:
+                            player.CanCrouch(trig.PlayerCanDoCanDo);
+                            break;
+                        default:
+                            Debug.LogWarning("Unimplemented Player Can Do Type: " + trig.PlayerCanDoType);
+                            break;
+                    }
+                    break;
+
+                case TriggerType.MovePlayer:
+                    switch (trig.MovePlayerType)
+                    {
+                        case MovePlayerType.Location:
+                            player.SetPosition(trig.MovePlayerVector);
+                            break;
+                        case MovePlayerType.Direction:
+                            player.Move(trig.MovePlayerVector);
+                            break;
+                        default:
+                            Debug.LogWarning("Unimplemented Move Player Type: " + trig.MovePlayerType);
+                            break;
+                    }
                     break;
 
                 default:
@@ -205,6 +295,9 @@ public class MainManager : MonoBehaviour
     {
         effectsPlayer.clip = writingEffect;
         effectsPlayer.Play();
+
+        speaker = Translate(speaker);
+        content = Translate(content);
 
         bool sub = type == DisplayDialogueType.Sub || type == DisplayDialogueType.FlashSub;
         bool flash = type == DisplayDialogueType.FlashMain || type == DisplayDialogueType.FlashSub;

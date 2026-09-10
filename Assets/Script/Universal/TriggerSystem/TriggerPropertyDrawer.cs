@@ -37,11 +37,16 @@ public class TriggerPropertyDrawer : PropertyDrawer
                     EditorGUI.PropertyField(rect, displayDialogueSkippable, new GUIContent("Skippable"));
                     rect.y += gap;
                 }
-                else
+                else if ((DisplayDialogueType)displayDialogueType.enumValueIndex == DisplayDialogueType.FlashMain ||
+                    (DisplayDialogueType)displayDialogueType.enumValueIndex == DisplayDialogueType.FlashSub)
                 {
                     SerializedProperty displayDialogueFlashLength = property.FindPropertyRelative("displayDialogueFlashLength");
                     EditorGUI.PropertyField(rect, displayDialogueFlashLength, new GUIContent("Flash Length"));
                     rect.y += gap;
+                }
+                else
+                {
+                    Debug.LogWarning("Unimplemented Display Dialogue Type: " + (DisplayDialogueType)displayDialogueType.enumValueIndex);
                 }
                 break;
 
@@ -73,6 +78,9 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 SerializedProperty displayPromptPrompt = property.FindPropertyRelative("displayPromptPrompt");
                 EditorGUI.PropertyField(rect, displayPromptPrompt, new GUIContent("Prompt"));
                 rect.y += gap;
+                SerializedProperty displayPromptColor = property.FindPropertyRelative("displayPromptColor");
+                EditorGUI.PropertyField(rect, displayPromptColor, new GUIContent("Color"));
+                rect.y += gap;
                 SerializedProperty displayPromptSub = property.FindPropertyRelative("displayPromptSub");
                 EditorGUI.PropertyField(rect, displayPromptSub, new GUIContent("Sub"));
                 rect.y += gap;
@@ -86,7 +94,7 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 EditorGUI.PropertyField(rect, manageTasksType, new GUIContent("Type"));
                 rect.y += gap;
 
-                if((ManageTasksType)manageTasksType.enumValueIndex != ManageTasksType.ClearAllTasks)
+                if((ManageTasksType)manageTasksType.enumValueIndex != ManageTasksType.ClearTasks)
                 {
                     SerializedProperty manageTasksTask = property.FindPropertyRelative("manageTasksTask");
                     EditorGUI.PropertyField(rect, manageTasksTask, new GUIContent("Task"));
@@ -137,11 +145,11 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 return gap * 2;
 
             case TriggerType.DisplayPrompt:
-                return gap * 4;
+                return gap * 5;
 
             case TriggerType.ManageTasks:
                 SerializedProperty manageTasksType = property.FindPropertyRelative("manageTasksType");
-                return gap * ((ManageTasksType)manageTasksType.enumValueIndex == ManageTasksType.ClearAllTasks ? 2 : 3);
+                return gap * ((ManageTasksType)manageTasksType.enumValueIndex == ManageTasksType.ClearTasks ? 2 : 3);
 
             case TriggerType.PlayerCanDo:
                 return gap * 3;
