@@ -53,7 +53,16 @@ public class MainManager : MonoBehaviour
     [Header("Prompts")]
     [SerializeField] private TextMeshProUGUI prompt;
     [SerializeField] private TextMeshProUGUI subprompt;
-    [SerializeField] private TextMeshProUGUI taskPrompt;
+    private Color promptColor = Color.white;
+    private Color subpromptColor = Color.white;
+    private bool flashPrompt = false;
+    private float flashPromptT = 0f;
+    private bool flashSubprompt = false;
+    private float flashSubpromptT = 0f;
+
+    [Header("Tasks")]
+    [SerializeField] private TextMeshProUGUI tasksPrompt;
+    private List<string> tasks = new List<string>();
 
     private float sensitivity;
     private float musicVolume;
@@ -64,7 +73,6 @@ public class MainManager : MonoBehaviour
     private AudioClip writingEffect;
 
     private List<Trigger> triggers = new List<Trigger>();
-    private List<string> tasks = new List<string>();
 
     private Dictionary<string, string> translations = new Dictionary<string, string>()
     {
@@ -89,6 +97,29 @@ public class MainManager : MonoBehaviour
             IsExecutingTriggers = true;
             StartCoroutine(ExecuteTriggers());
         }
+
+        if (flashPrompt)
+        {
+            flashPromptT += Time.deltaTime;
+            prompt.color = Color.Lerp(Color.clear, promptColor, (Mathf.Cos(flashPromptT * 5f) + 1f) / 2f * 0.75f + 0.25f); ;
+        }
+        else
+        {
+            flashPromptT = 0;
+            prompt.color = promptColor;
+        }
+
+        if (flashSubprompt)
+        {
+            flashSubpromptT += Time.deltaTime;
+            subprompt.color = Color.Lerp(Color.clear, subpromptColor, (Mathf.Cos(flashSubpromptT * 5f) + 1f) / 2f * 0.75f + 0.25f);
+        }
+        else
+        {
+            flashSubpromptT = 0;
+            subprompt.color = subpromptColor;
+        }
+        
     }
 
     public void AddTrigger(Trigger trigger)
@@ -96,9 +127,21 @@ public class MainManager : MonoBehaviour
         triggers.Add(trigger);
     }
 
-    public void SetPrompt(string s)
+    public void SetPrompt(string prompt, bool sub)
     {
-        prompt.text = Translate(s);
+        SetPrompt(prompt, sub, false);
+    }
+
+    public void SetPrompt(string prompt, bool sub, bool flash)
+    {
+        if (sub) subprompt.text = prompt;
+        else this.prompt.text = prompt;
+
+        if (sub) flashSubprompt = flash;
+        else flashPrompt = flash;
+
+        if (sub) flashSubpromptT = 0;
+        else flashPromptT = 0;
     }
 
     public string Translate(string s)
@@ -132,10 +175,11 @@ public class MainManager : MonoBehaviour
                 case TriggerType.ChangeScreen:
                     yield return StartCoroutine(
                         ChangeScreen(
-                            trig.ChangeScreenType,
                             trig.ChangeScreenStartColor,
                             trig.ChangeScreenEndColor,
-                            trig.ChangeScreenLength
+                            trig.ChangeScreenLength,
+                            trig.ChangeScreenSub,
+                            trig.ChangeScreenFlash
                         )
                     );
                     break;
@@ -144,7 +188,9 @@ public class MainManager : MonoBehaviour
                     yield return new WaitForSeconds(trig.WaitLength);
                     break;
 
-
+                case TriggerType.DisplayPrompt:
+                    SetPrompt(trig.DisplayPromptPrompt, trig.DisplayPromptSub, trig.DisplayPromptFlash);
+                    break;
 
                 default:
                     Debug.LogError("Trigger Not Found: " + trig.TriggerType);
@@ -213,11 +259,8 @@ public class MainManager : MonoBehaviour
         if (flash) IsPlayerActive = false;
     }
 
-    private IEnumerator ChangeScreen(ChangeScreenType type, Color startColor, Color endColor, float length)
+    private IEnumerator ChangeScreen(Color startColor, Color endColor, float length, bool sub, bool flash)
     {
-        bool sub = type == ChangeScreenType.Sub || type == ChangeScreenType.FlashSub;
-        bool flash = type == ChangeScreenType.FlashMain || type == ChangeScreenType.FlashSub;
-
         if (flash) IsPlayerActive = true;
 
         float t = 0;

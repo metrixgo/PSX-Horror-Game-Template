@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 
 public enum TriggerType
@@ -13,14 +12,6 @@ public enum TriggerType
 }
 
 public enum DisplayDialogueType
-{
-    Main,
-    Sub,
-    FlashMain,
-    FlashSub,
-}
-
-public enum ChangeScreenType
 {
     Main,
     Sub,
@@ -67,21 +58,25 @@ public class Trigger
     public bool DisplayDialogueSkippable => displayDialogueSkippable;
     public float DisplayDialogueFlashLength => displayDialogueFlashLength;
 
-    [SerializeField] private ChangeScreenType changeScreenType;
     [SerializeField] private Color changeScreenStartColor;
     [SerializeField] private Color changeScreenEndColor;
     [SerializeField] private float changeScreenLength;
-    public ChangeScreenType ChangeScreenType => changeScreenType;
+    [SerializeField] private bool changeScreenSub;
+    [SerializeField] private bool changeScreenFlash;
     public Color ChangeScreenStartColor => changeScreenStartColor;
     public Color ChangeScreenEndColor => changeScreenEndColor;
     public float ChangeScreenLength => changeScreenLength;
+    public bool ChangeScreenSub => changeScreenSub;
+    public bool ChangeScreenFlash => changeScreenFlash;
 
     [SerializeField] private float waitLength;
     public float WaitLength => waitLength;
 
     [SerializeField] private string displayPromptPrompt;
+    [SerializeField] private bool displayPromptSub;
     [SerializeField] private bool displayPromptFlash;
     public string DisplayPromptPrompt => displayPromptPrompt;
+    public bool DisplayPromptSub => displayPromptSub;
     public bool DisplayPromptFlash => displayPromptFlash;
 
     [SerializeField] private ManageTasksType manageTasksType;

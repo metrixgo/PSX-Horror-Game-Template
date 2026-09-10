@@ -46,9 +46,6 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 break;
 
             case TriggerType.ChangeScreen:
-                SerializedProperty changeScreenType = property.FindPropertyRelative("changeScreenType");
-                EditorGUI.PropertyField(rect, changeScreenType, new GUIContent("Type"));
-                rect.y += gap;
                 SerializedProperty changeScreenStartColor = property.FindPropertyRelative("changeScreenStartColor");
                 EditorGUI.PropertyField(rect, changeScreenStartColor, new GUIContent("Start Color"));
                 rect.y += gap;
@@ -57,6 +54,12 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 rect.y += gap;
                 SerializedProperty changeScreenLength = property.FindPropertyRelative("changeScreenLength");
                 EditorGUI.PropertyField(rect, changeScreenLength, new GUIContent("Length"));
+                rect.y += gap;
+                SerializedProperty changeScreenSub = property.FindPropertyRelative("changeScreenSub");
+                EditorGUI.PropertyField(rect, changeScreenSub, new GUIContent("Sub"));
+                rect.y += gap;
+                SerializedProperty changeScreenFlash = property.FindPropertyRelative("changeScreenFlash");
+                EditorGUI.PropertyField(rect, changeScreenFlash, new GUIContent("Flash"));
                 rect.y += gap;
                 break;
 
@@ -69,6 +72,9 @@ public class TriggerPropertyDrawer : PropertyDrawer
             case TriggerType.DisplayPrompt:
                 SerializedProperty displayPromptPrompt = property.FindPropertyRelative("displayPromptPrompt");
                 EditorGUI.PropertyField(rect, displayPromptPrompt, new GUIContent("Prompt"));
+                rect.y += gap;
+                SerializedProperty displayPromptSub = property.FindPropertyRelative("displayPromptSub");
+                EditorGUI.PropertyField(rect, displayPromptSub, new GUIContent("Sub"));
                 rect.y += gap;
                 SerializedProperty displayPromptFlash = property.FindPropertyRelative("displayPromptFlash");
                 EditorGUI.PropertyField(rect, displayPromptFlash, new GUIContent("Flash"));
@@ -125,13 +131,13 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 return gap * 5;
 
             case TriggerType.ChangeScreen:
-                return gap * 5;
+                return gap * 6;
 
             case TriggerType.Wait:
                 return gap * 2;
 
             case TriggerType.DisplayPrompt:
-                return gap * 3;
+                return gap * 4;
 
             case TriggerType.ManageTasks:
                 SerializedProperty manageTasksType = property.FindPropertyRelative("manageTasksType");

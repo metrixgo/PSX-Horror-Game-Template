@@ -382,12 +382,14 @@ MonoBehaviour:
     displayDialogueContent: 
     displayDialogueSkippable: 0
     displayDialogueFlashLength: 0
-    changeScreenType: 0
     changeScreenStartColor: {r: 0, g: 0, b: 0, a: 0}
     changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
     changeScreenLength: 0
+    changeScreenSub: 0
+    changeScreenFlash: 0
     waitLength: 0
     displayPromptPrompt: 
+    displayPromptSub: 0
     displayPromptFlash: 0
     manageTasksType: 0
     manageTasksTask: 
@@ -401,12 +403,14 @@ MonoBehaviour:
     displayDialogueContent: 
     displayDialogueSkippable: 0
     displayDialogueFlashLength: 0
-    changeScreenType: 0
     changeScreenStartColor: {r: 0.9245283, g: 0.21368816, b: 0.21368816, a: 0}
     changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
     changeScreenLength: 0
+    changeScreenSub: 0
+    changeScreenFlash: 0
     waitLength: 0
     displayPromptPrompt: 
+    displayPromptSub: 0
     displayPromptFlash: 0
     manageTasksType: 0
     manageTasksTask: 
@@ -420,12 +424,14 @@ MonoBehaviour:
     displayDialogueContent: 
     displayDialogueSkippable: 0
     displayDialogueFlashLength: 0
-    changeScreenType: 0
     changeScreenStartColor: {r: 0, g: 0, b: 0, a: 0}
     changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
     changeScreenLength: 0
+    changeScreenSub: 0
+    changeScreenFlash: 0
     waitLength: 0
     displayPromptPrompt: 
+    displayPromptSub: 0
     displayPromptFlash: 0
     manageTasksType: 0
     manageTasksTask: 
@@ -439,12 +445,14 @@ MonoBehaviour:
     displayDialogueContent: 
     displayDialogueSkippable: 0
     displayDialogueFlashLength: 0
-    changeScreenType: 0
     changeScreenStartColor: {r: 0, g: 0, b: 0, a: 0}
     changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
     changeScreenLength: 0
+    changeScreenSub: 0
+    changeScreenFlash: 0
     waitLength: 0
     displayPromptPrompt: 
+    displayPromptSub: 0
     displayPromptFlash: 0
     manageTasksType: 0
     manageTasksTask: 
@@ -1062,19 +1070,42 @@ MonoBehaviour:
   isPhysical: 1
   selfDestructs: 0
   triggers:
-  - triggerType: 0
+  - triggerType: 3
     displayDialogueType: 0
     displayDialogueSpeaker: 
     displayDialogueContent: 
     displayDialogueSkippable: 0
     displayDialogueFlashLength: 0
-    changeScreenType: 0
     changeScreenStartColor: {r: 0, g: 0, b: 0, a: 0}
     changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
     changeScreenLength: 0
+    changeScreenSub: 0
+    changeScreenFlash: 0
     waitLength: 0
-    displayPromptPrompt: 
+    displayPromptPrompt: hello!
+    displayPromptSub: 1
     displayPromptFlash: 0
+    manageTasksType: 0
+    manageTasksTask: 
+    playerCanDoType: 0
+    playerCanDoCanDo: 0
+    movePlayerType: 0
+    movePlayerVector: {x: 0, y: 0, z: 0}
+  - triggerType: 3
+    displayDialogueType: 0
+    displayDialogueSpeaker: 
+    displayDialogueContent: 
+    displayDialogueSkippable: 0
+    displayDialogueFlashLength: 0
+    changeScreenStartColor: {r: 0, g: 0, b: 0, a: 0}
+    changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
+    changeScreenLength: 0
+    changeScreenSub: 0
+    changeScreenFlash: 0
+    waitLength: 0
+    displayPromptPrompt: dude
+    displayPromptSub: 0
+    displayPromptFlash: 1
     manageTasksType: 0
     manageTasksTask: 
     playerCanDoType: 0
@@ -1477,7 +1508,7 @@ MonoBehaviour:
   subscreen: {fileID: 1685237557}
   prompt: {fileID: 6670251136512209132}
   subprompt: {fileID: 1558174051}
-  taskPrompt: {fileID: 3754788681222651384}
+  tasksPrompt: {fileID: 0}
 --- !u!4 &925605301
 Transform:
   m_ObjectHideFlags: 0
