@@ -3,7 +3,14 @@ using UnityEngine;
 
 public class TriggerSequences : MonoBehaviour
 {
+    [SerializeField] private bool isPhysical = false;
+    [SerializeField] private bool selfDestructs = false;
     [SerializeField] private List<Trigger> triggers;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (isPhysical) AddTriggers();
+    }
 
     public void AddTriggers()
     {
@@ -11,5 +18,7 @@ public class TriggerSequences : MonoBehaviour
         {
             MainManager.instance.AddTrigger(trigger);
         }
+
+        if (selfDestructs) Destroy(gameObject);
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 [CustomPropertyDrawer(typeof(Trigger))]
 public class TriggerPropertyDrawer : PropertyDrawer
 {
-    private float gap = EditorGUIUtility.singleLineHeight + 0.1f;
+    private float gap = EditorGUIUtility.singleLineHeight + 0.2f;
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
@@ -64,14 +64,8 @@ public class TriggerPropertyDrawer : PropertyDrawer
 
         switch ((TriggerType)type.enumValueIndex)
         {
-            case TriggerType.DisplayDialogue:
-                return gap * 5;
-            case TriggerType.ChangeScreen:
-                return gap * 4;
-            case TriggerType.Wait:
-                return gap * 3;
             default:
-                return gap;
+                return gap * 10;
         }
     }
 }

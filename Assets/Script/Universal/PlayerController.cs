@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public enum PlayerState
@@ -8,15 +7,6 @@ public enum PlayerState
     Sprint,
     CrouchIdle,
     CrouchWalk,
-}
-
-public class CanDo
-{
-    public bool Look = true;
-    public bool Move = true;
-    public bool Run = true;
-    public bool Jump = true;
-    public bool Crouch = true;
 }
 
 public class PlayerController : MonoBehaviour
@@ -45,8 +35,12 @@ public class PlayerController : MonoBehaviour
     private float reachRange = 1.5f;
     private float sensitivity = 5f;
 
-    private CanDo canDo = new CanDo();
-    private bool isCrouched = false;
+    public bool canLook { get; private set; } = true;
+    public bool canMove { get; private set; } = true;
+    public bool canRun { get; private set; } = true;
+    public bool canJump { get; private set; } = true;
+    public bool canCrouch { get; private set; } = true;
+    public bool isCrouched { get; private set; } = false;
 
     private float rotationX = 0f;
     private float velocityY = -1f;
@@ -75,15 +69,15 @@ public class PlayerController : MonoBehaviour
     {
         CameraBobbing();
 
-        if (MainManager.instance.gameState != GameState.Normal) return;
+        if (!MainManager.instance.playerIsActive) return;
 
         UpdateState();
         UpdateVelocity();
 
-        if (canDo.Look) CameraLook();
-        if (canDo.Crouch) HandleCrouch();
-        if (canDo.Jump) HandleJump();
-        if (canDo.Move) HandleMove();
+        if (canLook) CameraLook();
+        if (canCrouch) HandleCrouch();
+        if (canJump) HandleJump();
+        if (canMove) HandleMove();
 
         MovePlayer();
 
@@ -119,10 +113,10 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateState()
     {
-        if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.01f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.01f)
+        if ((Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.01f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.01f) && canMove)
         {
             if (isCrouched) state = PlayerState.CrouchWalk;
-            else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && canDo.Run) state = PlayerState.Sprint;
+            else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && canRun) state = PlayerState.Sprint;
             else state = PlayerState.Walk;
         }
         else
@@ -192,5 +186,30 @@ public class PlayerController : MonoBehaviour
     {
         CollisionFlags flags = controller.Move((move + Vector3.up * velocityY) * Time.deltaTime);
         if ((flags & CollisionFlags.Above) != 0 && velocityY > 0f) velocityY = groundGravity;
+    }
+
+    public void CanLook(bool can)
+    {
+        canLook = can;
+    }
+
+    public void CanMove(bool can)
+    {
+        canMove = can;
+    }
+
+    public void CanRun(bool can)
+    {
+        canRun = can;
+    }
+
+    public void CanJump(bool can)
+    {
+        canJump = can;
+    }
+
+    public void CanCrouch(bool can)
+    {
+        canCrouch = can;
     }
 }
