@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour
     {
         CameraBobbing();
 
-        if (!MainManager.instance.playerIsActive) return;
+        if (!MainManager.instance.IsPlayerActive) return;
 
         UpdateState();
         UpdateVelocity();

@@ -16,7 +16,8 @@ public class MainManager : MonoBehaviour
 
     public GameState gameState { get; private set; } = GameState.Normal;
 
-    public bool playerIsActive { get; private set; } = true;
+    public bool IsPlayerActive { get; private set; } = true;
+    public bool IsExecutingTriggers { get; private set; } = false;
 
     [Header("Player")]
     [SerializeField] private PlayerController player;
@@ -83,8 +84,9 @@ public class MainManager : MonoBehaviour
 
     private void Update()
     {
-        if (triggers.Count > 0 && gameState == GameState.Normal)
+        if (!IsExecutingTriggers && triggers.Count > 0 && gameState == GameState.Normal)
         {
+            IsExecutingTriggers = true;
             StartCoroutine(ExecuteTriggers());
         }
     }
@@ -118,15 +120,15 @@ public class MainManager : MonoBehaviour
                 case TriggerType.DisplayDialogue:
                     yield return StartCoroutine(
                         DisplayDialogue(
+                            trig.DisplayDialogueType,
                             trig.DisplayDialogueSpeaker,
                             trig.DisplayDialogueContent,
-                            trig.DisplayDialogueSub,
                             trig.DisplayDialogueSkippable,
-                            trig.DisplayDialogueTimedQuit,
-                            trig.DisplayDialogueQuitLength
+                            trig.DisplayDialogueFlashLength
                         )
                     );
                     break;
+
                 case TriggerType.ChangeScreen:
                     yield return StartCoroutine(
                         ChangeScreen(
@@ -137,18 +139,29 @@ public class MainManager : MonoBehaviour
                         )
                     );
                     break;
+
+                case TriggerType.Wait:
+                    yield return new WaitForSeconds(trig.WaitLength);
+                    break;
+
+
+
                 default:
                     Debug.LogError("Trigger Not Found: " + trig.TriggerType);
                     break;
             }
         }
+
+        IsExecutingTriggers = false;
     }
 
-    private IEnumerator DisplayDialogue(string speaker, string content, bool sub, bool skippable, bool timedQuit, float quitLength)
+    private IEnumerator DisplayDialogue(DisplayDialogueType type, string speaker, string content, bool skippable, float flashLength)
     {
         effectsPlayer.clip = writingEffect;
         effectsPlayer.Play();
 
+        bool sub = type == DisplayDialogueType.Sub || type == DisplayDialogueType.FlashSub;
+        bool flash = type == DisplayDialogueType.FlashMain || type == DisplayDialogueType.FlashSub;
         if (sub)
         {
             subdialogueSpeaker.text = speaker;
@@ -189,7 +202,7 @@ public class MainManager : MonoBehaviour
         yield return new WaitForSeconds(0.05f);
         effectsPlayer.Stop();
 
-        if (timedQuit) yield return new WaitForSeconds(quitLength);
+        if (flash) yield return new WaitForSeconds(flashLength);
         else yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
         if (sub) subdialogueScreen.SetActive(false);
         else dialogueScreen.SetActive(false);
