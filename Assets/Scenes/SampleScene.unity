@@ -382,10 +382,10 @@ MonoBehaviour:
     displayDialogueContent: 
     displayDialogueSkippable: 0
     displayDialogueFlashLength: 0
+    changeScreenType: 0
     changeScreenStartColor: {r: 0, g: 0, b: 0, a: 0}
     changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
     changeScreenLength: 0
-    changeScreenSub: 0
     waitLength: 0
     displayPromptPrompt: 
     displayPromptFlash: 0
@@ -393,16 +393,18 @@ MonoBehaviour:
     manageTasksTask: 
     playerCanDoType: 0
     playerCanDoCanDo: 0
+    movePlayerType: 0
+    movePlayerVector: {x: 0, y: 0, z: 0}
   - triggerType: 0
     displayDialogueType: 0
     displayDialogueSpeaker: 
     displayDialogueContent: 
     displayDialogueSkippable: 0
     displayDialogueFlashLength: 0
+    changeScreenType: 0
     changeScreenStartColor: {r: 0.9245283, g: 0.21368816, b: 0.21368816, a: 0}
     changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
     changeScreenLength: 0
-    changeScreenSub: 0
     waitLength: 0
     displayPromptPrompt: 
     displayPromptFlash: 0
@@ -410,16 +412,18 @@ MonoBehaviour:
     manageTasksTask: 
     playerCanDoType: 0
     playerCanDoCanDo: 0
+    movePlayerType: 0
+    movePlayerVector: {x: 0, y: 0, z: 0}
   - triggerType: 0
     displayDialogueType: 0
     displayDialogueSpeaker: 
     displayDialogueContent: 
     displayDialogueSkippable: 0
     displayDialogueFlashLength: 0
+    changeScreenType: 0
     changeScreenStartColor: {r: 0, g: 0, b: 0, a: 0}
     changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
     changeScreenLength: 0
-    changeScreenSub: 0
     waitLength: 0
     displayPromptPrompt: 
     displayPromptFlash: 0
@@ -427,16 +431,18 @@ MonoBehaviour:
     manageTasksTask: 
     playerCanDoType: 0
     playerCanDoCanDo: 0
+    movePlayerType: 0
+    movePlayerVector: {x: 0, y: 0, z: 0}
   - triggerType: 0
     displayDialogueType: 0
     displayDialogueSpeaker: 
     displayDialogueContent: 
     displayDialogueSkippable: 0
     displayDialogueFlashLength: 0
+    changeScreenType: 0
     changeScreenStartColor: {r: 0, g: 0, b: 0, a: 0}
     changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
     changeScreenLength: 0
-    changeScreenSub: 0
     waitLength: 0
     displayPromptPrompt: 
     displayPromptFlash: 0
@@ -444,6 +450,8 @@ MonoBehaviour:
     manageTasksTask: 
     playerCanDoType: 0
     playerCanDoCanDo: 0
+    movePlayerType: 0
+    movePlayerVector: {x: 0, y: 0, z: 0}
 --- !u!4 &127191286
 Transform:
   m_ObjectHideFlags: 0
@@ -1053,7 +1061,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TriggerSequences
   isPhysical: 1
   selfDestructs: 0
-  triggers: []
+  triggers:
+  - triggerType: 0
+    displayDialogueType: 0
+    displayDialogueSpeaker: 
+    displayDialogueContent: 
+    displayDialogueSkippable: 0
+    displayDialogueFlashLength: 0
+    changeScreenType: 0
+    changeScreenStartColor: {r: 0, g: 0, b: 0, a: 0}
+    changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
+    changeScreenLength: 0
+    waitLength: 0
+    displayPromptPrompt: 
+    displayPromptFlash: 0
+    manageTasksType: 0
+    manageTasksTask: 
+    playerCanDoType: 0
+    playerCanDoCanDo: 0
+    movePlayerType: 0
+    movePlayerVector: {x: 0, y: 0, z: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0

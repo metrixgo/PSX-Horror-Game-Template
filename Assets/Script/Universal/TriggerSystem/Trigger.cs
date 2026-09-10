@@ -1,5 +1,4 @@
-using NUnit.Framework;
-using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public enum TriggerType
@@ -10,9 +9,18 @@ public enum TriggerType
     DisplayPrompt,
     ManageTasks,
     PlayerCanDo,
+    MovePlayer,
 }
 
 public enum DisplayDialogueType
+{
+    Main,
+    Sub,
+    FlashMain,
+    FlashSub,
+}
+
+public enum ChangeScreenType
 {
     Main,
     Sub,
@@ -36,6 +44,12 @@ public enum PlayerCanDoType
     Crouch,
 }
 
+public enum MovePlayerType
+{
+    Location,
+    Direction,
+}
+
 [System.Serializable]
 public class Trigger
 {
@@ -53,14 +67,14 @@ public class Trigger
     public bool DisplayDialogueSkippable => displayDialogueSkippable;
     public float DisplayDialogueFlashLength => displayDialogueFlashLength;
 
+    [SerializeField] private ChangeScreenType changeScreenType;
     [SerializeField] private Color changeScreenStartColor;
     [SerializeField] private Color changeScreenEndColor;
     [SerializeField] private float changeScreenLength;
-    [SerializeField] private bool changeScreenSub;
+    public ChangeScreenType ChangeScreenType => changeScreenType;
     public Color ChangeScreenStartColor => changeScreenStartColor;
     public Color ChangeScreenEndColor => changeScreenEndColor;
     public float ChangeScreenLength => changeScreenLength;
-    public bool ChangeScreenSub => changeScreenSub;
 
     [SerializeField] private float waitLength;
     public float WaitLength => waitLength;
@@ -79,4 +93,9 @@ public class Trigger
     [SerializeField] private bool playerCanDoCanDo;
     public PlayerCanDoType PlayerCanDoType => playerCanDoType;
     public bool PlayerCanDoCanDo => playerCanDoCanDo;
+
+    [SerializeField] private MovePlayerType movePlayerType;
+    [SerializeField] private Vector3 movePlayerVector;
+    public MovePlayerType MovePlayerType => movePlayerType;
+    public Vector3 MovePlayerVector => movePlayerVector;
 }

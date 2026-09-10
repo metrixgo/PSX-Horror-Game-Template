@@ -46,6 +46,9 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 break;
 
             case TriggerType.ChangeScreen:
+                SerializedProperty changeScreenType = property.FindPropertyRelative("changeScreenType");
+                EditorGUI.PropertyField(rect, changeScreenType, new GUIContent("Type"));
+                rect.y += gap;
                 SerializedProperty changeScreenStartColor = property.FindPropertyRelative("changeScreenStartColor");
                 EditorGUI.PropertyField(rect, changeScreenStartColor, new GUIContent("Start Color"));
                 rect.y += gap;
@@ -54,9 +57,6 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 rect.y += gap;
                 SerializedProperty changeScreenLength = property.FindPropertyRelative("changeScreenLength");
                 EditorGUI.PropertyField(rect, changeScreenLength, new GUIContent("Length"));
-                rect.y += gap;
-                SerializedProperty changeScreenSub = property.FindPropertyRelative("changeScreenSub");
-                EditorGUI.PropertyField(rect, changeScreenSub, new GUIContent("Sub"));
                 rect.y += gap;
                 break;
 
@@ -97,6 +97,15 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 rect.y += gap;
                 break;
 
+            case TriggerType.MovePlayer:
+                SerializedProperty movePlayerType = property.FindPropertyRelative("movePlayerType");
+                EditorGUI.PropertyField(rect, movePlayerType, new GUIContent("Type"));
+                rect.y += gap;
+                SerializedProperty movePlayerVector = property.FindPropertyRelative("movePlayerVector");
+                EditorGUI.PropertyField(rect, movePlayerVector, new GUIContent("Vector"));
+                rect.y += gap;
+                break;
+
             default:
                 Debug.LogWarning("Unimplemented Trigger Type: " + (TriggerType)triggerType.enumValueIndex);
                 break;
@@ -129,6 +138,9 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 return gap * ((ManageTasksType)manageTasksType.enumValueIndex == ManageTasksType.ClearAllTasks ? 2 : 3);
 
             case TriggerType.PlayerCanDo:
+                return gap * 3;
+
+            case TriggerType.MovePlayer:
                 return gap * 3;
 
             default:

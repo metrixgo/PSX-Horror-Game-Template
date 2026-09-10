@@ -132,10 +132,10 @@ public class MainManager : MonoBehaviour
                 case TriggerType.ChangeScreen:
                     yield return StartCoroutine(
                         ChangeScreen(
+                            trig.ChangeScreenType,
                             trig.ChangeScreenStartColor,
                             trig.ChangeScreenEndColor,
-                            trig.ChangeScreenLength,
-                            trig.ChangeScreenSub
+                            trig.ChangeScreenLength
                         )
                     );
                     break;
@@ -162,6 +162,9 @@ public class MainManager : MonoBehaviour
 
         bool sub = type == DisplayDialogueType.Sub || type == DisplayDialogueType.FlashSub;
         bool flash = type == DisplayDialogueType.FlashMain || type == DisplayDialogueType.FlashSub;
+
+        if (flash) IsPlayerActive = true;
+
         if (sub)
         {
             subdialogueSpeaker.text = speaker;
@@ -206,18 +209,30 @@ public class MainManager : MonoBehaviour
         else yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
         if (sub) subdialogueScreen.SetActive(false);
         else dialogueScreen.SetActive(false);
+
+        if (flash) IsPlayerActive = false;
     }
 
-    private IEnumerator ChangeScreen(Color startColor, Color endColor, float length, bool sub)
+    private IEnumerator ChangeScreen(ChangeScreenType type, Color startColor, Color endColor, float length)
     {
+        bool sub = type == ChangeScreenType.Sub || type == ChangeScreenType.FlashSub;
+        bool flash = type == ChangeScreenType.FlashMain || type == ChangeScreenType.FlashSub;
+
+        if (flash) IsPlayerActive = true;
+
         float t = 0;
-        screen.color = startColor;
+        if (sub) subscreen.color = startColor;
+        else screen.color = startColor;
         while (t < length)
         {
             yield return null;
             t += Time.deltaTime;
-            screen.color = Color.Lerp(startColor, endColor, t / length);
+            if (sub) subscreen.color = Color.Lerp(startColor, endColor, t / length);
+            else screen.color = Color.Lerp(startColor, endColor, t / length);
         }
-        screen.color = endColor;
+        if (sub) subscreen.color = endColor;
+        else screen.color = endColor;
+
+        if (flash) IsPlayerActive = false;
     }
 }
