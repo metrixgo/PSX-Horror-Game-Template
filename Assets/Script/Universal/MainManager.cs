@@ -196,9 +196,10 @@ public class MainManager : MonoBehaviour
                 case TriggerType.DisplayDialogue:
                     yield return StartCoroutine(
                         DisplayDialogue(
-                            trig.DisplayDialogueType,
                             trig.DisplayDialogueSpeaker,
                             trig.DisplayDialogueContent,
+                            trig.DisplayDialogueSub,
+                            trig.DisplayPromptFlash,
                             trig.DisplayDialogueSkippable,
                             trig.DisplayDialogueFlashLength
                         )
@@ -291,16 +292,13 @@ public class MainManager : MonoBehaviour
         IsExecutingTriggers = false;
     }
 
-    private IEnumerator DisplayDialogue(DisplayDialogueType type, string speaker, string content, bool skippable, float flashLength)
+    private IEnumerator DisplayDialogue(string speaker, string content, bool sub, bool flash, bool skippable, float flashLength)
     {
         effectsPlayer.clip = writingEffect;
         effectsPlayer.Play();
 
         speaker = Translate(speaker);
         content = Translate(content);
-
-        bool sub = type == DisplayDialogueType.Sub || type == DisplayDialogueType.FlashSub;
-        bool flash = type == DisplayDialogueType.FlashMain || type == DisplayDialogueType.FlashSub;
 
         if (flash) IsPlayerActive = true;
 

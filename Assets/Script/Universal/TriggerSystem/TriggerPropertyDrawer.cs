@@ -20,33 +20,30 @@ public class TriggerPropertyDrawer : PropertyDrawer
         switch ((TriggerType)triggerType.enumValueIndex)
         {
             case TriggerType.DisplayDialogue:
-                SerializedProperty displayDialogueType = property.FindPropertyRelative("displayDialogueType");
-                EditorGUI.PropertyField(rect, displayDialogueType, new GUIContent("Type"));
-                rect.y += gap;
                 SerializedProperty displayDialogueSpeaker = property.FindPropertyRelative("displayDialogueSpeaker");
                 EditorGUI.PropertyField(rect, displayDialogueSpeaker, new GUIContent("Speaker"));
                 rect.y += gap;
                 SerializedProperty displayDialogueContent = property.FindPropertyRelative("displayDialogueContent");
                 EditorGUI.PropertyField(rect, displayDialogueContent, new GUIContent("Content"));
                 rect.y += gap;
+                SerializedProperty displayDialogueSub = property.FindPropertyRelative("displayDialogueSub");
+                EditorGUI.PropertyField(rect, displayDialogueSub, new GUIContent("Sub"));
+                rect.y += gap;
+                SerializedProperty displayDialogueFlash = property.FindPropertyRelative("displayDialogueFlash");
+                EditorGUI.PropertyField(rect, displayDialogueFlash, new GUIContent("Flash"));
+                rect.y += gap;
 
-                if ((DisplayDialogueType)displayDialogueType.enumValueIndex == DisplayDialogueType.Main || 
-                    (DisplayDialogueType)displayDialogueType.enumValueIndex == DisplayDialogueType.Sub)
+                if (!displayDialogueFlash.boolValue)
                 {
                     SerializedProperty displayDialogueSkippable = property.FindPropertyRelative("displayDialogueSkippable");
                     EditorGUI.PropertyField(rect, displayDialogueSkippable, new GUIContent("Skippable"));
                     rect.y += gap;
                 }
-                else if ((DisplayDialogueType)displayDialogueType.enumValueIndex == DisplayDialogueType.FlashMain ||
-                    (DisplayDialogueType)displayDialogueType.enumValueIndex == DisplayDialogueType.FlashSub)
+                else
                 {
                     SerializedProperty displayDialogueFlashLength = property.FindPropertyRelative("displayDialogueFlashLength");
                     EditorGUI.PropertyField(rect, displayDialogueFlashLength, new GUIContent("Flash Length"));
                     rect.y += gap;
-                }
-                else
-                {
-                    Debug.LogWarning("Unimplemented Display Dialogue Type: " + (DisplayDialogueType)displayDialogueType.enumValueIndex);
                 }
                 break;
 
@@ -136,7 +133,7 @@ public class TriggerPropertyDrawer : PropertyDrawer
         switch ((TriggerType)triggerType.enumValueIndex)
         {
             case TriggerType.DisplayDialogue:
-                return gap * 5;
+                return gap * 6;
 
             case TriggerType.ChangeScreen:
                 return gap * 6;
