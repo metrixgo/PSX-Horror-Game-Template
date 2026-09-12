@@ -107,11 +107,11 @@ public class Trigger
     [SerializeField] private GameObject displayCanvasCanvas;
     [SerializeField] private AudioClip displayCanvasEffect;
     [SerializeField] private bool displayCanvasFlash;
-    [SerializeField] private bool displayCanvasFlashLength;
+    [SerializeField] private float displayCanvasFlashLength;
     public GameObject DisplayCanvasCanvas => displayCanvasCanvas;
     public AudioClip DisplayCanvasEffect => displayCanvasEffect;
     public bool DisplayCanvasFlash => displayCanvasFlash;
-    public bool DisplayCanvasFlashLength => displayCanvasFlashLength;
+    public float DisplayCanvasFlashLength => displayCanvasFlashLength;
 
     [SerializeField] private AudioClip playSoundSound;
     [SerializeField] private bool playSoundLocal;
@@ -126,4 +126,14 @@ public class Trigger
     [SerializeField] private bool setObjectActive;
     public GameObject SetObjectObject => setObjectObject;
     public bool SetObjectActive => setObjectActive;
+
+    [SerializeField] private string loadSceneScene;
+    [SerializeField] private float loadSceneLength;
+    public string LoadSceneScene => loadSceneScene;
+    public float LoadSceneLength => loadSceneLength;
+
+    [SerializeField] private string displayEndingTitle;
+    [SerializeField] private string displayEndingDescription;
+    public string DisplayEndingTitle => displayEndingTitle;
+    public string DisplayEndingDescription => displayEndingDescription;
 }

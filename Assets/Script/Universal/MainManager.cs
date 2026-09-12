@@ -19,6 +19,9 @@ public class MainManager : MonoBehaviour
 
     public bool IsPlayerActive { get; private set; } = true;
     public bool IsExecutingTriggers { get; private set; } = false;
+    public bool IsPaused { get; private set; } = false;
+
+    private bool CanPause = true;
 
     [Header("Player")]
     [SerializeField] private PlayerController player;
@@ -93,12 +96,14 @@ public class MainManager : MonoBehaviour
 
     private void Update()
     {
-        if (!IsExecutingTriggers && triggers.Count > 0 && gameState == GameState.Normal)
-        {
-            IsExecutingTriggers = true;
-            StartCoroutine(ExecuteTriggers());
-        }
+        if (!IsExecutingTriggers && triggers.Count > 0 && gameState == GameState.Normal) StartCoroutine(ExecuteTriggers());
 
+        UpdatePrompts();
+
+    }
+
+    private void UpdatePrompts()
+    {
         if (flashPrompt)
         {
             flashPromptT += Time.deltaTime;
@@ -120,7 +125,6 @@ public class MainManager : MonoBehaviour
             flashSubpromptT = 0;
             subprompt.color = subpromptColor;
         }
-        
     }
 
     public void AddTrigger(Trigger trigger)
@@ -184,8 +188,33 @@ public class MainManager : MonoBehaviour
         tasksPrompt.text = s;
     }
 
+    public void PlayMusic(AudioClip music)
+    {
+        musicPlayer.clip = music;
+        musicPlayer.Play();
+    }
+
+    public void PlayEffect(AudioClip effect)
+    {
+        effectsPlayer.clip = effect;
+        effectsPlayer.Play();
+    }
+
+    public void StopMusic()
+    {
+        musicPlayer.Stop();
+    }
+
+    public void StopEffect()
+    {
+        effectsPlayer.Stop();
+    }
+
     private IEnumerator ExecuteTriggers()
     {
+        IsPlayerActive = false;
+        IsExecutingTriggers = true;
+
         while (triggers.Count > 0)
         {
             Trigger trig = triggers[0];
@@ -283,12 +312,45 @@ public class MainManager : MonoBehaviour
                     }
                     break;
 
+                case TriggerType.JumpscareAt:
+                    player.LookAt(trig.JumpscareAtPosition, trig.JumpscareAtLength);
+                    PlayEffect(trig.JumpscareAtEffect);
+                    yield return new WaitForSeconds(trig.JumpscareAtLength);
+                    break;
+
+                case TriggerType.DisplayCanvas:
+                    yield return StartCoroutine(
+                        DisplayCanvas(
+                            trig.DisplayCanvasCanvas,
+                            trig.DisplayCanvasEffect,
+                            trig.DisplayCanvasFlash,
+                            trig.DisplayCanvasFlashLength
+                        )
+                    );
+                    break;
+
+                case TriggerType.PlaySound:
+                    break;
+
+                case TriggerType.SetObject:
+                    break;
+
+                case TriggerType.LoadScene:
+                    break;
+
+                case TriggerType.DisplayEnding:
+                    break;
+
+                case TriggerType.Custom:
+                    break;
+
                 default:
                     Debug.LogError("Trigger Not Found: " + trig.TriggerType);
                     break;
             }
         }
 
+        IsPlayerActive = true;
         IsExecutingTriggers = false;
     }
 
@@ -368,5 +430,21 @@ public class MainManager : MonoBehaviour
         else screen.color = endColor;
 
         if (flash) IsPlayerActive = false;
+    }
+
+    private IEnumerator DisplayCanvas(GameObject canvas, AudioClip effect, bool flash, float flashLength)
+    {
+        CanPause = false;
+
+        if (flash) IsPlayerActive = true;
+
+        canvas.SetActive(true);
+
+        if (flash) yield return new WaitForSeconds(flashLength);
+        else yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Escape));
+
+        if (flash) IsPlayerActive = false;
+
+        CanPause = true;
     }
 }

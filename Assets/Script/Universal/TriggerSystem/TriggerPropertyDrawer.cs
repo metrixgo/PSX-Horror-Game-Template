@@ -45,6 +45,7 @@ public class TriggerPropertyDrawer : PropertyDrawer
                     EditorGUI.PropertyField(rect, displayDialogueFlashLength, new GUIContent("Flash Length"));
                     rect.y += gap;
                 }
+
                 break;
 
             case TriggerType.ChangeScreen:
@@ -91,12 +92,13 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 EditorGUI.PropertyField(rect, manageTasksType, new GUIContent("Type"));
                 rect.y += gap;
 
-                if((ManageTasksType)manageTasksType.enumValueIndex != ManageTasksType.ClearTasks)
+                if ((ManageTasksType)manageTasksType.enumValueIndex != ManageTasksType.ClearTasks)
                 {
                     SerializedProperty manageTasksTask = property.FindPropertyRelative("manageTasksTask");
                     EditorGUI.PropertyField(rect, manageTasksTask, new GUIContent("Task"));
                     rect.y += gap;
                 }
+
                 break;
 
             case TriggerType.PlayerCanDo:
@@ -117,6 +119,83 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 rect.y += gap;
                 break;
 
+            case TriggerType.JumpscareAt:
+                SerializedProperty jumpscareAtPosition = property.FindPropertyRelative("jumpscareAtPosition");
+                EditorGUI.PropertyField(rect, jumpscareAtPosition, new GUIContent("Position"));
+                rect.y += gap;
+                SerializedProperty jumpscareAtLength = property.FindPropertyRelative("jumpscareAtLength");
+                EditorGUI.PropertyField(rect, jumpscareAtLength, new GUIContent("Length"));
+                rect.y += gap;
+                SerializedProperty jumpscareAtEffect = property.FindPropertyRelative("jumpscareAtEffect");
+                EditorGUI.PropertyField(rect, jumpscareAtEffect, new GUIContent("Effect"));
+                rect.y += gap;
+                break;
+
+            case TriggerType.DisplayCanvas:
+                SerializedProperty displayCanvasCanvas = property.FindPropertyRelative("displayCanvasCanvas");
+                EditorGUI.PropertyField(rect, displayCanvasCanvas, new GUIContent("Canvas"));
+                rect.y += gap;
+                SerializedProperty displayCanvasEffect = property.FindPropertyRelative("displayCanvasEffect");
+                EditorGUI.PropertyField(rect, displayCanvasEffect, new GUIContent("Effect"));
+                rect.y += gap;
+                SerializedProperty displayCanvasFlash = property.FindPropertyRelative("displayCanvasFlash");
+                EditorGUI.PropertyField(rect, displayCanvasFlash, new GUIContent("Flash"));
+                rect.y += gap;
+
+                if (displayCanvasFlash.boolValue)
+                {
+                    SerializedProperty displayCanvasFlashLength = property.FindPropertyRelative("displayCanvasFlashLength");
+                    EditorGUI.PropertyField(rect, displayCanvasFlashLength, new GUIContent("Flash Length"));
+                    rect.y += gap;
+                }
+
+                break;
+
+            case TriggerType.PlaySound:
+                SerializedProperty playSoundSound = property.FindPropertyRelative("playSoundSound");
+                EditorGUI.PropertyField(rect, playSoundSound, new GUIContent("Sound"));
+                rect.y += gap;
+                SerializedProperty playSoundLocal = property.FindPropertyRelative("playSoundLocal");
+                EditorGUI.PropertyField(rect, playSoundLocal, new GUIContent("Local"));
+                rect.y += gap;
+                SerializedProperty playSoundEffect = property.FindPropertyRelative("playSoundEffect");
+                EditorGUI.PropertyField(rect, playSoundEffect, new GUIContent("Effect"));
+                rect.y += gap;
+                SerializedProperty playSoundSource = property.FindPropertyRelative("playSoundSource");
+                EditorGUI.PropertyField(rect, playSoundSource, new GUIContent("Source"));
+                rect.y += gap;
+                break;
+
+            case TriggerType.SetObject:
+                SerializedProperty setObjectObject = property.FindPropertyRelative("setObjectObject");
+                EditorGUI.PropertyField(rect, setObjectObject, new GUIContent("Object"));
+                rect.y += gap;
+                SerializedProperty setObjectActive = property.FindPropertyRelative("setObjectActive");
+                EditorGUI.PropertyField(rect, setObjectActive, new GUIContent("Active"));
+                rect.y += gap;
+                break;
+
+            case TriggerType.LoadScene:
+                SerializedProperty loadSceneScene = property.FindPropertyRelative("loadSceneScene");
+                EditorGUI.PropertyField(rect, loadSceneScene, new GUIContent("Scene"));
+                rect.y += gap;
+                SerializedProperty loadSceneLength = property.FindPropertyRelative("loadSceneLength");
+                EditorGUI.PropertyField(rect, loadSceneLength, new GUIContent("Length"));
+                rect.y += gap;
+                break;
+
+            case TriggerType.DisplayEnding:
+                SerializedProperty displayEndingTitle = property.FindPropertyRelative("displayEndingTitle");
+                EditorGUI.PropertyField(rect, displayEndingTitle, new GUIContent("Title"));
+                rect.y += gap;
+                SerializedProperty displayEndingDescription = property.FindPropertyRelative("displayEndingDescription");
+                EditorGUI.PropertyField(rect, displayEndingDescription, new GUIContent("Description"));
+                rect.y += gap;
+                break;
+
+            case TriggerType.Custom:
+                break;
+
             default:
                 Debug.LogWarning("Unimplemented Trigger Type: " + (TriggerType)triggerType.enumValueIndex);
                 break;
@@ -124,7 +203,7 @@ public class TriggerPropertyDrawer : PropertyDrawer
 
         EditorGUI.EndProperty();
     }
-    
+
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
@@ -153,6 +232,28 @@ public class TriggerPropertyDrawer : PropertyDrawer
 
             case TriggerType.MovePlayer:
                 return gap * 3;
+
+            case TriggerType.JumpscareAt:
+                return gap * 4;
+
+            case TriggerType.DisplayCanvas:
+                SerializedProperty displayCanvasFlash = property.FindPropertyRelative("displayCanvasFlash");
+                return gap * (displayCanvasFlash.boolValue ? 5 : 4);
+
+            case TriggerType.PlaySound:
+                return gap * 5;
+
+            case TriggerType.SetObject:
+                return gap * 3;
+
+            case TriggerType.LoadScene:
+                return gap * 3;
+
+            case TriggerType.DisplayEnding:
+                return gap * 3;
+
+            case TriggerType.Custom:
+                return gap;
 
             default:
                 return gap;

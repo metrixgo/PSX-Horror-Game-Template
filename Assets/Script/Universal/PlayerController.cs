@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public enum PlayerState
 {
@@ -202,6 +204,32 @@ public class PlayerController : MonoBehaviour
         controller.enabled = true;
     }
 
+    public void LookAt(Vector3 position, float l)
+    {
+        Vector3 dir = (position - playerCam.transform.position).normalized;
+        float y = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
+        float x = -Mathf.Asin(dir.y) * Mathf.Rad2Deg;
+        StartCoroutine(TurnTo(x, y, l));
+    }
+
+    private IEnumerator TurnTo(float x, float y, float l)
+    {
+        float t = 0;
+        float startX = rotationX;
+        float startY = transform.eulerAngles.y;
+        while (t < l)
+        {
+            rotationX = Mathf.LerpAngle(startX, x, t / l);
+            playerCam.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+            transform.rotation = Quaternion.Euler(0, Mathf.LerpAngle(startY, y, t / l), 0);
+            t += Time.deltaTime;
+            yield return null;
+        }
+        rotationX = x;
+        playerCam.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+        transform.rotation = Quaternion.Euler(0, y, 0);
+    }
+
     public void CanLook(bool can)
     {
         canLook = can;
@@ -226,4 +254,5 @@ public class PlayerController : MonoBehaviour
     {
         canCrouch = can;
     }
+
 }
