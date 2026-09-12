@@ -5,201 +5,102 @@ using UnityEngine;
 [CustomPropertyDrawer(typeof(Trigger))]
 public class TriggerPropertyDrawer : PropertyDrawer
 {
-    private float gap = EditorGUIUtility.singleLineHeight + 2.0f;
+    private float gap = 2f;
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         EditorGUI.BeginProperty(position, label, property);
 
         Rect rect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
-        SerializedProperty triggerType = property.FindPropertyRelative("triggerType");
-        EditorGUI.PropertyField(rect, triggerType);
 
-        rect.y += gap;
+        SerializedProperty triggerType = property.FindPropertyRelative("triggerType");
+        DrawProperty(ref rect, property, "triggerType", "Trigger Type");
 
         switch ((TriggerType)triggerType.enumValueIndex)
         {
             case TriggerType.DisplayDialogue:
-                SerializedProperty displayDialogueSpeaker = property.FindPropertyRelative("displayDialogueSpeaker");
-                EditorGUI.PropertyField(rect, displayDialogueSpeaker, new GUIContent("Speaker"));
-                rect.y += gap;
-                SerializedProperty displayDialogueContent = property.FindPropertyRelative("displayDialogueContent");
-                EditorGUI.PropertyField(rect, displayDialogueContent, new GUIContent("Content"));
-                rect.y += gap;
-                SerializedProperty displayDialogueSub = property.FindPropertyRelative("displayDialogueSub");
-                EditorGUI.PropertyField(rect, displayDialogueSub, new GUIContent("Sub"));
-                rect.y += gap;
-                SerializedProperty displayDialogueFlash = property.FindPropertyRelative("displayDialogueFlash");
-                EditorGUI.PropertyField(rect, displayDialogueFlash, new GUIContent("Flash"));
-                rect.y += gap;
-
+                DrawProperty(ref rect, property, "displayDialogueSpeaker", "Speaker");
+                DrawProperty(ref rect, property, "displayDialogueContent", "Content");
+                DrawProperty(ref rect, property, "displayDialogueSub", "Sub");
+                SerializedProperty displayDialogueFlash = DrawProperty(ref rect, property, "displayDialogueFlash", "Flash");
                 if (!displayDialogueFlash.boolValue)
-                {
-                    SerializedProperty displayDialogueSkippable = property.FindPropertyRelative("displayDialogueSkippable");
-                    EditorGUI.PropertyField(rect, displayDialogueSkippable, new GUIContent("Skippable"));
-                    rect.y += gap;
-                }
+                    DrawProperty(ref rect, property, "displayDialogueSkippable", "Skippable");
                 else
-                {
-                    SerializedProperty displayDialogueFlashLength = property.FindPropertyRelative("displayDialogueFlashLength");
-                    EditorGUI.PropertyField(rect, displayDialogueFlashLength, new GUIContent("Flash Length"));
-                    rect.y += gap;
-                }
-
+                    DrawProperty(ref rect, property, "displayDialogueFlashLength", "Flash Length");
                 break;
 
             case TriggerType.ChangeScreen:
-                SerializedProperty changeScreenStartColor = property.FindPropertyRelative("changeScreenStartColor");
-                EditorGUI.PropertyField(rect, changeScreenStartColor, new GUIContent("Start Color"));
-                rect.y += gap;
-                SerializedProperty changeScreenEndColor = property.FindPropertyRelative("changeScreenEndColor");
-                EditorGUI.PropertyField(rect, changeScreenEndColor, new GUIContent("End Color"));
-                rect.y += gap;
-                SerializedProperty changeScreenLength = property.FindPropertyRelative("changeScreenLength");
-                EditorGUI.PropertyField(rect, changeScreenLength, new GUIContent("Length"));
-                rect.y += gap;
-                SerializedProperty changeScreenSub = property.FindPropertyRelative("changeScreenSub");
-                EditorGUI.PropertyField(rect, changeScreenSub, new GUIContent("Sub"));
-                rect.y += gap;
-                SerializedProperty changeScreenFlash = property.FindPropertyRelative("changeScreenFlash");
-                EditorGUI.PropertyField(rect, changeScreenFlash, new GUIContent("Flash"));
-                rect.y += gap;
+                DrawProperty(ref rect, property, "changeScreenStartColor", "Start Color");
+                DrawProperty(ref rect, property, "changeScreenEndColor", "End Color");
+                DrawProperty(ref rect, property, "changeScreenLength", "Length");
+                DrawProperty(ref rect, property, "changeScreenSub", "Sub");
+                DrawProperty(ref rect, property, "changeScreenFlash", "Flash");
                 break;
 
             case TriggerType.Wait:
-                SerializedProperty waitLength = property.FindPropertyRelative("waitLength");
-                EditorGUI.PropertyField(rect, waitLength, new GUIContent("Length"));
-                rect.y += gap;
+                DrawProperty(ref rect, property, "waitLength", "Length");
                 break;
 
             case TriggerType.DisplayPrompt:
-                SerializedProperty displayPromptPrompt = property.FindPropertyRelative("displayPromptPrompt");
-                EditorGUI.PropertyField(rect, displayPromptPrompt, new GUIContent("Prompt"));
-                rect.y += gap;
-                SerializedProperty displayPromptColor = property.FindPropertyRelative("displayPromptColor");
-                EditorGUI.PropertyField(rect, displayPromptColor, new GUIContent("Color"));
-                rect.y += gap;
-                SerializedProperty displayPromptSub = property.FindPropertyRelative("displayPromptSub");
-                EditorGUI.PropertyField(rect, displayPromptSub, new GUIContent("Sub"));
-                rect.y += gap;
-                SerializedProperty displayPromptFlash = property.FindPropertyRelative("displayPromptFlash");
-                EditorGUI.PropertyField(rect, displayPromptFlash, new GUIContent("Flash"));
-                rect.y += gap;
+                DrawProperty(ref rect, property, "displayPromptPrompt", "Prompt");
+                DrawProperty(ref rect, property, "displayPromptColor", "Color");
+                DrawProperty(ref rect, property, "displayPromptSub", "Sub");
+                DrawProperty(ref rect, property, "displayPromptFlash", "Flash");
                 break;
 
             case TriggerType.ManageTasks:
-                SerializedProperty manageTasksType = property.FindPropertyRelative("manageTasksType");
-                EditorGUI.PropertyField(rect, manageTasksType, new GUIContent("Type"));
-                rect.y += gap;
-
+                SerializedProperty manageTasksType = DrawProperty(ref rect, property, "manageTasksType", "Type");
                 if ((ManageTasksType)manageTasksType.enumValueIndex != ManageTasksType.ClearTasks)
-                {
-                    SerializedProperty manageTasksTask = property.FindPropertyRelative("manageTasksTask");
-                    EditorGUI.PropertyField(rect, manageTasksTask, new GUIContent("Task"));
-                    rect.y += gap;
-                }
-
+                    DrawProperty(ref rect, property, "manageTasksTask", "Task");
                 break;
 
             case TriggerType.PlayerCanDo:
-                SerializedProperty playerCanDoType = property.FindPropertyRelative("playerCanDoType");
-                EditorGUI.PropertyField(rect, playerCanDoType, new GUIContent("Type"));
-                rect.y += gap;
-                SerializedProperty playerCanDoCanDo = property.FindPropertyRelative("playerCanDoCanDo");
-                EditorGUI.PropertyField(rect, playerCanDoCanDo, new GUIContent("Can Do"));
-                rect.y += gap;
+                DrawProperty(ref rect, property, "playerCanDoType", "Type");
+                DrawProperty(ref rect, property, "playerCanDoCanDo", "Can Do");
                 break;
 
             case TriggerType.MovePlayer:
-                SerializedProperty movePlayerType = property.FindPropertyRelative("movePlayerType");
-                EditorGUI.PropertyField(rect, movePlayerType, new GUIContent("Type"));
-                rect.y += gap;
-                SerializedProperty movePlayerVector = property.FindPropertyRelative("movePlayerVector");
-                EditorGUI.PropertyField(rect, movePlayerVector, new GUIContent("Vector"));
-                rect.y += gap;
+                DrawProperty(ref rect, property, "movePlayerType", "Type");
+                DrawProperty(ref rect, property, "movePlayerVector", "Vector");
                 break;
 
             case TriggerType.JumpscareAt:
-                SerializedProperty jumpscareAtPosition = property.FindPropertyRelative("jumpscareAtPosition");
-                EditorGUI.PropertyField(rect, jumpscareAtPosition, new GUIContent("Position"));
-                rect.y += gap;
-                SerializedProperty jumpscareAtLength = property.FindPropertyRelative("jumpscareAtLength");
-                EditorGUI.PropertyField(rect, jumpscareAtLength, new GUIContent("Length"));
-                rect.y += gap;
-                SerializedProperty jumpscareAtEffect = property.FindPropertyRelative("jumpscareAtEffect");
-                EditorGUI.PropertyField(rect, jumpscareAtEffect, new GUIContent("Effect"));
-                rect.y += gap;
+                DrawProperty(ref rect, property, "jumpscareAtPosition", "Position");
+                DrawProperty(ref rect, property, "jumpscareAtLength", "Length");
+                DrawProperty(ref rect, property, "jumpscareAtEffect", "Effect");
                 break;
 
             case TriggerType.DisplayCanvas:
-                SerializedProperty displayCanvasCanvas = property.FindPropertyRelative("displayCanvasCanvas");
-                EditorGUI.PropertyField(rect, displayCanvasCanvas, new GUIContent("Canvas"));
-                rect.y += gap;
-                SerializedProperty displayCanvasEffect = property.FindPropertyRelative("displayCanvasEffect");
-                EditorGUI.PropertyField(rect, displayCanvasEffect, new GUIContent("Effect"));
-                rect.y += gap;
-                SerializedProperty displayCanvasFlash = property.FindPropertyRelative("displayCanvasFlash");
-                EditorGUI.PropertyField(rect, displayCanvasFlash, new GUIContent("Flash"));
-                rect.y += gap;
-
+                DrawProperty(ref rect, property, "displayCanvasCanvas", "Canvas");
+                DrawProperty(ref rect, property, "displayCanvasEffect", "Effect");
+                SerializedProperty displayCanvasFlash = DrawProperty(ref rect, property, "displayCanvasFlash", "Flash");
                 if (displayCanvasFlash.boolValue)
-                {
-                    SerializedProperty displayCanvasFlashLength = property.FindPropertyRelative("displayCanvasFlashLength");
-                    EditorGUI.PropertyField(rect, displayCanvasFlashLength, new GUIContent("Flash Length"));
-                    rect.y += gap;
-                }
-
+                    DrawProperty(ref rect, property, "displayCanvasFlashLength", "Flash Length");
                 break;
 
             case TriggerType.PlaySound:
-                SerializedProperty playSoundSound = property.FindPropertyRelative("playSoundSound");
-                EditorGUI.PropertyField(rect, playSoundSound, new GUIContent("Sound"));
-                rect.y += gap;
-                SerializedProperty playSoundLocal = property.FindPropertyRelative("playSoundLocal");
-                EditorGUI.PropertyField(rect, playSoundLocal, new GUIContent("Local"));
-                rect.y += gap;
+                DrawProperty(ref rect, property, "playSoundSound", "Sound");
+                SerializedProperty playSoundLocal = DrawProperty(ref rect, property, "playSoundLocal", "Local");
                 if (!playSoundLocal.boolValue)
-                {
-                    SerializedProperty playSoundIsEffect = property.FindPropertyRelative("playSoundIsEffect");
-                    EditorGUI.PropertyField(rect, playSoundIsEffect, new GUIContent("IsEffect"));
-                    rect.y += gap;
-                }
+                    DrawProperty(ref rect, property, "playSoundIsEffect", "Is Effect");
                 else
-                {
-                    SerializedProperty playSoundSource = property.FindPropertyRelative("playSoundSource");
-                    EditorGUI.PropertyField(rect, playSoundSource, new GUIContent("Source"));
-                    rect.y += gap;
-                }
+                    DrawProperty(ref rect, property, "playSoundSource", "Source");
                 break;
 
             case TriggerType.SetObject:
-                SerializedProperty setObjectObject = property.FindPropertyRelative("setObjectObject");
-                EditorGUI.PropertyField(rect, setObjectObject, new GUIContent("Object"));
-                rect.y += gap;
-                SerializedProperty setObjectSetActive = property.FindPropertyRelative("setObjectSetActive");
-                EditorGUI.PropertyField(rect, setObjectSetActive, new GUIContent("Set Active"));
-                rect.y += gap;
+                DrawProperty(ref rect, property, "setObjectObject", "Object");
+                DrawProperty(ref rect, property, "setObjectSetActive", "Set Active");
                 break;
 
             case TriggerType.LoadScene:
-                SerializedProperty loadSceneScene = property.FindPropertyRelative("loadSceneScene");
-                EditorGUI.PropertyField(rect, loadSceneScene, new GUIContent("Scene"));
-                rect.y += gap;
-                SerializedProperty loadSceneLength = property.FindPropertyRelative("loadSceneLength");
-                EditorGUI.PropertyField(rect, loadSceneLength, new GUIContent("Length"));
-                rect.y += gap;
-                SerializedProperty loadSceneSave = property.FindPropertyRelative("loadSceneSave");
-                EditorGUI.PropertyField(rect, loadSceneSave, new GUIContent("Save"));
-                rect.y += gap;
+                DrawProperty(ref rect, property, "loadSceneScene", "Scene");
+                DrawProperty(ref rect, property, "loadSceneLength", "Length");
+                DrawProperty(ref rect, property, "loadSceneSave", "Save");
                 break;
 
             case TriggerType.DisplayEnding:
-                SerializedProperty displayEndingTitle = property.FindPropertyRelative("displayEndingTitle");
-                EditorGUI.PropertyField(rect, displayEndingTitle, new GUIContent("Title"));
-                rect.y += gap;
-                SerializedProperty displayEndingDescription = property.FindPropertyRelative("displayEndingDescription");
-                EditorGUI.PropertyField(rect, displayEndingDescription, new GUIContent("Description"));
-                rect.y += gap;
+                DrawProperty(ref rect, property, "displayEndingTitle", "Title");
+                DrawProperty(ref rect, property, "displayEndingDescription", "Description");
                 break;
 
             case TriggerType.Custom:
@@ -213,60 +114,128 @@ public class TriggerPropertyDrawer : PropertyDrawer
         EditorGUI.EndProperty();
     }
 
+    private SerializedProperty DrawProperty(ref Rect rect, SerializedProperty property, string name, string label)
+    {
+        SerializedProperty prop = property.FindPropertyRelative(name);
+        rect.height = EditorGUI.GetPropertyHeight(prop, new GUIContent(label));
+        EditorGUI.PropertyField(rect, prop, new GUIContent(label));
+        rect.y += rect.height + gap;
+
+        return prop;
+    }
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
+        float height = 0;
+
         SerializedProperty triggerType = property.FindPropertyRelative("triggerType");
+        AddHeightOfProperty(ref height, property, "triggerType");
 
         switch ((TriggerType)triggerType.enumValueIndex)
         {
             case TriggerType.DisplayDialogue:
-                return gap * 6;
+                AddHeightOfProperty(ref height, property, "displayDialogueSpeaker");
+                AddHeightOfProperty(ref height, property, "displayDialogueContent");
+                AddHeightOfProperty(ref height, property, "displayDialogueSub");
+                SerializedProperty displayDialogueFlash = AddHeightOfProperty(ref height, property, "displayDialogueFlash");
+                if (!displayDialogueFlash.boolValue)
+                    AddHeightOfProperty(ref height, property, "displayDialogueSkippable");
+                else
+                    AddHeightOfProperty(ref height, property, "displayDialogueFlashLength");
+                break;
 
             case TriggerType.ChangeScreen:
-                return gap * 6;
+                AddHeightOfProperty(ref height, property, "changeScreenStartColor");
+                AddHeightOfProperty(ref height, property, "changeScreenEndColor");
+                AddHeightOfProperty(ref height, property, "changeScreenLength");
+                AddHeightOfProperty(ref height, property, "changeScreenSub");
+                AddHeightOfProperty(ref height, property, "changeScreenFlash");
+                break;
 
             case TriggerType.Wait:
-                return gap * 2;
+                AddHeightOfProperty(ref height, property, "waitLength");
+                break;
 
             case TriggerType.DisplayPrompt:
-                return gap * 5;
+                AddHeightOfProperty(ref height, property, "displayPromptPrompt");
+                AddHeightOfProperty(ref height, property, "displayPromptColor");
+                AddHeightOfProperty(ref height, property, "displayPromptSub");
+                AddHeightOfProperty(ref height, property, "displayPromptFlash");
+                break;
 
             case TriggerType.ManageTasks:
-                SerializedProperty manageTasksType = property.FindPropertyRelative("manageTasksType");
-                return gap * ((ManageTasksType)manageTasksType.enumValueIndex == ManageTasksType.ClearTasks ? 2 : 3);
+                SerializedProperty manageTasksType = AddHeightOfProperty(ref height, property, "manageTasksType");
+                if ((ManageTasksType)manageTasksType.enumValueIndex != ManageTasksType.ClearTasks)
+                    AddHeightOfProperty(ref height, property, "manageTasksTask");
+                break;
 
             case TriggerType.PlayerCanDo:
-                return gap * 3;
+                AddHeightOfProperty(ref height, property, "playerCanDoType");
+                AddHeightOfProperty(ref height, property, "playerCanDoCanDo");
+                break;
 
             case TriggerType.MovePlayer:
-                return gap * 3;
+                AddHeightOfProperty(ref height, property, "movePlayerType");
+                AddHeightOfProperty(ref height, property, "movePlayerVector");
+                break;
 
             case TriggerType.JumpscareAt:
-                return gap * 4;
+                AddHeightOfProperty(ref height, property, "jumpscareAtPosition");
+                AddHeightOfProperty(ref height, property, "jumpscareAtLength");
+                AddHeightOfProperty(ref height, property, "jumpscareAtEffect");
+                break;
 
             case TriggerType.DisplayCanvas:
-                SerializedProperty displayCanvasFlash = property.FindPropertyRelative("displayCanvasFlash");
-                return gap * (displayCanvasFlash.boolValue ? 5 : 4);
+                AddHeightOfProperty(ref height, property, "displayCanvasCanvas");
+                AddHeightOfProperty(ref height, property, "displayCanvasEffect");
+                SerializedProperty displayCanvasFlash = AddHeightOfProperty(ref height, property, "displayCanvasFlash");
+                if (displayCanvasFlash.boolValue)
+                    AddHeightOfProperty(ref height, property, "displayCanvasFlashLength");
+                break;
 
             case TriggerType.PlaySound:
-                return gap * 4;
+                AddHeightOfProperty(ref height, property, "playSoundSound");
+
+                SerializedProperty playSoundLocal = AddHeightOfProperty(ref height, property, "playSoundLocal");
+
+                if (!playSoundLocal.boolValue)
+                    AddHeightOfProperty(ref height, property, "playSoundIsEffect");
+                else
+                    AddHeightOfProperty(ref height, property, "playSoundSource");
+                break;
 
             case TriggerType.SetObject:
-                return gap * 3;
+                AddHeightOfProperty(ref height, property, "setObjectObject");
+                AddHeightOfProperty(ref height, property, "setObjectSetActive");
+                break;
 
             case TriggerType.LoadScene:
-                return gap * 3;
+                AddHeightOfProperty(ref height, property, "loadSceneScene");
+                AddHeightOfProperty(ref height, property, "loadSceneLength");
+                AddHeightOfProperty(ref height, property, "loadSceneSave");
+                break;
 
             case TriggerType.DisplayEnding:
-                return gap * 3;
+                AddHeightOfProperty(ref height, property, "displayEndingTitle");
+                AddHeightOfProperty(ref height, property, "displayEndingDescription");
+                break;
 
             case TriggerType.Custom:
-                return gap;
+                break;
 
             default:
-                return gap;
+                break;
         }
+
+        return height;
+    }
+
+    private SerializedProperty AddHeightOfProperty(ref float height, SerializedProperty property, string name)
+    {
+        SerializedProperty prop = property.FindPropertyRelative(name);
+        height += EditorGUI.GetPropertyHeight(prop) + gap;
+
+        return prop;
     }
 }
 #endif
