@@ -158,20 +158,26 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 SerializedProperty playSoundLocal = property.FindPropertyRelative("playSoundLocal");
                 EditorGUI.PropertyField(rect, playSoundLocal, new GUIContent("Local"));
                 rect.y += gap;
-                SerializedProperty playSoundEffect = property.FindPropertyRelative("playSoundEffect");
-                EditorGUI.PropertyField(rect, playSoundEffect, new GUIContent("Effect"));
-                rect.y += gap;
-                SerializedProperty playSoundSource = property.FindPropertyRelative("playSoundSource");
-                EditorGUI.PropertyField(rect, playSoundSource, new GUIContent("Source"));
-                rect.y += gap;
+                if (!playSoundLocal.boolValue)
+                {
+                    SerializedProperty playSoundIsEffect = property.FindPropertyRelative("playSoundIsEffect");
+                    EditorGUI.PropertyField(rect, playSoundIsEffect, new GUIContent("IsEffect"));
+                    rect.y += gap;
+                }
+                else
+                {
+                    SerializedProperty playSoundSource = property.FindPropertyRelative("playSoundSource");
+                    EditorGUI.PropertyField(rect, playSoundSource, new GUIContent("Source"));
+                    rect.y += gap;
+                }
                 break;
 
             case TriggerType.SetObject:
                 SerializedProperty setObjectObject = property.FindPropertyRelative("setObjectObject");
                 EditorGUI.PropertyField(rect, setObjectObject, new GUIContent("Object"));
                 rect.y += gap;
-                SerializedProperty setObjectActive = property.FindPropertyRelative("setObjectActive");
-                EditorGUI.PropertyField(rect, setObjectActive, new GUIContent("Active"));
+                SerializedProperty setObjectSetActive = property.FindPropertyRelative("setObjectSetActive");
+                EditorGUI.PropertyField(rect, setObjectSetActive, new GUIContent("Set Active"));
                 rect.y += gap;
                 break;
 
@@ -181,6 +187,9 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 rect.y += gap;
                 SerializedProperty loadSceneLength = property.FindPropertyRelative("loadSceneLength");
                 EditorGUI.PropertyField(rect, loadSceneLength, new GUIContent("Length"));
+                rect.y += gap;
+                SerializedProperty loadSceneSave = property.FindPropertyRelative("loadSceneSave");
+                EditorGUI.PropertyField(rect, loadSceneSave, new GUIContent("Save"));
                 rect.y += gap;
                 break;
 
@@ -241,7 +250,7 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 return gap * (displayCanvasFlash.boolValue ? 5 : 4);
 
             case TriggerType.PlaySound:
-                return gap * 5;
+                return gap * 4;
 
             case TriggerType.SetObject:
                 return gap * 3;

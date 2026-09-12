@@ -115,22 +115,24 @@ public class Trigger
 
     [SerializeField] private AudioClip playSoundSound;
     [SerializeField] private bool playSoundLocal;
-    [SerializeField] private bool playSoundEffect;
+    [SerializeField] private bool playSoundIsEffect;
     [SerializeField] private AudioSource playSoundSource;
     public AudioClip PlaySoundSound => playSoundSound;
     public bool PlaySoundLocal => playSoundLocal;
-    public bool PlaySoundEffect => playSoundEffect;
+    public bool PlaySoundIsEffect => playSoundIsEffect;
     public AudioSource PlaySoundSource => playSoundSource;
 
     [SerializeField] private GameObject setObjectObject;
-    [SerializeField] private bool setObjectActive;
+    [SerializeField] private bool setObjectSetActive;
     public GameObject SetObjectObject => setObjectObject;
-    public bool SetObjectActive => setObjectActive;
+    public bool SetObjectSetActive => setObjectSetActive;
 
     [SerializeField] private string loadSceneScene;
     [SerializeField] private float loadSceneLength;
+    [SerializeField] private bool loadSceneSave;
     public string LoadSceneScene => loadSceneScene;
     public float LoadSceneLength => loadSceneLength;
+    public bool LoadSceneSave => loadSceneSave;
 
     [SerializeField] private string displayEndingTitle;
     [SerializeField] private string displayEndingDescription;

@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public enum GameState
@@ -20,6 +20,7 @@ public class MainManager : MonoBehaviour
     public bool IsPlayerActive { get; private set; } = true;
     public bool IsExecutingTriggers { get; private set; } = false;
     public bool IsPaused { get; private set; } = false;
+    public bool IsAtEnding { get; private set; } = false;
 
     private bool CanPause = true;
 
@@ -33,13 +34,6 @@ public class MainManager : MonoBehaviour
     [Header("Pause")]
     [SerializeField] private GameObject pausedScreen;
 
-    [Header("Ending")]
-    [SerializeField] private GameObject endingScreen;
-    [SerializeField] private Image endingFrontScreen;
-    [SerializeField] private TextMeshProUGUI endingType;
-    [SerializeField] private TextMeshProUGUI endingDescription;
-    [SerializeField] private GameObject endingReturnMenuButton;
-
     [Header("Dialogue")]
     [SerializeField] private GameObject dialogueScreen;
     [SerializeField] private TextMeshProUGUI dialogueSpeaker;
@@ -47,6 +41,7 @@ public class MainManager : MonoBehaviour
     [SerializeField] private GameObject subdialogueScreen;
     [SerializeField] private TextMeshProUGUI subdialogueSpeaker;
     [SerializeField] private TextMeshProUGUI subdialogueContent;
+    private AudioClip writingEffect;
     private float englishGap = 0.02f;
     private float nonEnglishGap = 0.04f;
 
@@ -68,13 +63,19 @@ public class MainManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI tasksPrompt;
     private List<string> tasks = new List<string>();
 
+    [Header("Ending")]
+    [SerializeField] private GameObject endingScreen;
+    [SerializeField] private Image endingFrontScreen;
+    [SerializeField] private TextMeshProUGUI endingTitle;
+    [SerializeField] private TextMeshProUGUI endingDescription;
+    [SerializeField] private GameObject endingReturnMenuButton;
+    private AudioClip endingEffect;
+
     private float sensitivity;
     private float musicVolume;
     private float effectsVolume;
     private string savedScene;
     private string language;
-
-    private AudioClip writingEffect;
 
     private List<Trigger> triggers = new List<Trigger>();
 
@@ -196,8 +197,7 @@ public class MainManager : MonoBehaviour
 
     public void PlayEffect(AudioClip effect)
     {
-        effectsPlayer.clip = effect;
-        effectsPlayer.Play();
+        effectsPlayer.PlayOneShot(effect);
     }
 
     public void StopMusic()
@@ -330,15 +330,39 @@ public class MainManager : MonoBehaviour
                     break;
 
                 case TriggerType.PlaySound:
+                    if (trig.PlaySoundLocal)
+                    {
+                        trig.PlaySoundSource.clip = trig.PlaySoundSound;
+                        trig.PlaySoundSource.Play();
+                    }
+                    else
+                    {
+                        if (trig.PlaySoundIsEffect) PlayEffect(trig.PlaySoundSound);
+                        else PlayMusic(trig.PlaySoundSound);
+                    }
                     break;
 
                 case TriggerType.SetObject:
+                    trig.SetObjectObject.SetActive(trig.SetObjectSetActive);
                     break;
 
                 case TriggerType.LoadScene:
+                    yield return StartCoroutine(
+                        LoadScene(
+                            trig.LoadSceneScene,
+                            trig.LoadSceneLength,
+                            trig.LoadSceneSave
+                        )
+                    );
                     break;
 
                 case TriggerType.DisplayEnding:
+                    yield return StartCoroutine(
+                        DisplayEnding(
+                            trig.DisplayEndingTitle,
+                            trig.DisplayEndingDescription
+                        )
+                    );
                     break;
 
                 case TriggerType.Custom:
@@ -446,5 +470,85 @@ public class MainManager : MonoBehaviour
         if (flash) IsPlayerActive = false;
 
         CanPause = true;
+    }
+
+    private IEnumerator LoadScene(string scene, float length, bool save)
+    {
+        yield return StartCoroutine(ChangeScreen(Color.clear, Color.black, length, false, false));
+        SceneManager.LoadScene(scene);
+    }
+
+    private IEnumerator DisplayEnding(string title, string description)
+    {
+        IsAtEnding = true;
+
+        effectsPlayer.clip = writingEffect;
+        effectsPlayer.Play();
+
+        title = Translate(title);
+        description = Translate(description);
+        endingTitle.text = "";
+        endingDescription.text = "";
+        endingReturnMenuButton.SetActive(false);
+        endingScreen.SetActive(true);
+        screen.color = Color.clear;
+
+        float t = 0, gap = language == "English" ? englishGap : nonEnglishGap;
+        int idx = 0;
+        while (idx < description.Length)
+        {
+            t += Time.deltaTime;
+            if (t >= gap)
+            {
+                t -= gap;
+                endingDescription.text += description[idx];
+                idx++;
+            }
+            if (Input.GetMouseButtonDown(0))
+            {
+                endingDescription.text = description;
+                break;
+            }
+            yield return null;
+        }
+        endingDescription.text = description;
+
+        yield return new WaitForSeconds(0.05f);
+        effectsPlayer.Stop();
+
+        yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
+        effectsPlayer.Play();
+
+        t = 0;
+        gap /= 10f;
+        idx = description.Length;
+        while (idx >= 0)
+        {
+            t += Time.deltaTime;
+            if (t >= gap)
+            {
+                t -= gap;
+                endingDescription.text = endingDescription.text.Substring(0, idx);
+                idx--;
+            }
+            if (Input.GetMouseButtonDown(0))
+            {
+                endingDescription.text = "";
+                break;
+            }
+            yield return null;
+        }
+        endingDescription.text = "";
+        effectsPlayer.Stop();
+
+        yield return new WaitForSeconds(1f);
+        endingTitle.text = title;
+        effectsPlayer.clip = endingEffect;
+        effectsPlayer.Play();
+
+        yield return new WaitForSeconds(1f);
+        endingReturnMenuButton.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }
