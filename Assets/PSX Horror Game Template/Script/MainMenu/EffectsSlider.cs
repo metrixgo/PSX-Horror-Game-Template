@@ -9,8 +9,11 @@ public class EffectsSlider : MonoBehaviour
     private void Awake()
     {
         slider = GetComponent<Slider>();
+    }
+
+    private void OnEnable()
+    {
         slider.value = MainManager.instance.data.effectsVolume;
-        Save(slider.value);
     }
 
     public void Save(float n)

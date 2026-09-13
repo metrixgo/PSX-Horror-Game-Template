@@ -1,8 +1,14 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
 {
+    private string firstScene = "";
+
     [Header("Screens")]
+    [SerializeField] private Image screen;
     [SerializeField] private GameObject startScreen;
     [SerializeField] private GameObject optionsScreen;
 
@@ -21,12 +27,15 @@ public class MainMenuManager : MonoBehaviour
     [Header("Continue")]
     [SerializeField] private GameObject continueButton;
 
-    private void Awake()
+    private void Start()
     {
-        ToStart();
+        continueButton.SetActive(MainManager.instance.data.savedScene != firstScene);
 
-        musicPlayer.volume = PlayerPrefs.GetFloat("Music", 1f);
-        effectsPlayer.volume = PlayerPrefs.GetFloat("Effects", 1f);
+        ToStart();
+        StartCoroutine(EnterMenu());
+
+        musicPlayer.volume = MainManager.instance.data.musicVolume;
+        effectsPlayer.volume = MainManager.instance.data.effectsVolume;
 
         musicPlayer.clip = menuMusic;
         effectsPlayer.clip = selectEffect;
@@ -52,23 +61,85 @@ public class MainMenuManager : MonoBehaviour
 
     public void ClearData()
     {
+        effectsPlayer.Play();
+
+
+
         PlayerPrefs.DeleteAll();
+        MainManager.instance.GetData();
     }
 
     public void StartGame()
     {
+        effectsPlayer.Play();
 
+        StartCoroutine(StartGameCoroutine());
     }
 
     public void ContinueGame()
     {
+        effectsPlayer.Play();
 
+        StartCoroutine(ContinueGameCoroutine());
     }
 
     public void QuitGame()
     {
         effectsPlayer.Play();
 
+        StartCoroutine(QuitGameCoroutine());
+    }
+
+    private IEnumerator StartGameCoroutine()
+    {
+        yield return StartCoroutine(ExitMenu());
+        SceneManager.LoadScene(firstScene);
+    }
+
+    private IEnumerator ContinueGameCoroutine()
+    {
+        yield return StartCoroutine(ExitMenu());
+        SceneManager.LoadScene(MainManager.instance.data.savedScene);
+    }
+
+    private IEnumerator QuitGameCoroutine()
+    {
+        yield return StartCoroutine(ExitMenu());
         Application.Quit();
     }
+
+    private IEnumerator EnterMenu()
+    {
+        screen.raycastTarget = true;
+        screen.color = Color.black;
+
+        float t = 0;
+        while (t < 2f)
+        {
+            t += Time.deltaTime;
+            screen.color = Color.Lerp(Color.black, Color.clear, t / 2f);
+            yield return null;
+        }
+
+        screen.color = Color.clear;
+        screen.raycastTarget = false;
+    }
+
+    private IEnumerator ExitMenu()
+    {
+        screen.raycastTarget = true;
+        screen.color = Color.clear;
+
+        float t = 0;
+        while (t < 2f)
+        {
+            t += Time.deltaTime;
+            screen.color = Color.Lerp(Color.clear, Color.black, t / 2f);
+            yield return null;
+        }
+
+        screen.color = Color.black;
+        screen.raycastTarget = false;
+    }
+
 }

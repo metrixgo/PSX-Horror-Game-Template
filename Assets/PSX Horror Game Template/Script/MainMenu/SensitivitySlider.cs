@@ -8,8 +8,11 @@ public class SensitivitySlider : MonoBehaviour
     private void Awake()
     {
         slider = GetComponent<Slider>();
+    }
+
+    private void OnEnable()
+    {
         slider.value = MainManager.instance.data.sensitivity;
-        Save(slider.value);
     }
 
     public void Save(float n)
