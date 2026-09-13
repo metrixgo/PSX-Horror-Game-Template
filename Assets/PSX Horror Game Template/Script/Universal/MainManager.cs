@@ -315,7 +315,7 @@ public class MainManager : MonoBehaviour
                     break;
 
                 case TriggerType.JumpscareAt:
-                    player.LookAt(trig.JumpscareAtPosition, trig.JumpscareAtLength);
+                    player.LookAt(trig.JumpscareAtObject.position, trig.JumpscareAtLength);
                     PlayEffect(trig.JumpscareAtEffect);
                     yield return new WaitForSeconds(trig.JumpscareAtLength);
                     break;
@@ -465,18 +465,19 @@ public class MainManager : MonoBehaviour
 
     private IEnumerator DisplayCanvas(GameObject canvas, AudioClip effect, bool flash, float flashLength)
     {
-        CanPause = false;
-
         if (flash) IsPlayerActive = true;
 
         canvas.SetActive(true);
+        PlayEffect(effect);
+        yield return new WaitForSeconds(effect.length);
 
         if (flash) yield return new WaitForSeconds(flashLength);
         else yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Escape));
 
-        if (flash) IsPlayerActive = false;
+        canvas.SetActive(false);
+        PlayEffect(effect);
 
-        CanPause = true;
+        if (flash) IsPlayerActive = false;
     }
 
     private IEnumerator LoadScene(string scene, float length, bool save)

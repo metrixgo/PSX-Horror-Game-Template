@@ -101,10 +101,10 @@ public class Trigger
     public MovePlayerType MovePlayerType => movePlayerType;
     public Vector3 MovePlayerVector => movePlayerVector;
 
-    [SerializeField] private Vector3 jumpscareAtPosition;
+    [SerializeField] private Transform jumpscareAtObject;
     [SerializeField] private float jumpscareAtLength;
     [SerializeField] private AudioClip jumpscareAtEffect;
-    public Vector3 JumpscareAtPosition => jumpscareAtPosition;
+    public Transform JumpscareAtObject => jumpscareAtObject;
     public float JumpscareAtLength => jumpscareAtLength;
     public AudioClip JumpscareAtEffect => jumpscareAtEffect;
 

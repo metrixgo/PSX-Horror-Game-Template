@@ -68,7 +68,7 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 break;
 
             case TriggerType.JumpscareAt:
-                DrawProperty(ref rect, property, "jumpscareAtPosition", "Position");
+                DrawProperty(ref rect, property, "jumpscareAtObject", "Object");
                 DrawProperty(ref rect, property, "jumpscareAtLength", "Length");
                 DrawProperty(ref rect, property, "jumpscareAtEffect", "Effect");
                 break;
@@ -185,7 +185,7 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 break;
 
             case TriggerType.JumpscareAt:
-                AddHeightOfProperty(ref height, property, "jumpscareAtPosition");
+                AddHeightOfProperty(ref height, property, "jumpscareAtObject");
                 AddHeightOfProperty(ref height, property, "jumpscareAtLength");
                 AddHeightOfProperty(ref height, property, "jumpscareAtEffect");
                 break;
