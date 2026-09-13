@@ -48,12 +48,16 @@ public class Trigger
 
     [SerializeField] private string displayDialogueSpeaker;
     [SerializeField] private string displayDialogueContent;
+    [SerializeField] private Color displayDialogueSpeakerColor;
+    [SerializeField] private Color displayDialogueContentColor;
     [SerializeField] private bool displayDialogueSub;
     [SerializeField] private bool displayDialogueFlash;
     [SerializeField] private bool displayDialogueSkippable;
     [SerializeField] private float displayDialogueFlashLength;
     public string DisplayDialogueSpeaker => displayDialogueSpeaker;
     public string DisplayDialogueContent => displayDialogueContent;
+    public Color DisplayDialogueSpeakerColor => displayDialogueSpeakerColor;
+    public Color DisplayDialogueContentColor => displayDialogueContentColor;
     public bool DisplayDialogueSub => displayDialogueSub;
     public bool DisplayDialogueFlash => displayDialogueFlash;
     public bool DisplayDialogueSkippable => displayDialogueSkippable;

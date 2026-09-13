@@ -227,8 +227,10 @@ public class MainManager : MonoBehaviour
                         DisplayDialogue(
                             trig.DisplayDialogueSpeaker,
                             trig.DisplayDialogueContent,
+                            trig.DisplayDialogueSpeakerColor,
+                            trig.DisplayDialogueContentColor,
                             trig.DisplayDialogueSub,
-                            trig.DisplayPromptFlash,
+                            trig.DisplayDialogueFlash,
                             trig.DisplayDialogueSkippable,
                             trig.DisplayDialogueFlashLength
                         )
@@ -378,7 +380,7 @@ public class MainManager : MonoBehaviour
         IsExecutingTriggers = false;
     }
 
-    private IEnumerator DisplayDialogue(string speaker, string content, bool sub, bool flash, bool skippable, float flashLength)
+    private IEnumerator DisplayDialogue(string speaker, string content, Color speakerColor, Color contentColor, bool sub, bool flash, bool skippable, float flashLength)
     {
         effectsPlayer.clip = writingEffect;
         effectsPlayer.Play();
@@ -392,12 +394,16 @@ public class MainManager : MonoBehaviour
         {
             subdialogueSpeaker.text = speaker;
             subdialogueContent.text = "";
+            subdialogueSpeaker.color = speakerColor;
+            subdialogueContent.color = contentColor;
             subdialogueScreen.SetActive(true);
         }
         else
         {
             dialogueSpeaker.text = speaker;
             dialogueContent.text = "";
+            dialogueSpeaker.color = speakerColor;
+            dialogueContent.color = contentColor;
             dialogueScreen.SetActive(true);
         }
 
@@ -430,6 +436,7 @@ public class MainManager : MonoBehaviour
 
         if (flash) yield return new WaitForSeconds(flashLength);
         else yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
+
         if (sub) subdialogueScreen.SetActive(false);
         else dialogueScreen.SetActive(false);
 

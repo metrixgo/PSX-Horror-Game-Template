@@ -69,11 +69,11 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        UpdateState();
         CameraBobbing();
 
         if (!MainManager.instance.IsPlayerActive) return;
 
-        UpdateState();
         UpdateVelocity();
 
         if (canLook) CameraLook();
@@ -83,6 +83,25 @@ public class PlayerController : MonoBehaviour
 
         MovePlayer();
 
+    }
+
+    private void UpdateState()
+    {
+        if (!MainManager.instance.IsPlayerActive)
+        {
+            state = isCrouched ? PlayerState.CrouchIdle : PlayerState.Idle;
+        }
+        else if ((Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.01f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.01f) && canMove)
+        {
+            if (isCrouched) state = PlayerState.CrouchWalk;
+            else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && canRun) state = PlayerState.Sprint;
+            else state = PlayerState.Walk;
+        }
+        else
+        {
+            if (isCrouched) state = PlayerState.CrouchIdle;
+            else state = PlayerState.Idle;
+        }
     }
 
     private void CameraBobbing()
@@ -100,7 +119,7 @@ public class PlayerController : MonoBehaviour
         float offsetSum = 0f;
         int curState = (int)state;
         if (!controller.isGrounded) curState = 0;
-        if (MainManager.instance.gameState != GameState.Normal) curState = isCrouched ? 3 : 0;
+        if (!MainManager.instance.IsPlayerActive) curState = isCrouched ? 3 : 0;
 
         for (int i = 0; i < weights.Length; i++)
         {
@@ -111,21 +130,6 @@ public class PlayerController : MonoBehaviour
         }
         
         if (weightSum > 0f) playerCam.transform.localPosition = new Vector3(0f, camHeight + offsetSum / weightSum, 0f);
-    }
-
-    private void UpdateState()
-    {
-        if ((Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.01f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.01f) && canMove)
-        {
-            if (isCrouched) state = PlayerState.CrouchWalk;
-            else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && canRun) state = PlayerState.Sprint;
-            else state = PlayerState.Walk;
-        }
-        else
-        {
-            if (isCrouched) state = PlayerState.CrouchIdle;
-            else state = PlayerState.Idle;
-        }
     }
 
     private void UpdateVelocity()

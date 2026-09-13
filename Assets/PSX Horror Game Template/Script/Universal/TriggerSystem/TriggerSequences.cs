@@ -5,11 +5,12 @@ public class TriggerSequences : MonoBehaviour
 {
     [SerializeField] private bool isPhysical = false;
     [SerializeField] private bool selfDestructs = false;
-    [SerializeField] private List<Trigger> triggers;
+    [SerializeField] private bool playerOnly = true;
+    [SerializeField] private List<Trigger> triggers = new List<Trigger>();
 
     private void OnTriggerEnter(Collider other)
     {
-        if (isPhysical) AddTriggers();
+        if (isPhysical && (!playerOnly || other.CompareTag("Player"))) AddTriggers();
     }
 
     public void AddTriggers()

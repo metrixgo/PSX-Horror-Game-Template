@@ -1,7 +1,8 @@
+#if UNITY_EDITOR
+
 using UnityEditor;
 using UnityEngine;
 
-#if UNITY_EDITOR
 [CustomPropertyDrawer(typeof(Trigger))]
 public class TriggerPropertyDrawer : PropertyDrawer
 {
@@ -21,6 +22,8 @@ public class TriggerPropertyDrawer : PropertyDrawer
             case TriggerType.DisplayDialogue:
                 DrawProperty(ref rect, property, "displayDialogueSpeaker", "Speaker");
                 DrawProperty(ref rect, property, "displayDialogueContent", "Content");
+                DrawProperty(ref rect, property, "displayDialogueSpeakerColor", "Speaker Color");
+                DrawProperty(ref rect, property, "displayDialogueContentColor", "Content Color");
                 DrawProperty(ref rect, property, "displayDialogueSub", "Sub");
                 SerializedProperty displayDialogueFlash = DrawProperty(ref rect, property, "displayDialogueFlash", "Flash");
                 if (!displayDialogueFlash.boolValue)
@@ -136,6 +139,8 @@ public class TriggerPropertyDrawer : PropertyDrawer
             case TriggerType.DisplayDialogue:
                 AddHeightOfProperty(ref height, property, "displayDialogueSpeaker");
                 AddHeightOfProperty(ref height, property, "displayDialogueContent");
+                AddHeightOfProperty(ref height, property, "displayDialogueSpeakerColor");
+                AddHeightOfProperty(ref height, property, "displayDialogueContentColor");
                 AddHeightOfProperty(ref height, property, "displayDialogueSub");
                 SerializedProperty displayDialogueFlash = AddHeightOfProperty(ref height, property, "displayDialogueFlash");
                 if (!displayDialogueFlash.boolValue)
@@ -238,4 +243,5 @@ public class TriggerPropertyDrawer : PropertyDrawer
         return prop;
     }
 }
+
 #endif
