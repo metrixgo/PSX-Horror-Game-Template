@@ -11,11 +11,22 @@ public enum GameState
     Paused,
 }
 
+public class GameData
+{
+    public float sensitivity;
+    public float musicVolume;
+    public float effectsVolume;
+    public string savedScene;
+    public string language;
+}
+
 public class MainManager : MonoBehaviour
 {
-    public static MainManager instance;
+    public static MainManager instance { get; private set; }
 
     public GameState gameState { get; private set; } = GameState.Normal;
+
+    public GameData data { get; private set; } = new GameData();
 
     public bool IsPlayerActive { get; private set; } = true;
     public bool IsExecutingTriggers { get; private set; } = false;
@@ -23,6 +34,9 @@ public class MainManager : MonoBehaviour
     public bool IsAtEnding { get; private set; } = false;
 
     private bool CanPause = true;
+
+    [Header("Active")]
+    [SerializeField] private bool active = true;
 
     [Header("Player")]
     [SerializeField] private PlayerController player;
@@ -71,12 +85,6 @@ public class MainManager : MonoBehaviour
     [SerializeField] private GameObject endingReturnMenuButton;
     private AudioClip endingEffect;
 
-    private float sensitivity;
-    private float musicVolume;
-    private float effectsVolume;
-    private string savedScene;
-    private string language;
-
     private List<Trigger> triggers = new List<Trigger>();
 
     private Dictionary<string, string> translations = new Dictionary<string, string>()
@@ -88,19 +96,16 @@ public class MainManager : MonoBehaviour
     {
         instance = this;
 
-        sensitivity = PlayerPrefs.GetFloat("Sensitivity", 10f);
-        musicVolume = PlayerPrefs.GetFloat("MusicVolume", 100f) / 100f;
-        effectsVolume = PlayerPrefs.GetFloat("EffectsVolume", 100f) / 100f;
-        savedScene = PlayerPrefs.GetString("SavedScene", "");
-        language = PlayerPrefs.GetString("Language", "English");
+        GetData();
     }
 
     private void Update()
     {
+        if (!active) return;
+
         if (!IsExecutingTriggers && triggers.Count > 0 && gameState == GameState.Normal) StartCoroutine(ExecuteTriggers());
 
         UpdatePrompts();
-
     }
 
     private void UpdatePrompts()
@@ -128,6 +133,26 @@ public class MainManager : MonoBehaviour
         }
     }
 
+    public void GetData()
+    {
+        data.sensitivity = PlayerPrefs.GetFloat("Sensitivity", 10f);
+        data.musicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        data.effectsVolume = PlayerPrefs.GetFloat("EffectsVolume", 1f);
+        data.savedScene = PlayerPrefs.GetString("SavedScene", "");
+        data.language = PlayerPrefs.GetString("Language", "English");
+    }
+
+    public void SaveData()
+    {
+        PlayerPrefs.SetFloat("Sensitivity", data.sensitivity);
+        PlayerPrefs.SetFloat("MusicVolume", data.musicVolume);
+        PlayerPrefs.SetFloat("EffectsVolume", data.effectsVolume);
+        PlayerPrefs.SetString("SavedScene", data.savedScene);
+        PlayerPrefs.SetString("Language", data.language);
+
+        PlayerPrefs.Save();
+    }
+
     public void AddTrigger(Trigger trigger)
     {
         triggers.Add(trigger);
@@ -135,7 +160,7 @@ public class MainManager : MonoBehaviour
 
     public string Translate(string s)
     {
-        if (language == "English") return s;
+        if (data.language == "English") return s;
         if (translations.ContainsKey(s)) return translations[s];
         return s;
     }
@@ -408,7 +433,7 @@ public class MainManager : MonoBehaviour
         }
 
         int idx = 0;
-        float t = 0, gap = language == "English" ? englishGap : nonEnglishGap;
+        float t = 0, gap = data.language == "English" ? englishGap : nonEnglishGap;
 
         yield return new WaitForSeconds(0.05f);
         while (idx < content.Length)
@@ -501,7 +526,7 @@ public class MainManager : MonoBehaviour
         endingScreen.SetActive(true);
         screen.color = Color.clear;
 
-        float t = 0, gap = language == "English" ? englishGap : nonEnglishGap;
+        float t = 0, gap = data.language == "English" ? englishGap : nonEnglishGap;
         int idx = 0;
         while (idx < description.Length)
         {

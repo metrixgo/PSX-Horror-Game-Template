@@ -5,21 +5,16 @@ public class SensitivitySlider : MonoBehaviour
 {
     private Slider slider;
 
-    private void OnEnable()
+    private void Awake()
     {
         slider = GetComponent<Slider>();
-        Set();
-    }
-
-    public void Set()
-    {
-        slider.value = PlayerPrefs.GetFloat("Sensitivity", 10.0f);
+        slider.value = MainManager.instance.data.sensitivity;
         Save(slider.value);
     }
 
     public void Save(float n)
     {
-        PlayerPrefs.SetFloat("Sensitivity", n);
-        PlayerPrefs.Save();
+        MainManager.instance.data.sensitivity = n;
+        MainManager.instance.SaveData();
     }
 }

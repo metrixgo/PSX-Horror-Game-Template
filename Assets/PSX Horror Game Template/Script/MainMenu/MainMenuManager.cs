@@ -8,8 +8,9 @@ public class MainMenuManager : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private SensitivitySlider sensitivity;
-    [SerializeField] private EffectsSlider effects;
     [SerializeField] private MusicSlider music;
+    [SerializeField] private EffectsSlider effects;
+    [SerializeField] private LanguageDropdown language;
 
     [Header("Sounds")]
     [SerializeField] private AudioClip menuMusic;
@@ -24,8 +25,8 @@ public class MainMenuManager : MonoBehaviour
     {
         ToStart();
 
-        musicPlayer.volume = PlayerPrefs.GetFloat("Music", 100.0f) / 100.0f;
-        effectsPlayer.volume = PlayerPrefs.GetFloat("Effects", 100.0f) / 100.0f;
+        musicPlayer.volume = PlayerPrefs.GetFloat("Music", 1f);
+        effectsPlayer.volume = PlayerPrefs.GetFloat("Effects", 1f);
 
         musicPlayer.clip = menuMusic;
         effectsPlayer.clip = selectEffect;
@@ -47,6 +48,21 @@ public class MainMenuManager : MonoBehaviour
 
         startScreen.SetActive(false);
         optionsScreen.SetActive(true);
+    }
+
+    public void ClearData()
+    {
+        PlayerPrefs.DeleteAll();
+    }
+
+    public void StartGame()
+    {
+
+    }
+
+    public void ContinueGame()
+    {
+
     }
 
     public void QuitGame()
