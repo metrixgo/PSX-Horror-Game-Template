@@ -1,11 +1,12 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
 {
-    private string firstScene = "";
+    private string firstScene = "SampleScene";
 
     [Header("Screens")]
     [SerializeField] private Image screen;
@@ -29,7 +30,7 @@ public class MainMenuManager : MonoBehaviour
 
     private void Start()
     {
-        continueButton.SetActive(MainManager.instance.data.savedScene != firstScene);
+        continueButton.SetActive(MainManager.instance.data.savedScene != "");
 
         ToStart();
         StartCoroutine(EnterMenu());
@@ -59,14 +60,32 @@ public class MainMenuManager : MonoBehaviour
         optionsScreen.SetActive(true);
     }
 
-    public void ClearData()
+    public void RefreshLanguage()
     {
         effectsPlayer.Play();
 
+        TranslateText[] texts = FindObjectsByType<TranslateText>(FindObjectsSortMode.None);
 
+        foreach (TranslateText text in texts)
+            text.Translate();
+    }
 
+    public void ClearData()
+    {
         PlayerPrefs.DeleteAll();
         MainManager.instance.GetData();
+
+        musicPlayer.volume = MainManager.instance.data.musicVolume;
+        effectsPlayer.volume = MainManager.instance.data.effectsVolume;
+
+        music.Get();
+        effects.Get();
+        sensitivity.Get();
+        language.Get();
+
+        continueButton.SetActive(false);
+
+        RefreshLanguage();
     }
 
     public void StartGame()
@@ -93,6 +112,8 @@ public class MainMenuManager : MonoBehaviour
     private IEnumerator StartGameCoroutine()
     {
         yield return StartCoroutine(ExitMenu());
+        MainManager.instance.data.savedScene = firstScene;
+        MainManager.instance.SaveData();
         SceneManager.LoadScene(firstScene);
     }
 

@@ -1,24 +1,39 @@
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class LanguageDropdown : MonoBehaviour
 {
-    private Dropdown dropdown;
+    [SerializeField] private MainMenuManager manager;
+
+    private TMP_Dropdown dropdown;
 
     private void Awake()
     {
-        dropdown = GetComponent<Dropdown>();
+        dropdown = GetComponent<TMP_Dropdown>();
+    }
+
+    private void Start()
+    {
+        Get();
     }
 
     private void OnEnable()
     {
-        dropdown.value = Lang2Idx(MainManager.instance.data.language);
+        if (MainManager.instance != null)
+            Get();
+    }
+
+    public void Get()
+    {
+        dropdown.SetValueWithoutNotify(lang2Idx(MainManager.instance.data.language));
     }
 
     public void ChangeLanguage(int index)
     {
         MainManager.instance.data.language = idx2Lang(index);
         MainManager.instance.SaveData();
+
+        manager.RefreshLanguage();
     }
 
     private string idx2Lang(int idx)
@@ -28,7 +43,7 @@ public class LanguageDropdown : MonoBehaviour
         else return "English";
     }
 
-    private int Lang2Idx(string lang)
+    private int lang2Idx(string lang)
     {
         if (lang == "English") return 0;
         else if (lang == "Chinese") return 1;

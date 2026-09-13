@@ -5,9 +5,24 @@ public class TranslateText : MonoBehaviour
 {
     private TMP_Text txt;
 
-    private void Start()
+    private void Awake()
     {
         txt = GetComponent<TMP_Text>();
-        txt.text = MainManager.instance.Translate(txt.text);
+    }
+
+    private void Start()
+    {
+        Translate();
+    }
+
+    private void OnEnable()
+    {
+        if(MainManager.instance != null)
+            Translate();
+    }
+
+    public void Translate()
+    {
+        txt.text = MainManager.instance.Translate(gameObject.name);
     }
 }

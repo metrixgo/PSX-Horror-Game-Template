@@ -89,7 +89,18 @@ public class MainManager : MonoBehaviour
 
     private Dictionary<string, string> translations = new Dictionary<string, string>()
     {
-        { "Hello!", "你好！"},
+        { "Hello!", "你好！" },
+        { "PSX Horror Game Template", "PSX 恐怖游戏模板" },
+        { "Continue", "继续" },
+        { "Start", "开始" },
+        { "Options", "选项" },
+        { "Quit", "退出" },
+        { "Language", "语言" },
+        { "Sensitivity", "灵敏度" },
+        { "Music", "音乐" },
+        { "Effects", "音效" },
+        { "Back", "返回" },
+        { "Clear Data", "清除数据" },
     };
 
     private void Awake()
@@ -494,7 +505,6 @@ public class MainManager : MonoBehaviour
 
         canvas.SetActive(true);
         PlayEffect(effect);
-        yield return new WaitForSeconds(effect.length);
 
         if (flash) yield return new WaitForSeconds(flashLength);
         else yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Escape));

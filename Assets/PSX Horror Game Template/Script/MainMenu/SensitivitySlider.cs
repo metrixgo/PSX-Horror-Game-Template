@@ -10,9 +10,20 @@ public class SensitivitySlider : MonoBehaviour
         slider = GetComponent<Slider>();
     }
 
+    private void Start()
+    {
+        Get();
+    }
+
     private void OnEnable()
     {
-        slider.value = MainManager.instance.data.sensitivity;
+        if (MainManager.instance != null)
+            Get();
+    }
+
+    public void Get()
+    {
+        slider.SetValueWithoutNotify(MainManager.instance.data.sensitivity);
     }
 
     public void Save(float n)

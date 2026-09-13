@@ -2150,7 +2150,7 @@ MonoBehaviour:
     changeScreenSub: 1
     changeScreenFlash: 0
     waitLength: 1
-    displayPromptPrompt: Hello
+    displayPromptPrompt: Hello!
     displayPromptColor: {r: 1, g: 1, b: 1, a: 1}
     displayPromptSub: 1
     displayPromptFlash: 1
@@ -4352,6 +4352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a98acff204db6c043bcd38d38c9a448e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainManager
+  active: 1
   player: {fileID: 2027041989}
   musicPlayer: {fileID: 1958594138}
   effectsPlayer: {fileID: 1441228404}

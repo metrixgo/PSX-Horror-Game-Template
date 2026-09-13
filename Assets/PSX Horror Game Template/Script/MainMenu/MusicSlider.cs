@@ -11,9 +11,20 @@ public class MusicSlider : MonoBehaviour
         slider = GetComponent<Slider>();
     }
 
+    private void Start()
+    {
+        Get();
+    }
+
     private void OnEnable()
     {
-        slider.value = MainManager.instance.data.musicVolume;
+        if(MainManager.instance != null)
+            Get();
+    }
+
+    public void Get()
+    {
+        slider.SetValueWithoutNotify(MainManager.instance.data.musicVolume);
     }
 
     public void Save(float n)
