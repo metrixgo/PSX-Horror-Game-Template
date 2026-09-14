@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
@@ -14,10 +15,10 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject optionsScreen;
 
     [Header("Settings")]
-    [SerializeField] private SensitivitySlider sensitivity;
-    [SerializeField] private MusicSlider music;
-    [SerializeField] private EffectsSlider effects;
-    [SerializeField] private LanguageDropdown language;
+    [SerializeField] private TMP_Dropdown language;
+    [SerializeField] private Slider sensitivity;
+    [SerializeField] private Slider music;
+    [SerializeField] private Slider effects;
 
     [Header("Sounds")]
     [SerializeField] private AudioClip menuMusic;
@@ -32,8 +33,9 @@ public class MainMenuManager : MonoBehaviour
     {
         continueButton.SetActive(MainManager.instance.data.savedScene != "");
 
-        ToStart();
         StartCoroutine(EnterMenu());
+
+        StartCoroutine(ChangeLanguage(MainManager.instance.data.language));
 
         musicPlayer.volume = MainManager.instance.data.musicVolume;
         effectsPlayer.volume = MainManager.instance.data.effectsVolume;
@@ -42,8 +44,6 @@ public class MainMenuManager : MonoBehaviour
         effectsPlayer.clip = selectEffect;
 
         musicPlayer.Play();
-
-        ChangeLanguage(MainManager.instance.data.language);
     }
 
     public void ToStart()
@@ -58,33 +58,62 @@ public class MainMenuManager : MonoBehaviour
     {
         effectsPlayer.Play();
 
+        UpdateOptions();
+
         startScreen.SetActive(false);
         optionsScreen.SetActive(true);
     }
 
+    public void UpdateOptions()
+    {
+        language.value = MainManager.instance.data.language;
+        sensitivity.value = MainManager.instance.data.sensitivity;
+        music.value = MainManager.instance.data.musicVolume;
+        effects.value = MainManager.instance.data.effectsVolume;
+    }
+
+    public void SaveLanguage(int language)
+    {
+        MainManager.instance.data.language = language;
+        MainManager.instance.SaveData();
+        StartCoroutine(ChangeLanguage(language));
+    }
+
+    public void SaveSensitivity(float sensitivity)
+    {
+        MainManager.instance.data.sensitivity = sensitivity;
+        MainManager.instance.SaveData();
+    }
+
+    public void SaveMusic(float music)
+    {
+        musicPlayer.volume = music;
+        MainManager.instance.data.musicVolume = music;
+        MainManager.instance.SaveData();
+    }
+
+    public void SaveEffects(float effects)
+    {
+        effectsPlayer.volume = effects;
+        MainManager.instance.data.effectsVolume = effects;
+        MainManager.instance.SaveData();
+    }
+
     public void ClearData()
     {
+        effectsPlayer.Play();
+
         PlayerPrefs.DeleteAll();
         MainManager.instance.GetData();
 
         musicPlayer.volume = MainManager.instance.data.musicVolume;
         effectsPlayer.volume = MainManager.instance.data.effectsVolume;
 
-        music.Get();
-        effects.Get();
-        sensitivity.Get();
-        language.Get();
+        UpdateOptions();
 
         continueButton.SetActive(false);
 
-        ChangeLanguage(MainManager.instance.data.language);
-    }
-
-    public void ChangeLanguage(int index)
-    {
-        effectsPlayer.Play();
-
-        StartCoroutine(ChangeLanguageCoroutine(index));
+        StartCoroutine(ChangeLanguage(MainManager.instance.data.language));
     }
 
     public void StartGame()
@@ -108,7 +137,7 @@ public class MainMenuManager : MonoBehaviour
         StartCoroutine(QuitGameCoroutine());
     }
 
-    private IEnumerator ChangeLanguageCoroutine(int index)
+    private IEnumerator ChangeLanguage(int index)
     {
         yield return LocalizationSettings.InitializationOperation;
 

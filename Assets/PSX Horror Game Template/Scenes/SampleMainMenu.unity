@@ -549,7 +549,6 @@ GameObject:
   - component: {fileID: 124420762}
   - component: {fileID: 124420761}
   - component: {fileID: 124420760}
-  - component: {fileID: 124420763}
   m_Layer: 5
   m_Name: LanguageDropdown
   m_TagString: Untagged
@@ -639,9 +638,9 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 124420763}
-        m_TargetAssemblyTypeName: LanguageDropdown, Assembly-CSharp
-        m_MethodName: ChangeLanguage
+      - m_Target: {fileID: 750993844}
+        m_TargetAssemblyTypeName: MainMenuManager, Assembly-CSharp
+        m_MethodName: SaveLanguage
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -690,19 +689,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 124420758}
   m_CullTransparentMesh: 1
---- !u!114 &124420763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 124420758}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 031ac1d64df6bde48ad741e8907be3d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LanguageDropdown
-  manager: {fileID: 750993844}
 --- !u!1 &151735889
 GameObject:
   m_ObjectHideFlags: 0
@@ -899,7 +885,6 @@ GameObject:
   m_Component:
   - component: {fileID: 200304599}
   - component: {fileID: 200304601}
-  - component: {fileID: 200304600}
   m_Layer: 5
   m_Name: SensitivitySlider
   m_TagString: Untagged
@@ -929,18 +914,6 @@ RectTransform:
   m_AnchoredPosition: {x: 110, y: 25}
   m_SizeDelta: {x: 400, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &200304600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 200304598}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c12a44dce8f908a4582b46743ca54d77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SensitivitySlider
 --- !u!114 &200304601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -992,9 +965,9 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 200304600}
-        m_TargetAssemblyTypeName: SensitivitySlider, Assembly-CSharp
-        m_MethodName: Save
+      - m_Target: {fileID: 750993844}
+        m_TargetAssemblyTypeName: MainMenuManager, Assembly-CSharp
+        m_MethodName: SaveSensitivity
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2069,10 +2042,10 @@ MonoBehaviour:
   screen: {fileID: 7629224}
   startScreen: {fileID: 1378789274}
   optionsScreen: {fileID: 1791900049}
-  sensitivity: {fileID: 200304600}
-  music: {fileID: 1293021095}
-  effects: {fileID: 2023632299}
-  language: {fileID: 124420763}
+  language: {fileID: 0}
+  sensitivity: {fileID: 0}
+  music: {fileID: 0}
+  effects: {fileID: 0}
   menuMusic: {fileID: 8300000, guid: e17d85eb6b6c1514b9aaabcfbfc49c0a, type: 3}
   selectEffect: {fileID: 8300000, guid: 732a1686f416afd479b78c86e4ae5912, type: 3}
   musicPlayer: {fileID: 1019191696}
@@ -3776,7 +3749,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1293021094}
   - component: {fileID: 1293021096}
-  - component: {fileID: 1293021095}
   m_Layer: 5
   m_Name: MusicSlider
   m_TagString: Untagged
@@ -3806,19 +3778,6 @@ RectTransform:
   m_AnchoredPosition: {x: 110, y: -45}
   m_SizeDelta: {x: 400, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1293021095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1293021093}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e8b1190f492fdc44ae835d1c007d6f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::VolumeSlider
-  musicPlayer: {fileID: 1019191696}
 --- !u!114 &1293021096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3870,9 +3829,9 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1293021095}
-        m_TargetAssemblyTypeName: VolumeSlider, Assembly-CSharp
-        m_MethodName: Save
+      - m_Target: {fileID: 750993844}
+        m_TargetAssemblyTypeName: MainMenuManager, Assembly-CSharp
+        m_MethodName: SaveMusic
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6659,7 +6618,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2023632298}
   - component: {fileID: 2023632300}
-  - component: {fileID: 2023632299}
   m_Layer: 5
   m_Name: EffectsSlider
   m_TagString: Untagged
@@ -6689,19 +6647,6 @@ RectTransform:
   m_AnchoredPosition: {x: 110, y: -115}
   m_SizeDelta: {x: 400, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2023632299
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2023632297}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c15cc920480215449f602593360a4e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EffectsSlider
-  effectsPlayer: {fileID: 2012241104}
 --- !u!114 &2023632300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6753,9 +6698,9 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2023632299}
-        m_TargetAssemblyTypeName: EffectsSlider, Assembly-CSharp
-        m_MethodName: Save
+      - m_Target: {fileID: 750993844}
+        m_TargetAssemblyTypeName: MainMenuManager, Assembly-CSharp
+        m_MethodName: SaveEffects
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
