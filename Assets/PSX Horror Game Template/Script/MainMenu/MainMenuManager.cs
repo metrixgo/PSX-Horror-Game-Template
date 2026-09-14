@@ -1,6 +1,6 @@
 using System.Collections;
-using TMPro;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -42,6 +42,8 @@ public class MainMenuManager : MonoBehaviour
         effectsPlayer.clip = selectEffect;
 
         musicPlayer.Play();
+
+        ChangeLanguage(MainManager.instance.data.language);
     }
 
     public void ToStart()
@@ -60,16 +62,6 @@ public class MainMenuManager : MonoBehaviour
         optionsScreen.SetActive(true);
     }
 
-    public void RefreshLanguage()
-    {
-        effectsPlayer.Play();
-
-        TranslateText[] texts = FindObjectsByType<TranslateText>(FindObjectsSortMode.None);
-
-        foreach (TranslateText text in texts)
-            text.Translate();
-    }
-
     public void ClearData()
     {
         PlayerPrefs.DeleteAll();
@@ -85,7 +77,14 @@ public class MainMenuManager : MonoBehaviour
 
         continueButton.SetActive(false);
 
-        RefreshLanguage();
+        ChangeLanguage(MainManager.instance.data.language);
+    }
+
+    public void ChangeLanguage(int index)
+    {
+        effectsPlayer.Play();
+
+        StartCoroutine(ChangeLanguageCoroutine(index));
     }
 
     public void StartGame()
@@ -107,6 +106,13 @@ public class MainMenuManager : MonoBehaviour
         effectsPlayer.Play();
 
         StartCoroutine(QuitGameCoroutine());
+    }
+
+    private IEnumerator ChangeLanguageCoroutine(int index)
+    {
+        yield return LocalizationSettings.InitializationOperation;
+
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
     }
 
     private IEnumerator StartGameCoroutine()

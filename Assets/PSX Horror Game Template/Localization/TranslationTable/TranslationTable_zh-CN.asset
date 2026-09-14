@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: TranslationTable_zh-CN
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: zh-CN
+  m_SharedData: {fileID: 11400000, guid: 9d2a3d2a8897ef04a8e35246458387cc, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 308422127616
+    m_Localized: "\u5F00\u59CB"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16615414706176
+    m_Localized: "\u4F60\u597D\uFF01"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16615418900480
+    m_Localized: "PSX \u6050\u6016\u6E38\u620F\u6A21\u677F"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16615418900481
+    m_Localized: "\u7EE7\u7EED"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16615418900482
+    m_Localized: "\u9009\u9879"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16615418900483
+    m_Localized: "\u9000\u51FA"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16615418900484
+    m_Localized: "\u8BED\u8A00"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16615418900485
+    m_Localized: "\u7075\u654F\u5EA6"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16615418900486
+    m_Localized: "\u97F3\u4E50"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16615418900487
+    m_Localized: "\u97F3\u6548"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16615418900488
+    m_Localized: "\u8FD4\u56DE"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16615418900489
+    m_Localized: "\u6E05\u9664\u6570\u636E"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

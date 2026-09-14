@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -17,7 +18,7 @@ public class GameData
     public float musicVolume;
     public float effectsVolume;
     public string savedScene;
-    public string language;
+    public int language;
 }
 
 public class MainManager : MonoBehaviour
@@ -56,8 +57,7 @@ public class MainManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI subdialogueSpeaker;
     [SerializeField] private TextMeshProUGUI subdialogueContent;
     private AudioClip writingEffect;
-    private float englishGap = 0.02f;
-    private float nonEnglishGap = 0.04f;
+    private float[] displayGap = { 0.02f, 0.04f };
 
     [Header("Screen")]
     [SerializeField] private Image screen;
@@ -87,22 +87,6 @@ public class MainManager : MonoBehaviour
 
     private List<Trigger> triggers = new List<Trigger>();
 
-    private Dictionary<string, string> translations = new Dictionary<string, string>()
-    {
-        { "Hello!", "你好！" },
-        { "PSX Horror Game Template", "PSX 恐怖游戏模板" },
-        { "Continue", "继续" },
-        { "Start", "开始" },
-        { "Options", "选项" },
-        { "Quit", "退出" },
-        { "Language", "语言" },
-        { "Sensitivity", "灵敏度" },
-        { "Music", "音乐" },
-        { "Effects", "音效" },
-        { "Back", "返回" },
-        { "Clear Data", "清除数据" },
-    };
-
     private void Awake()
     {
         instance = this;
@@ -114,7 +98,8 @@ public class MainManager : MonoBehaviour
     {
         if (!active) return;
 
-        if (!IsExecutingTriggers && triggers.Count > 0 && gameState == GameState.Normal) StartCoroutine(ExecuteTriggers());
+        if (!IsExecutingTriggers && triggers.Count > 0 && gameState == GameState.Normal)
+            StartCoroutine(ExecuteTriggers());
 
         UpdatePrompts();
     }
@@ -150,7 +135,7 @@ public class MainManager : MonoBehaviour
         data.musicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
         data.effectsVolume = PlayerPrefs.GetFloat("EffectsVolume", 1f);
         data.savedScene = PlayerPrefs.GetString("SavedScene", "");
-        data.language = PlayerPrefs.GetString("Language", "English");
+        data.language = PlayerPrefs.GetInt("Language", 0);
     }
 
     public void SaveData()
@@ -159,7 +144,7 @@ public class MainManager : MonoBehaviour
         PlayerPrefs.SetFloat("MusicVolume", data.musicVolume);
         PlayerPrefs.SetFloat("EffectsVolume", data.effectsVolume);
         PlayerPrefs.SetString("SavedScene", data.savedScene);
-        PlayerPrefs.SetString("Language", data.language);
+        PlayerPrefs.SetInt("Language", data.language);
 
         PlayerPrefs.Save();
     }
@@ -171,9 +156,7 @@ public class MainManager : MonoBehaviour
 
     public string Translate(string s)
     {
-        if (data.language == "English") return s;
-        if (translations.ContainsKey(s)) return translations[s];
-        return s;
+        return LocalizationSettings.StringDatabase.GetLocalizedString("TranslationTable", s);
     }
 
     public void SetPrompt(string prompt, Color color, bool sub, bool flash)
@@ -444,7 +427,7 @@ public class MainManager : MonoBehaviour
         }
 
         int idx = 0;
-        float t = 0, gap = data.language == "English" ? englishGap : nonEnglishGap;
+        float t = 0, gap = displayGap[data.language];
 
         yield return new WaitForSeconds(0.05f);
         while (idx < content.Length)
@@ -506,8 +489,10 @@ public class MainManager : MonoBehaviour
         canvas.SetActive(true);
         PlayEffect(effect);
 
-        if (flash) yield return new WaitForSeconds(flashLength);
-        else yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Escape));
+        if (flash)
+            yield return new WaitForSeconds(flashLength);
+        else
+            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Escape));
 
         canvas.SetActive(false);
         PlayEffect(effect);
@@ -536,7 +521,7 @@ public class MainManager : MonoBehaviour
         endingScreen.SetActive(true);
         screen.color = Color.clear;
 
-        float t = 0, gap = data.language == "English" ? englishGap : nonEnglishGap;
+        float t = 0, gap = displayGap[data.language];
         int idx = 0;
         while (idx < description.Length)
         {
