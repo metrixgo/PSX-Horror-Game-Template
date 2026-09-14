@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
+using UnityEngine.Localization.Tables;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -156,7 +157,12 @@ public class MainManager : MonoBehaviour
 
     public string Translate(string s)
     {
-        return LocalizationSettings.StringDatabase.GetLocalizedString("TranslationTable", s);
+        StringTable table = LocalizationSettings.StringDatabase.GetTable("TranslationTable");
+
+        if (table != null && table.GetEntry(s) != null)
+            return LocalizationSettings.StringDatabase.GetLocalizedString("TranslationTable", s);
+        else
+            return s;
     }
 
     public void SetPrompt(string prompt, Color color, bool sub, bool flash)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -35,7 +36,7 @@ public class MainMenuManager : MonoBehaviour
 
         StartCoroutine(EnterMenu());
 
-        StartCoroutine(ChangeLanguage(MainManager.instance.data.language));
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[MainManager.instance.data.language];
 
         musicPlayer.volume = MainManager.instance.data.musicVolume;
         effectsPlayer.volume = MainManager.instance.data.effectsVolume;
@@ -76,7 +77,7 @@ public class MainMenuManager : MonoBehaviour
     {
         MainManager.instance.data.language = language;
         MainManager.instance.SaveData();
-        StartCoroutine(ChangeLanguage(language));
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[language];
     }
 
     public void SaveSensitivity(float sensitivity)
@@ -113,7 +114,7 @@ public class MainMenuManager : MonoBehaviour
 
         continueButton.SetActive(false);
 
-        StartCoroutine(ChangeLanguage(MainManager.instance.data.language));
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[MainManager.instance.data.language];
     }
 
     public void StartGame()
@@ -135,13 +136,6 @@ public class MainMenuManager : MonoBehaviour
         effectsPlayer.Play();
 
         StartCoroutine(QuitGameCoroutine());
-    }
-
-    private IEnumerator ChangeLanguage(int index)
-    {
-        yield return LocalizationSettings.InitializationOperation;
-
-        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
     }
 
     private IEnumerator StartGameCoroutine()
@@ -168,6 +162,8 @@ public class MainMenuManager : MonoBehaviour
     {
         screen.raycastTarget = true;
         screen.color = Color.black;
+
+        yield return LocalizationSettings.InitializationOperation;
 
         float t = 0;
         while (t < 2f)

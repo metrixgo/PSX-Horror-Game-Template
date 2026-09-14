@@ -441,7 +441,7 @@ MonoBehaviour:
       m_KeyId: 16615418900483
       m_Key: 
     m_FallbackState: 0
-    m_WaitForCompletion: 0
+    m_WaitForCompletion: 1
     m_LocalVariables: []
   m_FormatArguments: []
   m_UpdateString:
@@ -1794,7 +1794,7 @@ MonoBehaviour:
       m_KeyId: 16615418900482
       m_Key: 
     m_FallbackState: 0
-    m_WaitForCompletion: 0
+    m_WaitForCompletion: 1
     m_LocalVariables: []
   m_FormatArguments: []
   m_UpdateString:
@@ -1972,7 +1972,7 @@ MonoBehaviour:
       m_KeyId: 16615418900487
       m_Key: 
     m_FallbackState: 0
-    m_WaitForCompletion: 0
+    m_WaitForCompletion: 1
     m_LocalVariables: []
   m_FormatArguments: []
   m_UpdateString:
@@ -2042,10 +2042,10 @@ MonoBehaviour:
   screen: {fileID: 7629224}
   startScreen: {fileID: 1378789274}
   optionsScreen: {fileID: 1791900049}
-  language: {fileID: 0}
-  sensitivity: {fileID: 0}
-  music: {fileID: 0}
-  effects: {fileID: 0}
+  language: {fileID: 124420760}
+  sensitivity: {fileID: 200304601}
+  music: {fileID: 1293021096}
+  effects: {fileID: 2023632300}
   menuMusic: {fileID: 8300000, guid: e17d85eb6b6c1514b9aaabcfbfc49c0a, type: 3}
   selectEffect: {fileID: 8300000, guid: 732a1686f416afd479b78c86e4ae5912, type: 3}
   musicPlayer: {fileID: 1019191696}
@@ -2319,7 +2319,7 @@ MonoBehaviour:
       m_KeyId: 16615418900485
       m_Key: 
     m_FallbackState: 0
-    m_WaitForCompletion: 0
+    m_WaitForCompletion: 1
     m_LocalVariables: []
   m_FormatArguments: []
   m_UpdateString:
@@ -3525,7 +3525,7 @@ MonoBehaviour:
       m_KeyId: 16615418900489
       m_Key: 
     m_FallbackState: 0
-    m_WaitForCompletion: 0
+    m_WaitForCompletion: 1
     m_LocalVariables: []
   m_FormatArguments: []
   m_UpdateString:
@@ -3718,7 +3718,7 @@ MonoBehaviour:
       m_KeyId: 16615418900483
       m_Key: 
     m_FallbackState: 0
-    m_WaitForCompletion: 0
+    m_WaitForCompletion: 1
     m_LocalVariables: []
   m_FormatArguments: []
   m_UpdateString:
@@ -4049,7 +4049,7 @@ MonoBehaviour:
       m_KeyId: 308422127616
       m_Key: 
     m_FallbackState: 0
-    m_WaitForCompletion: 0
+    m_WaitForCompletion: 1
     m_LocalVariables: []
   m_FormatArguments: []
   m_UpdateString:
@@ -5073,7 +5073,7 @@ MonoBehaviour:
       m_KeyId: 16615418900481
       m_Key: 
     m_FallbackState: 0
-    m_WaitForCompletion: 0
+    m_WaitForCompletion: 1
     m_LocalVariables: []
   m_FormatArguments: []
   m_UpdateString:
@@ -5251,7 +5251,7 @@ MonoBehaviour:
       m_KeyId: 16615418900482
       m_Key: 
     m_FallbackState: 0
-    m_WaitForCompletion: 0
+    m_WaitForCompletion: 1
     m_LocalVariables: []
   m_FormatArguments: []
   m_UpdateString:
@@ -5596,7 +5596,7 @@ GameObject:
   - component: {fileID: 1634011785}
   - component: {fileID: 1634011784}
   m_Layer: 5
-  m_Name: metrixgo
+  m_Name: Author
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5734,7 +5734,7 @@ GameObject:
   - component: {fileID: 1652162343}
   - component: {fileID: 1652162345}
   m_Layer: 5
-  m_Name: PSX Horror Game Template
+  m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5878,7 +5878,7 @@ MonoBehaviour:
       m_KeyId: 16615418900480
       m_Key: 
     m_FallbackState: 0
-    m_WaitForCompletion: 0
+    m_WaitForCompletion: 1
     m_LocalVariables: []
   m_FormatArguments: []
   m_UpdateString:
@@ -6190,7 +6190,7 @@ MonoBehaviour:
       m_KeyId: 16615418900486
       m_Key: 
     m_FallbackState: 0
-    m_WaitForCompletion: 0
+    m_WaitForCompletion: 1
     m_LocalVariables: []
   m_FormatArguments: []
   m_UpdateString:
@@ -6368,7 +6368,7 @@ MonoBehaviour:
       m_KeyId: 16615418900484
       m_Key: 
     m_FallbackState: 0
-    m_WaitForCompletion: 0
+    m_WaitForCompletion: 1
     m_LocalVariables: []
   m_FormatArguments: []
   m_UpdateString:
@@ -6882,7 +6882,7 @@ MonoBehaviour:
       m_KeyId: 16615418900488
       m_Key: 
     m_FallbackState: 0
-    m_WaitForCompletion: 0
+    m_WaitForCompletion: 1
     m_LocalVariables: []
   m_FormatArguments: []
   m_UpdateString:

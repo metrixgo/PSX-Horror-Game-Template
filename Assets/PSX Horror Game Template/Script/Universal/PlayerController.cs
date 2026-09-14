@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public enum PlayerState
 {
@@ -177,7 +176,7 @@ public class PlayerController : MonoBehaviour
 
     private void HandleJump()
     {
-        if (controller.isGrounded && Input.GetKeyDown(KeyCode.Space) && !isCrouched) velocityY = jumpStrength;
+        if (controller.isGrounded && Input.GetKey(KeyCode.Space) && !isCrouched) velocityY = jumpStrength;
     }
 
     private void HandleMove()
