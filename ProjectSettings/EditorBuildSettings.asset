@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/PSX Horror Game Template/Scenes/SampleMainMenu.unity
+    path: Assets/PSX Horror Game Template/Scenes/MainMenu.unity
     guid: a86d968949d6cb044b2ea64a41b22728
   - enabled: 1
     path: Assets/PSX Horror Game Template/Scenes/SampleScene.unity

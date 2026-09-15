@@ -37,6 +37,8 @@ public class MainManager : MonoBehaviour
 
     private bool CanPause = true;
 
+    private string mainMenuName = "MainMenu";
+
     [Header("Active")]
     [SerializeField] private bool active = true;
 
@@ -49,6 +51,7 @@ public class MainManager : MonoBehaviour
 
     [Header("Pause")]
     [SerializeField] private GameObject pausedScreen;
+    [SerializeField] private Image pausedFrontScreen;
 
     [Header("Dialogue")]
     [SerializeField] private GameObject dialogueScreen;
@@ -103,6 +106,7 @@ public class MainManager : MonoBehaviour
             StartCoroutine(ExecuteTriggers());
 
         UpdatePrompts();
+        CheckPause();
     }
 
     private void UpdatePrompts()
@@ -128,6 +132,51 @@ public class MainManager : MonoBehaviour
             flashSubpromptT = 0;
             subprompt.color = subpromptColor;
         }
+    }
+
+    private void CheckPause()
+    {
+        if (!Input.GetKeyDown(KeyCode.Escape) || !CanPause) return;
+
+        if (IsPaused) Resume();
+        else Pause();
+    }
+
+    public void Pause()
+    {
+        if (!CanPause || IsPaused) return;
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        pausedScreen.SetActive(true);
+        Time.timeScale = 0f;
+
+        IsPaused = true;
+    }
+
+    public void Resume()
+    {
+        if (!CanPause || !IsPaused) return;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        pausedScreen.SetActive(false);
+        Time.timeScale = 1f;
+
+        IsPaused = false;
+    }
+
+    public void ReturnToMainMenu()
+    {
+        StartCoroutine(LoadMainMenu());
+    }
+
+    public void ChangeSensitivity(float sensitivity)
+    {
+        data.sensitivity = sensitivity;
+        SaveData();
     }
 
     public void GetData()
@@ -460,7 +509,7 @@ public class MainManager : MonoBehaviour
         effectsPlayer.Stop();
 
         if (flash) yield return new WaitForSeconds(flashLength);
-        else yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
+        else yield return new WaitUntil(() => Input.GetMouseButtonDown(0) && !IsPaused);
 
         if (sub) subdialogueScreen.SetActive(false);
         else dialogueScreen.SetActive(false);
@@ -490,6 +539,8 @@ public class MainManager : MonoBehaviour
 
     private IEnumerator DisplayCanvas(GameObject canvas, AudioClip effect, bool flash, float flashLength)
     {
+        if (!flash) CanPause = false;
+
         if (flash) IsPlayerActive = true;
 
         canvas.SetActive(true);
@@ -504,12 +555,33 @@ public class MainManager : MonoBehaviour
         PlayEffect(effect);
 
         if (flash) IsPlayerActive = false;
+
+        if(!flash) CanPause = true;
     }
 
     private IEnumerator LoadScene(string scene, float length, bool save)
     {
         yield return StartCoroutine(ChangeScreen(Color.clear, Color.black, length, false, false));
         SceneManager.LoadScene(scene);
+    }
+
+    private IEnumerator LoadMainMenu()
+    {
+        CanPause = false;
+        pausedFrontScreen.raycastTarget = true;
+        pausedFrontScreen.color = Color.clear;
+
+        float t = 0f;
+        while (t < 2f)
+        {
+            yield return null;
+            t += Time.unscaledDeltaTime;
+            pausedFrontScreen.color = Color.Lerp(Color.clear, Color.black, t / 2f);
+        }
+
+        Time.timeScale = 1f;
+
+        SceneManager.LoadScene(mainMenuName);
     }
 
     private IEnumerator DisplayEnding(string title, string description)

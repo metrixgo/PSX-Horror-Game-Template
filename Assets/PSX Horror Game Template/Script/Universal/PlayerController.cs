@@ -68,12 +68,10 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (!MainManager.instance.IsPlayerActive || MainManager.instance.IsPaused) return;
+
         UpdateState();
         CameraBobbing();
-
-        if (!MainManager.instance.IsPlayerActive) return;
-
-        UpdateVelocity();
 
         if (canLook) CameraLook();
         if (canCrouch) HandleCrouch();
@@ -101,6 +99,13 @@ public class PlayerController : MonoBehaviour
             if (isCrouched) state = PlayerState.CrouchIdle;
             else state = PlayerState.Idle;
         }
+
+        move = Vector3.zero;
+
+        if (controller.isGrounded) velocityY = groundGravity;
+        else velocityY += gravity * Time.deltaTime;
+
+        sensitivity = MainManager.instance.data.sensitivity;
     }
 
     private void CameraBobbing()
@@ -129,14 +134,6 @@ public class PlayerController : MonoBehaviour
         }
         
         if (weightSum > 0f) playerCam.transform.localPosition = new Vector3(0f, camHeight + offsetSum / weightSum, 0f);
-    }
-
-    private void UpdateVelocity()
-    {
-        move = Vector3.zero;
-
-        if (controller.isGrounded) velocityY = groundGravity;
-        else velocityY += gravity * Time.deltaTime;
     }
 
     private void CameraLook()

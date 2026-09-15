@@ -15,6 +15,10 @@ MonoBehaviour:
   m_TableCollectionName: TranslationTable
   m_TableCollectionNameGuidString: 9d2a3d2a8897ef04a8e35246458387cc
   m_Entries:
+  - m_Id: 373203652587520
+    m_Key: You
+    m_Metadata:
+      m_Items: []
   - m_Id: 16615414706176
     m_Key: Hello!
     m_Metadata:
@@ -61,6 +65,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 16615418900489
     m_Key: Clear Data
+    m_Metadata:
+      m_Items: []
+  - m_Id: 374374857453568
+    m_Key: Paused
+    m_Metadata:
+      m_Items: []
+  - m_Id: 373401510490112
+    m_Key: Resume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 373562940862464
+    m_Key: Main Menu
     m_Metadata:
       m_Items: []
   m_Metadata:

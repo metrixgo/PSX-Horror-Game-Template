@@ -16,9 +16,7 @@ public class TriggerSequences : MonoBehaviour
     public void AddTriggers()
     {
         foreach (Trigger trigger in triggers)
-        {
             MainManager.instance.AddTrigger(trigger);
-        }
 
         if (selfDestructs) Destroy(gameObject);
     }
