@@ -1809,6 +1809,118 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 186070330}
   m_CullTransparentMesh: 1
+--- !u!1 &214197055
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 214197056}
+  - component: {fileID: 214197059}
+  - component: {fileID: 214197058}
+  - component: {fileID: 214197057}
+  m_Layer: 0
+  m_Name: Cube (9)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &214197056
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 214197055}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -14.926, y: 1.5, z: 7.15}
+  m_LocalScale: {x: 0.5, y: 3, z: 0.5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2014601004}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &214197057
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 214197055}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &214197058
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 214197055}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 116266165c267b444aaf2fc38b6b62e3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &214197059
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 214197055}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &222663835
 GameObject:
   m_ObjectHideFlags: 0
@@ -2230,7 +2342,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 1.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 737852349}
   m_Father: {fileID: 2027041987}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &252641410
@@ -3741,6 +3854,38 @@ MonoBehaviour:
     loadSceneSave: 0
     displayEndingTitle: 
     displayEndingDescription: 
+--- !u!1 &737852348
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 737852349}
+  m_Layer: 0
+  m_Name: Hold
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &737852349
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 737852348}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.15, y: -0.1, z: 0.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2133486593}
+  m_Father: {fileID: 252641409}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &750896102
 GameObject:
   m_ObjectHideFlags: 0
@@ -6179,6 +6324,570 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1270383185}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1287797762
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1287797763}
+  - component: {fileID: 1287797769}
+  - component: {fileID: 1287797768}
+  - component: {fileID: 1287797767}
+  - component: {fileID: 1287797766}
+  - component: {fileID: 1287797765}
+  - component: {fileID: 1287797764}
+  m_Layer: 7
+  m_Name: Cube (8)
+  m_TagString: Interactable
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1287797763
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287797762}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.38268343, z: 0, w: 0.92387956}
+  m_LocalPosition: {x: -15.621, y: 0.5, z: 9.875}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2014601004}
+  m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
+--- !u!114 &1287797764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287797762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bdb5c310ab27d14292b551aedf584e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TriggerSequences
+  isPhysical: 0
+  selfDestructs: 0
+  playerOnly: 0
+  triggers:
+  - triggerType: 0
+    displayDialogueSpeaker: You
+    displayDialogueContent: Hello!
+    displayDialogueSpeakerColor: {r: 1, g: 1, b: 1, a: 1}
+    displayDialogueContentColor: {r: 1, g: 1, b: 1, a: 1}
+    displayDialogueSub: 1
+    displayDialogueFlash: 0
+    displayDialogueSkippable: 0
+    displayDialogueFlashLength: 0
+    changeScreenStartColor: {r: 0, g: 0, b: 0, a: 0}
+    changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
+    changeScreenLength: 0
+    changeScreenSub: 0
+    changeScreenFlash: 0
+    waitLength: 0
+    displayPromptPrompt: 
+    displayPromptColor: {r: 0, g: 0, b: 0, a: 0}
+    displayPromptSub: 0
+    displayPromptFlash: 0
+    manageTasksType: 0
+    manageTasksTask: 
+    playerCanDoType: 0
+    playerCanDoCanDo: 0
+    movePlayerType: 0
+    movePlayerVector: {x: 0, y: 0, z: 0}
+    jumpscareAtObject: {fileID: 0}
+    jumpscareAtLength: 0
+    jumpscareAtEffect: {fileID: 0}
+    displayCanvasCanvas: {fileID: 0}
+    displayCanvasEffect: {fileID: 0}
+    displayCanvasFlash: 0
+    displayCanvasFlashLength: 0
+    playSoundSound: {fileID: 0}
+    playSoundLocal: 0
+    playSoundIsEffect: 0
+    playSoundSource: {fileID: 0}
+    setObjectObject: {fileID: 0}
+    setObjectSetActive: 0
+    loadSceneScene: 
+    loadSceneLength: 0
+    loadSceneSave: 0
+    displayEndingTitle: 
+    displayEndingDescription: 
+  - triggerType: 0
+    displayDialogueSpeaker: You
+    displayDialogueContent: Hello!
+    displayDialogueSpeakerColor: {r: 1, g: 1, b: 1, a: 1}
+    displayDialogueContentColor: {r: 1, g: 1, b: 1, a: 1}
+    displayDialogueSub: 0
+    displayDialogueFlash: 0
+    displayDialogueSkippable: 0
+    displayDialogueFlashLength: 0
+    changeScreenStartColor: {r: 0, g: 0, b: 0, a: 0}
+    changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
+    changeScreenLength: 0
+    changeScreenSub: 0
+    changeScreenFlash: 0
+    waitLength: 0
+    displayPromptPrompt: 
+    displayPromptColor: {r: 0, g: 0, b: 0, a: 0}
+    displayPromptSub: 0
+    displayPromptFlash: 0
+    manageTasksType: 0
+    manageTasksTask: 
+    playerCanDoType: 0
+    playerCanDoCanDo: 0
+    movePlayerType: 0
+    movePlayerVector: {x: 0, y: 0, z: 0}
+    jumpscareAtObject: {fileID: 0}
+    jumpscareAtLength: 0
+    jumpscareAtEffect: {fileID: 0}
+    displayCanvasCanvas: {fileID: 0}
+    displayCanvasEffect: {fileID: 0}
+    displayCanvasFlash: 0
+    displayCanvasFlashLength: 0
+    playSoundSound: {fileID: 0}
+    playSoundLocal: 0
+    playSoundIsEffect: 0
+    playSoundSource: {fileID: 0}
+    setObjectObject: {fileID: 0}
+    setObjectSetActive: 0
+    loadSceneScene: 
+    loadSceneLength: 0
+    loadSceneSave: 0
+    displayEndingTitle: 
+    displayEndingDescription: 
+  - triggerType: 1
+    displayDialogueSpeaker: You
+    displayDialogueContent: Hello!
+    displayDialogueSpeakerColor: {r: 1, g: 1, b: 1, a: 1}
+    displayDialogueContentColor: {r: 1, g: 1, b: 1, a: 1}
+    displayDialogueSub: 0
+    displayDialogueFlash: 0
+    displayDialogueSkippable: 0
+    displayDialogueFlashLength: 0
+    changeScreenStartColor: {r: 1, g: 0, b: 0, a: 1}
+    changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
+    changeScreenLength: 1
+    changeScreenSub: 0
+    changeScreenFlash: 0
+    waitLength: 0
+    displayPromptPrompt: 
+    displayPromptColor: {r: 0, g: 0, b: 0, a: 0}
+    displayPromptSub: 0
+    displayPromptFlash: 0
+    manageTasksType: 0
+    manageTasksTask: 
+    playerCanDoType: 0
+    playerCanDoCanDo: 0
+    movePlayerType: 0
+    movePlayerVector: {x: 0, y: 0, z: 0}
+    jumpscareAtObject: {fileID: 0}
+    jumpscareAtLength: 0
+    jumpscareAtEffect: {fileID: 0}
+    displayCanvasCanvas: {fileID: 0}
+    displayCanvasEffect: {fileID: 0}
+    displayCanvasFlash: 0
+    displayCanvasFlashLength: 0
+    playSoundSound: {fileID: 0}
+    playSoundLocal: 0
+    playSoundIsEffect: 0
+    playSoundSource: {fileID: 0}
+    setObjectObject: {fileID: 0}
+    setObjectSetActive: 0
+    loadSceneScene: 
+    loadSceneLength: 0
+    loadSceneSave: 0
+    displayEndingTitle: 
+    displayEndingDescription: 
+  - triggerType: 10
+    displayDialogueSpeaker: You
+    displayDialogueContent: Hello!
+    displayDialogueSpeakerColor: {r: 1, g: 1, b: 1, a: 1}
+    displayDialogueContentColor: {r: 1, g: 1, b: 1, a: 1}
+    displayDialogueSub: 0
+    displayDialogueFlash: 0
+    displayDialogueSkippable: 0
+    displayDialogueFlashLength: 0
+    changeScreenStartColor: {r: 1, g: 0, b: 0, a: 1}
+    changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
+    changeScreenLength: 1
+    changeScreenSub: 0
+    changeScreenFlash: 0
+    waitLength: 0
+    displayPromptPrompt: 
+    displayPromptColor: {r: 0, g: 0, b: 0, a: 0}
+    displayPromptSub: 0
+    displayPromptFlash: 0
+    manageTasksType: 0
+    manageTasksTask: 
+    playerCanDoType: 0
+    playerCanDoCanDo: 0
+    movePlayerType: 0
+    movePlayerVector: {x: 0, y: 0, z: 0}
+    jumpscareAtObject: {fileID: 0}
+    jumpscareAtLength: 0
+    jumpscareAtEffect: {fileID: 0}
+    displayCanvasCanvas: {fileID: 0}
+    displayCanvasEffect: {fileID: 0}
+    displayCanvasFlash: 0
+    displayCanvasFlashLength: 0
+    playSoundSound: {fileID: 0}
+    playSoundLocal: 0
+    playSoundIsEffect: 0
+    playSoundSource: {fileID: 0}
+    setObjectObject: {fileID: 214197055}
+    setObjectSetActive: 1
+    loadSceneScene: 
+    loadSceneLength: 0
+    loadSceneSave: 0
+    displayEndingTitle: 
+    displayEndingDescription: 
+  - triggerType: 7
+    displayDialogueSpeaker: You
+    displayDialogueContent: Hello!
+    displayDialogueSpeakerColor: {r: 1, g: 1, b: 1, a: 1}
+    displayDialogueContentColor: {r: 1, g: 1, b: 1, a: 1}
+    displayDialogueSub: 0
+    displayDialogueFlash: 0
+    displayDialogueSkippable: 0
+    displayDialogueFlashLength: 0
+    changeScreenStartColor: {r: 1, g: 0, b: 0, a: 1}
+    changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
+    changeScreenLength: 1
+    changeScreenSub: 0
+    changeScreenFlash: 0
+    waitLength: 0
+    displayPromptPrompt: 
+    displayPromptColor: {r: 0, g: 0, b: 0, a: 0}
+    displayPromptSub: 0
+    displayPromptFlash: 0
+    manageTasksType: 0
+    manageTasksTask: 
+    playerCanDoType: 0
+    playerCanDoCanDo: 0
+    movePlayerType: 0
+    movePlayerVector: {x: 0, y: 0, z: 0}
+    jumpscareAtObject: {fileID: 214197056}
+    jumpscareAtLength: 0.2
+    jumpscareAtEffect: {fileID: 8300000, guid: bad4e1cbd5f77d34995bff0b5644c364, type: 3}
+    displayCanvasCanvas: {fileID: 0}
+    displayCanvasEffect: {fileID: 0}
+    displayCanvasFlash: 0
+    displayCanvasFlashLength: 0
+    playSoundSound: {fileID: 0}
+    playSoundLocal: 0
+    playSoundIsEffect: 0
+    playSoundSource: {fileID: 0}
+    setObjectObject: {fileID: 214197055}
+    setObjectSetActive: 1
+    loadSceneScene: 
+    loadSceneLength: 0
+    loadSceneSave: 0
+    displayEndingTitle: 
+    displayEndingDescription: 
+  - triggerType: 2
+    displayDialogueSpeaker: You
+    displayDialogueContent: Hello!
+    displayDialogueSpeakerColor: {r: 1, g: 1, b: 1, a: 1}
+    displayDialogueContentColor: {r: 1, g: 1, b: 1, a: 1}
+    displayDialogueSub: 0
+    displayDialogueFlash: 0
+    displayDialogueSkippable: 0
+    displayDialogueFlashLength: 0
+    changeScreenStartColor: {r: 1, g: 0, b: 0, a: 1}
+    changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
+    changeScreenLength: 1
+    changeScreenSub: 0
+    changeScreenFlash: 0
+    waitLength: 0.2
+    displayPromptPrompt: 
+    displayPromptColor: {r: 0, g: 0, b: 0, a: 0}
+    displayPromptSub: 0
+    displayPromptFlash: 0
+    manageTasksType: 0
+    manageTasksTask: 
+    playerCanDoType: 0
+    playerCanDoCanDo: 0
+    movePlayerType: 0
+    movePlayerVector: {x: 0, y: 0, z: 0}
+    jumpscareAtObject: {fileID: 214197056}
+    jumpscareAtLength: 0.2
+    jumpscareAtEffect: {fileID: 8300000, guid: bad4e1cbd5f77d34995bff0b5644c364, type: 3}
+    displayCanvasCanvas: {fileID: 0}
+    displayCanvasEffect: {fileID: 0}
+    displayCanvasFlash: 0
+    displayCanvasFlashLength: 0
+    playSoundSound: {fileID: 0}
+    playSoundLocal: 0
+    playSoundIsEffect: 0
+    playSoundSource: {fileID: 0}
+    setObjectObject: {fileID: 214197055}
+    setObjectSetActive: 1
+    loadSceneScene: 
+    loadSceneLength: 0
+    loadSceneSave: 0
+    displayEndingTitle: 
+    displayEndingDescription: 
+  - triggerType: 10
+    displayDialogueSpeaker: You
+    displayDialogueContent: Hello!
+    displayDialogueSpeakerColor: {r: 1, g: 1, b: 1, a: 1}
+    displayDialogueContentColor: {r: 1, g: 1, b: 1, a: 1}
+    displayDialogueSub: 0
+    displayDialogueFlash: 0
+    displayDialogueSkippable: 0
+    displayDialogueFlashLength: 0
+    changeScreenStartColor: {r: 1, g: 0, b: 0, a: 1}
+    changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
+    changeScreenLength: 1
+    changeScreenSub: 0
+    changeScreenFlash: 0
+    waitLength: 0.2
+    displayPromptPrompt: 
+    displayPromptColor: {r: 0, g: 0, b: 0, a: 0}
+    displayPromptSub: 0
+    displayPromptFlash: 0
+    manageTasksType: 0
+    manageTasksTask: 
+    playerCanDoType: 0
+    playerCanDoCanDo: 0
+    movePlayerType: 0
+    movePlayerVector: {x: 0, y: 0, z: 0}
+    jumpscareAtObject: {fileID: 214197056}
+    jumpscareAtLength: 0.2
+    jumpscareAtEffect: {fileID: 8300000, guid: bad4e1cbd5f77d34995bff0b5644c364, type: 3}
+    displayCanvasCanvas: {fileID: 0}
+    displayCanvasEffect: {fileID: 0}
+    displayCanvasFlash: 0
+    displayCanvasFlashLength: 0
+    playSoundSound: {fileID: 0}
+    playSoundLocal: 0
+    playSoundIsEffect: 0
+    playSoundSource: {fileID: 0}
+    setObjectObject: {fileID: 214197055}
+    setObjectSetActive: 0
+    loadSceneScene: 
+    loadSceneLength: 0
+    loadSceneSave: 0
+    displayEndingTitle: 
+    displayEndingDescription: 
+  - triggerType: 2
+    displayDialogueSpeaker: You
+    displayDialogueContent: Hello!
+    displayDialogueSpeakerColor: {r: 1, g: 1, b: 1, a: 1}
+    displayDialogueContentColor: {r: 1, g: 1, b: 1, a: 1}
+    displayDialogueSub: 0
+    displayDialogueFlash: 0
+    displayDialogueSkippable: 0
+    displayDialogueFlashLength: 0
+    changeScreenStartColor: {r: 1, g: 0, b: 0, a: 1}
+    changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
+    changeScreenLength: 1
+    changeScreenSub: 0
+    changeScreenFlash: 0
+    waitLength: 1
+    displayPromptPrompt: 
+    displayPromptColor: {r: 0, g: 0, b: 0, a: 0}
+    displayPromptSub: 0
+    displayPromptFlash: 0
+    manageTasksType: 0
+    manageTasksTask: 
+    playerCanDoType: 0
+    playerCanDoCanDo: 0
+    movePlayerType: 0
+    movePlayerVector: {x: 0, y: 0, z: 0}
+    jumpscareAtObject: {fileID: 214197056}
+    jumpscareAtLength: 0.2
+    jumpscareAtEffect: {fileID: 8300000, guid: bad4e1cbd5f77d34995bff0b5644c364, type: 3}
+    displayCanvasCanvas: {fileID: 0}
+    displayCanvasEffect: {fileID: 0}
+    displayCanvasFlash: 0
+    displayCanvasFlashLength: 0
+    playSoundSound: {fileID: 0}
+    playSoundLocal: 0
+    playSoundIsEffect: 0
+    playSoundSource: {fileID: 0}
+    setObjectObject: {fileID: 214197055}
+    setObjectSetActive: 1
+    loadSceneScene: 
+    loadSceneLength: 0
+    loadSceneSave: 0
+    displayEndingTitle: 
+    displayEndingDescription: 
+  - triggerType: 0
+    displayDialogueSpeaker: 
+    displayDialogueContent: Hello!
+    displayDialogueSpeakerColor: {r: 1, g: 0, b: 0, a: 1}
+    displayDialogueContentColor: {r: 1, g: 0, b: 0, a: 1}
+    displayDialogueSub: 1
+    displayDialogueFlash: 0
+    displayDialogueSkippable: 0
+    displayDialogueFlashLength: 0
+    changeScreenStartColor: {r: 1, g: 0, b: 0, a: 1}
+    changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
+    changeScreenLength: 1
+    changeScreenSub: 0
+    changeScreenFlash: 0
+    waitLength: 1
+    displayPromptPrompt: 
+    displayPromptColor: {r: 0, g: 0, b: 0, a: 0}
+    displayPromptSub: 0
+    displayPromptFlash: 0
+    manageTasksType: 0
+    manageTasksTask: 
+    playerCanDoType: 0
+    playerCanDoCanDo: 0
+    movePlayerType: 0
+    movePlayerVector: {x: 0, y: 0, z: 0}
+    jumpscareAtObject: {fileID: 214197056}
+    jumpscareAtLength: 0.2
+    jumpscareAtEffect: {fileID: 8300000, guid: bad4e1cbd5f77d34995bff0b5644c364, type: 3}
+    displayCanvasCanvas: {fileID: 0}
+    displayCanvasEffect: {fileID: 0}
+    displayCanvasFlash: 0
+    displayCanvasFlashLength: 0
+    playSoundSound: {fileID: 0}
+    playSoundLocal: 0
+    playSoundIsEffect: 0
+    playSoundSource: {fileID: 0}
+    setObjectObject: {fileID: 214197055}
+    setObjectSetActive: 1
+    loadSceneScene: 
+    loadSceneLength: 0
+    loadSceneSave: 0
+    displayEndingTitle: 
+    displayEndingDescription: 
+--- !u!114 &1287797765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287797762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d26f65cc00e6554182574f057b08c0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Interactable
+  prompt: Example Interaction
+  onInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1287797764}
+        m_TargetAssemblyTypeName: TriggerSequences, Assembly-CSharp
+        m_MethodName: AddTriggers
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1287797766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287797762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!65 &1287797767
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287797762}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1287797768
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287797762}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 116266165c267b444aaf2fc38b6b62e3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1287797769
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287797762}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1302774834
 GameObject:
@@ -8990,6 +9699,8 @@ Transform:
   - {fileID: 840960061}
   - {fileID: 157194050}
   - {fileID: 2056036088}
+  - {fileID: 1287797763}
+  - {fileID: 214197056}
   - {fileID: 707681370}
   - {fileID: 143370727}
   - {fileID: 168065411}
@@ -9082,8 +9793,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cdf93a1fdbcab648aca1458a5e6940c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  playerCam: {fileID: 252641412}
-  playerHold: {fileID: 0}
+  playerCam: {fileID: 252641409}
+  playerHold: {fileID: 737852349}
+  interactableLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!82 &2027041990
 AudioSource:
   m_ObjectHideFlags: 0
@@ -9655,6 +10369,118 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &2133486592
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2133486593}
+  - component: {fileID: 2133486596}
+  - component: {fileID: 2133486595}
+  - component: {fileID: 2133486594}
+  m_Layer: 0
+  m_Name: Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2133486593
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2133486592}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 737852349}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2133486594
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2133486592}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &2133486595
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2133486592}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &2133486596
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2133486592}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!224 &65758177308441672
 RectTransform:
   m_ObjectHideFlags: 0

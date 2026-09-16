@@ -12,8 +12,12 @@ public enum PlayerState
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private Camera playerCam;
+    [Header("Player")]
+    [SerializeField] private Transform playerCam;
     [SerializeField] private Transform playerHold;
+
+    [Header("Interactable Layer")]
+    [SerializeField] private LayerMask interactableLayer;
 
     private float walkSpeed = 3f;
     private float sprintSpeed = 6f;
@@ -41,16 +45,19 @@ public class PlayerController : MonoBehaviour
     public bool canRun { get; private set; } = true;
     public bool canJump { get; private set; } = true;
     public bool canCrouch { get; private set; } = true;
+    public bool canInteract { get; private set; } = true;
     public bool isCrouched { get; private set; } = false;
 
     private float rotationX = 0f;
     private float velocityY = -1f;
 
     private PlayerState state = PlayerState.Idle;
+
     private float camBobbingT = 0f;
-    private float bobbingTransitionLength = 0.2f;
-    private float[] offsets = new float[5];
-    private float[] weights = new float[5];
+    private Vector3 playerHoldPosition = new Vector3(0.15f, -0.1f, 0.2f);
+
+    private Interactable curItem;
+    private Interactable newItem;
 
     private AudioSource playerAd;
     private CharacterController controller;
@@ -62,8 +69,6 @@ public class PlayerController : MonoBehaviour
 
         playerAd = GetComponent<AudioSource>();
         controller = GetComponent<CharacterController>();
-
-        weights[(int)state] = 1f;
     }
 
     private void Update()
@@ -77,6 +82,7 @@ public class PlayerController : MonoBehaviour
         if (canCrouch) HandleCrouch();
         if (canJump) HandleJump();
         if (canMove) HandleMove();
+        if (canInteract) HandleInteractions();
 
         MovePlayer();
 
@@ -84,11 +90,7 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateState()
     {
-        if (!MainManager.instance.IsPlayerActive)
-        {
-            state = isCrouched ? PlayerState.CrouchIdle : PlayerState.Idle;
-        }
-        else if ((Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.01f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.01f) && canMove)
+        if ((Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.01f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.01f) && canMove)
         {
             if (isCrouched) state = PlayerState.CrouchWalk;
             else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && canRun) state = PlayerState.Sprint;
@@ -111,36 +113,36 @@ public class PlayerController : MonoBehaviour
     private void CameraBobbing()
     {
         camBobbingT += Time.deltaTime;
-        camBobbingT = Mathf.Repeat(camBobbingT, 3f * 0.8f * 0.5f * 10f);
 
-        offsets[0] = Mathf.Sin(camBobbingT * 2 * Mathf.PI / 3f) * 0.01f;
-        offsets[1] = Mathf.Sin(camBobbingT * 2 * Mathf.PI / 0.8f) * 0.05f;
-        offsets[2] = Mathf.Sin(camBobbingT * 2 * Mathf.PI / 0.5f) * 0.08f;
-        offsets[3] = Mathf.Sin(camBobbingT * 2 * Mathf.PI / 3f) * 0.005f;
-        offsets[4] = Mathf.Sin(camBobbingT * 2 * Mathf.PI / 0.8f) * 0.025f;
+        playerCam.transform.localPosition = Vector3.up * camHeight;
 
-        float weightSum = 0f;
-        float offsetSum = 0f;
-        int curState = (int)state;
-        if (!controller.isGrounded) curState = 0;
-        if (!MainManager.instance.IsPlayerActive) curState = isCrouched ? 3 : 0;
+        int curState = controller.isGrounded ? (int)state : (int)PlayerState.Idle;
 
-        for (int i = 0; i < weights.Length; i++)
-        {
-            if (i != curState) weights[i] = Mathf.MoveTowards(weights[i], 0f, Time.deltaTime / bobbingTransitionLength);
-            else weights[i] = Mathf.MoveTowards(weights[i], 1f, Time.deltaTime / bobbingTransitionLength);
-            weightSum += weights[i];
-            offsetSum += weights[i] * offsets[i];
-        }
-        
-        if (weightSum > 0f) playerCam.transform.localPosition = new Vector3(0f, camHeight + offsetSum / weightSum, 0f);
+        float[] bobSteps = { 0.003f, 0.006f, 0.012f, 0.002f, 0.003f };
+        float[] bobSpeeds = { 0.8f, 4f, 8f, 0.7f, 2f };
+
+        float bobStep = bobSteps[curState];
+        float bobSpeed = bobSpeeds[curState];
+        float swayStep = 0.02f;
+        float maxSwayStep = 0.15f;
+        float swaySpeed = 10f;
+
+        Vector3 offset = Vector3.zero;
+
+        offset.x = (Mathf.Cos(camBobbingT * bobSpeed) * bobStep);
+        offset.y = (Mathf.Sin(camBobbingT * 2f * bobSpeed) * bobStep);
+
+        offset.x += Mathf.Clamp(-swayStep * Input.GetAxis("Mouse X"), -maxSwayStep, maxSwayStep);
+        offset.y += Mathf.Clamp(-swayStep * Input.GetAxis("Mouse Y"), -maxSwayStep, maxSwayStep);
+
+        playerHold.localPosition = Vector3.Lerp(playerHold.localPosition, playerHoldPosition + offset, Time.deltaTime * swaySpeed);
     }
 
     private void CameraLook()
     {
         rotationX -= Input.GetAxis("Mouse Y") * sensitivity;
         rotationX = Mathf.Clamp(rotationX, -90.0f, 90.0f);
-        playerCam.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+        playerCam.localRotation = Quaternion.Euler(rotationX, 0, 0);
         transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
     }
 
@@ -169,6 +171,8 @@ public class PlayerController : MonoBehaviour
         controller.center = Vector3.up * controller.height * 0.5f;
 
         camHeight = Mathf.Lerp(standCamHeight, crouchCamHeight, crouchProgress);
+
+
     }
 
     private void HandleJump()
@@ -182,6 +186,39 @@ public class PlayerController : MonoBehaviour
         speed = Mathf.Lerp(speed, crouchSpeed, crouchProgress);
 
         move = (transform.right * Input.GetAxisRaw("Horizontal") + transform.forward * Input.GetAxisRaw("Vertical")).normalized * speed;
+    }
+
+    private void HandleInteractions()
+    {
+        Ray ray = new Ray(playerCam.position, playerCam.forward);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, reachRange, interactableLayer, QueryTriggerInteraction.Collide) &&
+            hit.collider.CompareTag("Interactable"))
+        {
+            newItem = hit.collider.GetComponent<Interactable>();
+
+            if (newItem == null)
+                Debug.LogError("Interactable Object Not Having Interactable Script: " + hit.collider.name);
+
+            if (curItem != null && curItem != newItem)
+                curItem.SetFocused(false);
+
+            curItem = newItem;
+
+            if (curItem != null)
+                curItem.SetFocused(true);
+        }
+        else
+        {
+            newItem = null;
+
+            if (curItem != null) curItem.SetFocused(false);
+
+            curItem = null;
+        }
+
+        if (Input.GetMouseButtonDown(0) && curItem != null)
+            curItem.Interact();
     }
 
     private void MovePlayer()
@@ -206,7 +243,7 @@ public class PlayerController : MonoBehaviour
 
     public void LookAt(Vector3 position, float l)
     {
-        Vector3 dir = (position - playerCam.transform.position).normalized;
+        Vector3 dir = (position - playerCam.position).normalized;
         float y = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
         float x = -Mathf.Asin(dir.y) * Mathf.Rad2Deg;
         StartCoroutine(TurnTo(x, y, l));
@@ -220,13 +257,13 @@ public class PlayerController : MonoBehaviour
         while (t < l)
         {
             rotationX = Mathf.LerpAngle(startX, x, t / l);
-            playerCam.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+            playerCam.localRotation = Quaternion.Euler(rotationX, 0, 0);
             transform.rotation = Quaternion.Euler(0, Mathf.LerpAngle(startY, y, t / l), 0);
             t += Time.deltaTime;
             yield return null;
         }
         rotationX = x;
-        playerCam.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+        playerCam.localRotation = Quaternion.Euler(rotationX, 0, 0);
         transform.rotation = Quaternion.Euler(0, y, 0);
     }
 
@@ -253,6 +290,11 @@ public class PlayerController : MonoBehaviour
     public void CanCrouch(bool can)
     {
         canCrouch = can;
+    }
+
+    public void CanInteract(bool can)
+    {
+        canInteract = can;
     }
 
 }

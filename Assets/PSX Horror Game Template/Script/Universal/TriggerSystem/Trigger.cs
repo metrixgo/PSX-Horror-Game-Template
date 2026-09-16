@@ -32,6 +32,7 @@ public enum PlayerCanDoType
     Run,
     Jump,
     Crouch,
+    Interact,
 }
 
 public enum MovePlayerType

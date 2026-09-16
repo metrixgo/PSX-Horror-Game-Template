@@ -100,7 +100,8 @@ public class MainManager : MonoBehaviour
 
     private void Update()
     {
-        if (!active) return;
+        if (!active)
+            return;
 
         if (!IsExecutingTriggers && triggers.Count > 0 && gameState == GameState.Normal)
             StartCoroutine(ExecuteTriggers());
@@ -366,6 +367,9 @@ public class MainManager : MonoBehaviour
                             break;
                         case PlayerCanDoType.Crouch:
                             player.CanCrouch(trig.PlayerCanDoCanDo);
+                            break;
+                        case PlayerCanDoType.Interact:
+                            player.CanInteract(trig.PlayerCanDoCanDo);
                             break;
                         default:
                             Debug.LogWarning("Unimplemented Player Can Do Type: " + trig.PlayerCanDoType);

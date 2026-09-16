@@ -22,7 +22,7 @@ public class Interactable : MonoBehaviour
 
     public void SetFocused(bool b)
     {
-        if (outline) outline.enabled = b;
+        if (outline != null) outline.enabled = b;
         if (b) MainManager.instance.SetPrompt(prompt, Color.white, false, false);
         else MainManager.instance.SetPrompt("", Color.white, false, false);
     }
