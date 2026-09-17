@@ -720,226 +720,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &127191284
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 127191286}
-  - component: {fileID: 127191285}
-  m_Layer: 0
-  m_Name: Trigger
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &127191285
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 127191284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bdb5c310ab27d14292b551aedf584e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TriggerSequences
-  isPhysical: 0
-  selfDestructs: 0
-  playerOnly: 1
-  triggers:
-  - triggerType: 0
-    displayDialogueSpeaker: 
-    displayDialogueContent: 
-    displayDialogueSpeakerColor: {r: 0, g: 0, b: 0, a: 0}
-    displayDialogueContentColor: {r: 0, g: 0, b: 0, a: 0}
-    displayDialogueSub: 0
-    displayDialogueFlash: 0
-    displayDialogueSkippable: 0
-    displayDialogueFlashLength: 0
-    changeScreenStartColor: {r: 0, g: 0, b: 0, a: 0}
-    changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
-    changeScreenLength: 0
-    changeScreenSub: 0
-    changeScreenFlash: 0
-    waitLength: 0
-    displayPromptPrompt: 
-    displayPromptColor: {r: 0, g: 0, b: 0, a: 0}
-    displayPromptSub: 0
-    displayPromptFlash: 0
-    manageTasksType: 0
-    manageTasksTask: 
-    playerCanDoType: 0
-    playerCanDoCanDo: 0
-    movePlayerType: 0
-    movePlayerVector: {x: 0, y: 0, z: 0}
-    jumpscareAtObject: {fileID: 0}
-    jumpscareAtLength: 0
-    jumpscareAtEffect: {fileID: 0}
-    displayCanvasCanvas: {fileID: 0}
-    displayCanvasEffect: {fileID: 0}
-    displayCanvasFlash: 0
-    displayCanvasFlashLength: 0
-    playSoundSound: {fileID: 0}
-    playSoundLocal: 0
-    playSoundIsEffect: 0
-    playSoundSource: {fileID: 0}
-    setObjectObject: {fileID: 0}
-    setObjectSetActive: 0
-    loadSceneScene: 
-    loadSceneLength: 0
-    loadSceneSave: 0
-    displayEndingTitle: 
-    displayEndingDescription: 
-  - triggerType: 0
-    displayDialogueSpeaker: 
-    displayDialogueContent: 
-    displayDialogueSpeakerColor: {r: 0, g: 0, b: 0, a: 0}
-    displayDialogueContentColor: {r: 0, g: 0, b: 0, a: 0}
-    displayDialogueSub: 0
-    displayDialogueFlash: 0
-    displayDialogueSkippable: 0
-    displayDialogueFlashLength: 0
-    changeScreenStartColor: {r: 0.9245283, g: 0.21368816, b: 0.21368816, a: 0}
-    changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
-    changeScreenLength: 0
-    changeScreenSub: 0
-    changeScreenFlash: 0
-    waitLength: 0
-    displayPromptPrompt: 
-    displayPromptColor: {r: 0, g: 0, b: 0, a: 0}
-    displayPromptSub: 0
-    displayPromptFlash: 0
-    manageTasksType: 0
-    manageTasksTask: 
-    playerCanDoType: 0
-    playerCanDoCanDo: 0
-    movePlayerType: 0
-    movePlayerVector: {x: 0, y: 0, z: 0}
-    jumpscareAtObject: {fileID: 0}
-    jumpscareAtLength: 0
-    jumpscareAtEffect: {fileID: 0}
-    displayCanvasCanvas: {fileID: 0}
-    displayCanvasEffect: {fileID: 0}
-    displayCanvasFlash: 0
-    displayCanvasFlashLength: 0
-    playSoundSound: {fileID: 0}
-    playSoundLocal: 0
-    playSoundIsEffect: 0
-    playSoundSource: {fileID: 0}
-    setObjectObject: {fileID: 0}
-    setObjectSetActive: 0
-    loadSceneScene: 
-    loadSceneLength: 0
-    loadSceneSave: 0
-    displayEndingTitle: 
-    displayEndingDescription: 
-  - triggerType: 0
-    displayDialogueSpeaker: 
-    displayDialogueContent: 
-    displayDialogueSpeakerColor: {r: 0, g: 0, b: 0, a: 0}
-    displayDialogueContentColor: {r: 0, g: 0, b: 0, a: 0}
-    displayDialogueSub: 0
-    displayDialogueFlash: 0
-    displayDialogueSkippable: 0
-    displayDialogueFlashLength: 0
-    changeScreenStartColor: {r: 0, g: 0, b: 0, a: 0}
-    changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
-    changeScreenLength: 0
-    changeScreenSub: 0
-    changeScreenFlash: 0
-    waitLength: 0
-    displayPromptPrompt: 
-    displayPromptColor: {r: 0, g: 0, b: 0, a: 0}
-    displayPromptSub: 0
-    displayPromptFlash: 0
-    manageTasksType: 0
-    manageTasksTask: 
-    playerCanDoType: 0
-    playerCanDoCanDo: 0
-    movePlayerType: 0
-    movePlayerVector: {x: 0, y: 0, z: 0}
-    jumpscareAtObject: {fileID: 0}
-    jumpscareAtLength: 0
-    jumpscareAtEffect: {fileID: 0}
-    displayCanvasCanvas: {fileID: 0}
-    displayCanvasEffect: {fileID: 0}
-    displayCanvasFlash: 0
-    displayCanvasFlashLength: 0
-    playSoundSound: {fileID: 0}
-    playSoundLocal: 0
-    playSoundIsEffect: 0
-    playSoundSource: {fileID: 0}
-    setObjectObject: {fileID: 0}
-    setObjectSetActive: 0
-    loadSceneScene: 
-    loadSceneLength: 0
-    loadSceneSave: 0
-    displayEndingTitle: 
-    displayEndingDescription: 
-  - triggerType: 0
-    displayDialogueSpeaker: 
-    displayDialogueContent: 
-    displayDialogueSpeakerColor: {r: 0, g: 0, b: 0, a: 0}
-    displayDialogueContentColor: {r: 0, g: 0, b: 0, a: 0}
-    displayDialogueSub: 0
-    displayDialogueFlash: 0
-    displayDialogueSkippable: 0
-    displayDialogueFlashLength: 0
-    changeScreenStartColor: {r: 0, g: 0, b: 0, a: 0}
-    changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
-    changeScreenLength: 0
-    changeScreenSub: 0
-    changeScreenFlash: 0
-    waitLength: 0
-    displayPromptPrompt: 
-    displayPromptColor: {r: 0, g: 0, b: 0, a: 0}
-    displayPromptSub: 0
-    displayPromptFlash: 0
-    manageTasksType: 0
-    manageTasksTask: 
-    playerCanDoType: 0
-    playerCanDoCanDo: 0
-    movePlayerType: 0
-    movePlayerVector: {x: 0, y: 0, z: 0}
-    jumpscareAtObject: {fileID: 0}
-    jumpscareAtLength: 0
-    jumpscareAtEffect: {fileID: 0}
-    displayCanvasCanvas: {fileID: 0}
-    displayCanvasEffect: {fileID: 0}
-    displayCanvasFlash: 0
-    displayCanvasFlashLength: 0
-    playSoundSound: {fileID: 0}
-    playSoundLocal: 0
-    playSoundIsEffect: 0
-    playSoundSource: {fileID: 0}
-    setObjectObject: {fileID: 0}
-    setObjectSetActive: 0
-    loadSceneScene: 
-    loadSceneLength: 0
-    loadSceneSave: 0
-    displayEndingTitle: 
-    displayEndingDescription: 
---- !u!4 &127191286
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 127191284}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &143370726
 GameObject:
   m_ObjectHideFlags: 0
@@ -2644,6 +2424,143 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 339518729}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &403893402
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 403893403}
+  - component: {fileID: 403893406}
+  - component: {fileID: 403893405}
+  - component: {fileID: 403893404}
+  m_Layer: 0
+  m_Name: MainCamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &403893403
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403893402}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 11.98859, y: -2.71241, z: -0.72471}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1458121475}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &403893404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403893402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalCameraData
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_TaaSettings:
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
+  m_Version: 2
+--- !u!81 &403893405
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403893402}
+  m_Enabled: 1
+--- !u!20 &403893406
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403893402}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
+  m_Iso: 200
+  m_ShutterSpeed: 0.005
+  m_Aperture: 16
+  m_FocusDistance: 10
+  m_FocalLength: 50
+  m_BladeCount: 5
+  m_Curvature: {x: 2, y: 11}
+  m_BarrelClipping: 0.25
+  m_Anamorphism: 0
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -2740,7 +2657,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2014601004}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!114 &410087042
 MonoBehaviour:
@@ -4235,12 +4152,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 832575517}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 11.98859, y: -2.71241, z: -0.72471}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1458121475}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &840960057
 GameObject:
@@ -4781,14 +4698,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 925605299}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.18804, y: -0, z: 2.31053}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 7.8005505, y: -2.71241, z: 1.58582}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1958594139}
   - {fileID: 1441228405}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1458121475}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &991654161
 GameObject:
@@ -7572,6 +7489,40 @@ Transform:
   m_Children: []
   m_Father: {fileID: 925605301}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1458121474
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1458121475}
+  m_Layer: 0
+  m_Name: Settings
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1458121475
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1458121474}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -11.98859, y: 2.71241, z: 0.72471}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 925605301}
+  - {fileID: 403893403}
+  - {fileID: 832575519}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1485067640
 GameObject:
   m_ObjectHideFlags: 0
@@ -9719,6 +9670,7 @@ Transform:
   - {fileID: 222663836}
   - {fileID: 791233950}
   - {fileID: 553716193}
+  - {fileID: 410087041}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2027041985
@@ -13515,10 +13467,7 @@ RectTransform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 925605301}
+  - {fileID: 1458121475}
   - {fileID: 9155364278192500199}
-  - {fileID: 410087041}
-  - {fileID: 832575519}
-  - {fileID: 127191286}
   - {fileID: 2027041987}
   - {fileID: 2014601004}

@@ -118,8 +118,8 @@ public class PlayerController : MonoBehaviour
 
         int curState = controller.isGrounded ? (int)state : (int)PlayerState.Idle;
 
-        float[] bobSteps = { 0.003f, 0.006f, 0.012f, 0.002f, 0.003f };
-        float[] bobSpeeds = { 0.8f, 4f, 8f, 0.7f, 2f };
+        float[] bobSteps = { 0.002f, 0.004f, 0.01f, 0.002f, 0.004f };
+        float[] bobSpeeds = { 0.6f, 4f, 8f, 0.6f, 2f };
 
         float bobStep = bobSteps[curState];
         float bobSpeed = bobSpeeds[curState];
