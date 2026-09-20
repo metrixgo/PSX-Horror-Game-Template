@@ -345,7 +345,7 @@ public class MainManager : MonoBehaviour
                             ClearTasks();
                             break;
                         default:
-                            Debug.LogWarning("Unimplemented Manage Tasks Type: " + trig.ManageTasksType);
+                            Debug.LogError("Unimplemented Manage Tasks Type: " + trig.ManageTasksType);
                             break;
                     }
                     break;
@@ -372,7 +372,7 @@ public class MainManager : MonoBehaviour
                             player.CanInteract(trig.PlayerCanDoCanDo);
                             break;
                         default:
-                            Debug.LogWarning("Unimplemented Player Can Do Type: " + trig.PlayerCanDoType);
+                            Debug.LogError("Unimplemented Player Can Do Type: " + trig.PlayerCanDoType);
                             break;
                     }
                     break;
@@ -387,7 +387,7 @@ public class MainManager : MonoBehaviour
                             player.Move(trig.MovePlayerVector);
                             break;
                         default:
-                            Debug.LogWarning("Unimplemented Move Player Type: " + trig.MovePlayerType);
+                            Debug.LogError("Unimplemented Move Player Type: " + trig.MovePlayerType);
                             break;
                     }
                     break;

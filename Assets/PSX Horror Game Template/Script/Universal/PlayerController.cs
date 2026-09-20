@@ -15,8 +15,10 @@ public class PlayerController : MonoBehaviour
     [Header("Player")]
     [SerializeField] private Transform playerCam;
     [SerializeField] private Transform playerHold;
+    [SerializeField] private Transform playerBody;
 
-    [Header("Interactable Layer")]
+    [Header("Layers")]
+    [SerializeField] private LayerMask environmentLayer;
     [SerializeField] private LayerMask interactableLayer;
 
     private float walkSpeed = 3f;
@@ -27,15 +29,15 @@ public class PlayerController : MonoBehaviour
 
     private float camHeight = 1.75f;
     private float standHeight = 2f;
-    private float crouchHeight = 0.8f;
+    private float crouchHeight = 1f;
     private float standCamHeight = 1.75f;
-    private float crouchCamHeight = 0.6f;
-    private float crouchTransitionLength = 0.4f;
+    private float crouchCamHeight = 0.9f;
+    private float crouchTransitionLength = 0.3f;
     private float crouchProgress = 0f;
 
     private float jumpStrength = 6f;
     private float gravity = -12f;
-    private float groundGravity = -1f;
+    private float groundGravity = -2f;
 
     private float reachRange = 1.5f;
     private float sensitivity = 5f;
@@ -78,7 +80,7 @@ public class PlayerController : MonoBehaviour
         UpdateState();
         CameraBobbing();
 
-        if (canLook) CameraLook();
+        if (canLook) HandleLook();
         if (canCrouch) HandleCrouch();
         if (canJump) HandleJump();
         if (canMove) HandleMove();
@@ -123,8 +125,8 @@ public class PlayerController : MonoBehaviour
 
         float bobStep = bobSteps[curState];
         float bobSpeed = bobSpeeds[curState];
-        float swayStep = 0.02f;
-        float maxSwayStep = 0.15f;
+        float swayStep = 0.03f;
+        float maxSwayStep = 0.3f;
         float swaySpeed = 10f;
 
         Vector3 offset = Vector3.zero;
@@ -138,7 +140,7 @@ public class PlayerController : MonoBehaviour
         playerHold.localPosition = Vector3.Lerp(playerHold.localPosition, playerHoldPosition + offset, Time.deltaTime * swaySpeed);
     }
 
-    private void CameraLook()
+    private void HandleLook()
     {
         rotationX -= Input.GetAxis("Mouse Y") * sensitivity;
         rotationX = Mathf.Clamp(rotationX, -90.0f, 90.0f);
@@ -148,19 +150,17 @@ public class PlayerController : MonoBehaviour
 
     private void HandleCrouch()
     {
-        bool hasCeiling = Physics.CapsuleCast(
-                    transform.position + controller.center - Vector3.up * (controller.height / 2 - controller.radius),
-                    transform.position + controller.center + Vector3.up * (controller.height / 2 - controller.radius),
-                    controller.radius + controller.skinWidth,
-                    Vector3.up,
-                    standHeight - controller.height - controller.skinWidth
-                );
+        if (Input.GetKey(KeyCode.C) && controller.isGrounded)
+            isCrouched = true;
+        else if (!Input.GetKey(KeyCode.C))
+            isCrouched = false;
 
-        if (Input.GetKeyDown(KeyCode.C) && controller.isGrounded)
-        {
-            if (!isCrouched) isCrouched = true;
-            else if (!hasCeiling) isCrouched = false;
-        }
+        bool hasCeiling = Physics.CheckCapsule(
+                    transform.position + Vector3.up * controller.radius,
+                    transform.position - Vector3.up * controller.radius + Vector3.up * standHeight,
+                    controller.radius,
+                    environmentLayer
+                );
 
         if (hasCeiling && !isCrouched) isCrouched = true;
 
@@ -170,9 +170,12 @@ public class PlayerController : MonoBehaviour
         controller.height = Mathf.Lerp(standHeight, crouchHeight, crouchProgress);
         controller.center = Vector3.up * controller.height * 0.5f;
 
+        float margin = 1.1f;
+
+        playerBody.localScale = new Vector3(controller.radius * 2f, controller.height * 0.5f, controller.radius * 2f) * margin;
+        playerBody.localPosition = controller.center;
+
         camHeight = Mathf.Lerp(standCamHeight, crouchCamHeight, crouchProgress);
-
-
     }
 
     private void HandleJump()

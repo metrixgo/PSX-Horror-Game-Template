@@ -110,7 +110,7 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 break;
 
             default:
-                Debug.LogWarning("Unimplemented Trigger Type: " + (TriggerType)triggerType.enumValueIndex);
+                Debug.LogError("Unimplemented Trigger Type: " + (TriggerType)triggerType.enumValueIndex);
                 break;
         }
 
