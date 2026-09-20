@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Newtonsoft.Json.Bson;
+using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public enum PlayerState
@@ -23,6 +25,7 @@ public class PlayerController : MonoBehaviour
 
     private AudioSource playerAd;
     private CharacterController controller;
+    private CinemachineInputAxisController camController;
 
     private Vector3 move = Vector3.zero;
 
@@ -74,16 +77,21 @@ public class PlayerController : MonoBehaviour
 
         playerAd = GetComponent<AudioSource>();
         controller = GetComponent<CharacterController>();
+        camController = playerCam.GetComponent<CinemachineInputAxisController>();
     }
 
     private void Update()
     {
-        if (!MainManager.instance.IsPlayerActive || MainManager.instance.IsPaused) return;
+        if (!MainManager.instance.IsPlayerActive || MainManager.instance.IsPaused)
+        {
+            sensitivity = 0f;
+            UpdateSensitivity();
+            return;
+        }
 
         UpdateState();
         CameraBobbing();
 
-        if (canLook) HandleLook();
         if (canCrouch) HandleCrouch();
         if (canJump) HandleJump();
         if (canMove) HandleMove();
@@ -117,7 +125,24 @@ public class PlayerController : MonoBehaviour
         if (controller.isGrounded) velocityY = groundGravity;
         else velocityY += gravity * Time.deltaTime;
 
-        sensitivity = MainManager.instance.data.sensitivity;
+        bool needChange = !canLook && sensitivity != 0 ||
+            canLook && sensitivity != MainManager.instance.data.sensitivity;
+
+        if (needChange)
+        {
+            sensitivity = canLook ? MainManager.instance.data.sensitivity : 0;
+            UpdateSensitivity();
+        }
+    }
+
+    private void UpdateSensitivity()
+    {
+        foreach (var controller in camController.Controllers)
+        {
+            if (controller.Name == "Look X (Pan)") controller.Input.Gain = sensitivity;
+            else if (controller.Name == "Look Y (Tilt)") controller.Input.Gain = -sensitivity;
+            else Debug.LogError("Unknown Cinemachine Controller Name: " + controller.Name);
+        }
     }
 
     private void CameraBobbing()
@@ -146,14 +171,6 @@ public class PlayerController : MonoBehaviour
         offset.y += Mathf.Clamp(-swayStep * lookInput.y, -maxSwayStep, maxSwayStep);
 
         playerHold.localPosition = Vector3.Lerp(playerHold.localPosition, playerHoldPosition + offset, Time.deltaTime * swaySpeed);
-    }
-
-    private void HandleLook()
-    {
-        rotationX -= lookInput.y * sensitivity;
-        rotationX = Mathf.Clamp(rotationX, -90.0f, 90.0f);
-        playerCam.localRotation = Quaternion.Euler(rotationX, 0, 0);
-        transform.Rotate(0, lookInput.x * sensitivity, 0);
     }
 
     private void HandleCrouch()
@@ -196,7 +213,10 @@ public class PlayerController : MonoBehaviour
         float speed = state == PlayerState.Sprint ? sprintSpeed : walkSpeed;
         speed = Mathf.Lerp(speed, crouchSpeed, crouchProgress);
 
-        move = (transform.right * moveInput.x + transform.forward * moveInput.y).normalized * speed;
+        Vector3 camRight = new Vector3(playerCam.right.x, 0f, playerCam.right.z).normalized;
+        Vector3 camForward = new Vector3(playerCam.forward.x, 0f, playerCam.forward.z).normalized;
+
+        move = (camRight * moveInput.x + camForward * moveInput.y).normalized * speed;
 
         if (move.magnitude > 0.01f &&
             Physics.SphereCast(
