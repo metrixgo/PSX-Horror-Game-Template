@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public enum PlayerState
@@ -21,11 +21,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask environmentLayer;
     [SerializeField] private LayerMask interactableLayer;
 
+    private AudioSource playerAd;
+    private CharacterController controller;
+
+    private Vector3 move = Vector3.zero;
+
+    private Vector2 moveInput = Vector2.zero;
+    private Vector2 lookInput = Vector2.zero;
+
     private float walkSpeed = 3f;
     private float sprintSpeed = 6f;
     private float crouchSpeed = 1.5f;
-
-    private Vector3 move = Vector3.zero;
 
     private float camHeight = 1.75f;
     private float standHeight = 2f;
@@ -61,9 +67,6 @@ public class PlayerController : MonoBehaviour
     private Interactable curItem;
     private Interactable newItem;
 
-    private AudioSource playerAd;
-    private CharacterController controller;
-
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -92,7 +95,12 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateState()
     {
-        if ((Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0.01f || Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.01f) && canMove)
+        moveInput.x = Input.GetAxisRaw("Horizontal");
+        moveInput.y = Input.GetAxisRaw("Vertical");
+        lookInput.x = Input.GetAxis("Mouse X");
+        lookInput.y = Input.GetAxis("Mouse Y");
+
+        if (moveInput.magnitude > 0.01f && canMove)
         {
             if (isCrouched) state = PlayerState.CrouchWalk;
             else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && canRun) state = PlayerState.Sprint;
@@ -134,18 +142,18 @@ public class PlayerController : MonoBehaviour
         offset.x = (Mathf.Cos(camBobbingT * bobSpeed) * bobStep);
         offset.y = (Mathf.Sin(camBobbingT * 2f * bobSpeed) * bobStep);
 
-        offset.x += Mathf.Clamp(-swayStep * Input.GetAxis("Mouse X"), -maxSwayStep, maxSwayStep);
-        offset.y += Mathf.Clamp(-swayStep * Input.GetAxis("Mouse Y"), -maxSwayStep, maxSwayStep);
+        offset.x += Mathf.Clamp(-swayStep * lookInput.x, -maxSwayStep, maxSwayStep);
+        offset.y += Mathf.Clamp(-swayStep * lookInput.y, -maxSwayStep, maxSwayStep);
 
         playerHold.localPosition = Vector3.Lerp(playerHold.localPosition, playerHoldPosition + offset, Time.deltaTime * swaySpeed);
     }
 
     private void HandleLook()
     {
-        rotationX -= Input.GetAxis("Mouse Y") * sensitivity;
+        rotationX -= lookInput.y * sensitivity;
         rotationX = Mathf.Clamp(rotationX, -90.0f, 90.0f);
         playerCam.localRotation = Quaternion.Euler(rotationX, 0, 0);
-        transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
+        transform.Rotate(0, lookInput.x * sensitivity, 0);
     }
 
     private void HandleCrouch()
@@ -157,7 +165,7 @@ public class PlayerController : MonoBehaviour
 
         bool hasCeiling = Physics.CheckCapsule(
                     transform.position + Vector3.up * controller.radius,
-                    transform.position - Vector3.up * controller.radius + Vector3.up * standHeight,
+                    transform.position + Vector3.up * (standHeight - controller.radius),
                     controller.radius,
                     environmentLayer
                 );
@@ -188,7 +196,23 @@ public class PlayerController : MonoBehaviour
         float speed = state == PlayerState.Sprint ? sprintSpeed : walkSpeed;
         speed = Mathf.Lerp(speed, crouchSpeed, crouchProgress);
 
-        move = (transform.right * Input.GetAxisRaw("Horizontal") + transform.forward * Input.GetAxisRaw("Vertical")).normalized * speed;
+        move = (transform.right * moveInput.x + transform.forward * moveInput.y).normalized * speed;
+
+        if (move.magnitude > 0.01f &&
+            Physics.SphereCast(
+                transform.position + Vector3.up * (controller.height - controller.radius),
+                controller.radius,
+                move.normalized,
+                out RaycastHit hit,
+                controller.skinWidth + 0.1f,
+                environmentLayer
+                ) &&
+            hit.normal.y < -0.01f && 
+            hit.normal.y > -0.99f)
+        {
+            Vector3 slideDirection = Vector3.Cross(Vector3.up, hit.normal).normalized;
+            move = slideDirection * Vector3.Dot(move, slideDirection);
+        }
     }
 
     private void HandleInteractions()
