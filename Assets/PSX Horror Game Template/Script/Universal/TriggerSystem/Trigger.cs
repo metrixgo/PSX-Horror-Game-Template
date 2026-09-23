@@ -29,7 +29,7 @@ public enum PlayerCanDoType
 {
     Look,
     Move,
-    Run,
+    Sprint,
     Jump,
     Crouch,
     Interact,

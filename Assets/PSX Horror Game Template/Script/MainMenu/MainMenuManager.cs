@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -30,26 +29,48 @@ public class MainMenuManager : MonoBehaviour
     [Header("Continue")]
     [SerializeField] private GameObject continueButton;
 
-    private void Start()
+    private GameData data = new GameData();
+
+    private void Awake()
     {
-        continueButton.SetActive(MainManager.instance.data.savedScene != "");
+        GetData();
+
+        continueButton.SetActive(data.savedScene != "");
 
         StartCoroutine(EnterMenu());
 
-        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[MainManager.instance.data.language];
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[data.language];
 
-        musicPlayer.volume = MainManager.instance.data.musicVolume;
-        effectsPlayer.volume = MainManager.instance.data.effectsVolume;
+        musicPlayer.volume = data.musicVolume;
+        effectsPlayer.volume = data.effectsVolume;
 
         musicPlayer.clip = menuMusic;
-        effectsPlayer.clip = selectEffect;
-
         musicPlayer.Play();
+    }
+
+    public void GetData()
+    {
+        data.sensitivity = PlayerPrefs.GetFloat("Sensitivity", 100f);
+        data.musicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        data.effectsVolume = PlayerPrefs.GetFloat("EffectsVolume", 1f);
+        data.savedScene = PlayerPrefs.GetString("SavedScene", "");
+        data.language = PlayerPrefs.GetInt("Language", 0);
+    }
+
+    public void SaveData()
+    {
+        PlayerPrefs.SetFloat("Sensitivity", data.sensitivity);
+        PlayerPrefs.SetFloat("MusicVolume", data.musicVolume);
+        PlayerPrefs.SetFloat("EffectsVolume", data.effectsVolume);
+        PlayerPrefs.SetString("SavedScene", data.savedScene);
+        PlayerPrefs.SetInt("Language", data.language);
+
+        PlayerPrefs.Save();
     }
 
     public void ToStart()
     {
-        effectsPlayer.Play();
+        effectsPlayer.PlayOneShot(selectEffect);
         
         startScreen.SetActive(true);
         optionsScreen.SetActive(false);
@@ -57,7 +78,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void ToOptions()
     {
-        effectsPlayer.Play();
+        effectsPlayer.PlayOneShot(selectEffect);
 
         UpdateOptions();
 
@@ -67,73 +88,73 @@ public class MainMenuManager : MonoBehaviour
 
     public void UpdateOptions()
     {
-        language.value = MainManager.instance.data.language;
-        sensitivity.value = MainManager.instance.data.sensitivity;
-        music.value = MainManager.instance.data.musicVolume;
-        effects.value = MainManager.instance.data.effectsVolume;
+        language.value = data.language;
+        sensitivity.value = data.sensitivity;
+        music.value = data.musicVolume;
+        effects.value = data.effectsVolume;
     }
 
     public void SaveLanguage(int language)
     {
-        MainManager.instance.data.language = language;
-        MainManager.instance.SaveData();
+        data.language = language;
+        SaveData();
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[language];
     }
 
     public void SaveSensitivity(float sensitivity)
     {
-        MainManager.instance.data.sensitivity = sensitivity;
-        MainManager.instance.SaveData();
+        data.sensitivity = sensitivity;
+        SaveData();
     }
 
     public void SaveMusic(float music)
     {
         musicPlayer.volume = music;
-        MainManager.instance.data.musicVolume = music;
-        MainManager.instance.SaveData();
+        data.musicVolume = music;
+        SaveData();
     }
 
     public void SaveEffects(float effects)
     {
         effectsPlayer.volume = effects;
-        MainManager.instance.data.effectsVolume = effects;
-        MainManager.instance.SaveData();
+        data.effectsVolume = effects;
+        SaveData();
     }
 
     public void ClearData()
     {
-        effectsPlayer.Play();
+        effectsPlayer.PlayOneShot(selectEffect);
 
         PlayerPrefs.DeleteAll();
-        MainManager.instance.GetData();
+        GetData();
 
-        musicPlayer.volume = MainManager.instance.data.musicVolume;
-        effectsPlayer.volume = MainManager.instance.data.effectsVolume;
+        musicPlayer.volume = data.musicVolume;
+        effectsPlayer.volume = data.effectsVolume;
 
         UpdateOptions();
 
         continueButton.SetActive(false);
 
-        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[MainManager.instance.data.language];
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[data.language];
     }
 
     public void StartGame()
     {
-        effectsPlayer.Play();
+        effectsPlayer.PlayOneShot(selectEffect);
 
         StartCoroutine(StartGameCoroutine());
     }
 
     public void ContinueGame()
     {
-        effectsPlayer.Play();
+        effectsPlayer.PlayOneShot(selectEffect);
 
         StartCoroutine(ContinueGameCoroutine());
     }
 
     public void QuitGame()
     {
-        effectsPlayer.Play();
+        effectsPlayer.PlayOneShot(selectEffect);
 
         StartCoroutine(QuitGameCoroutine());
     }
@@ -141,15 +162,15 @@ public class MainMenuManager : MonoBehaviour
     private IEnumerator StartGameCoroutine()
     {
         yield return StartCoroutine(ExitMenu());
-        MainManager.instance.data.savedScene = firstScene;
-        MainManager.instance.SaveData();
+        data.savedScene = firstScene;
+        SaveData();
         SceneManager.LoadScene(firstScene);
     }
 
     private IEnumerator ContinueGameCoroutine()
     {
         yield return StartCoroutine(ExitMenu());
-        SceneManager.LoadScene(MainManager.instance.data.savedScene);
+        SceneManager.LoadScene(data.savedScene);
     }
 
     private IEnumerator QuitGameCoroutine()

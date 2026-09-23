@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
 using UnityEngine.SceneManagement;
@@ -39,8 +40,13 @@ public class MainManager : MonoBehaviour
 
     private string mainMenuName = "MainMenu";
 
-    [Header("Active")]
-    [SerializeField] private bool active = true;
+    private InputSystem input;
+
+    private InputAction returnAction;
+    private InputAction skipAction;
+
+    private bool returnInput;
+    private bool skipInput;
 
     [Header("Player")]
     [SerializeField] private PlayerController player;
@@ -52,6 +58,7 @@ public class MainManager : MonoBehaviour
     [Header("Pause")]
     [SerializeField] private GameObject pausedScreen;
     [SerializeField] private Image pausedFrontScreen;
+    [SerializeField] private Slider sensitivity;
 
     [Header("Dialogue")]
     [SerializeField] private GameObject dialogueScreen;
@@ -95,19 +102,40 @@ public class MainManager : MonoBehaviour
     {
         instance = this;
 
+        input = new InputSystem();
+
+        returnAction = input.Game.Return;
+        skipAction = input.Game.Skip;
+
         GetData();
+
+        sensitivity.value = data.sensitivity;
+    }
+
+    private void OnEnable()
+    {
+        input.Enable();
+    }
+
+    private void OnDisable()
+    {
+        input.Disable();
     }
 
     private void Update()
     {
-        if (!active)
-            return;
-
         if (!IsExecutingTriggers && triggers.Count > 0 && gameState == GameState.Normal)
             StartCoroutine(ExecuteTriggers());
 
+        GetInput();
         UpdatePrompts();
         CheckPause();
+    }
+
+    private void GetInput()
+    {
+        returnInput = returnAction.WasPressedThisFrame();
+        skipInput = skipAction.WasPressedThisFrame();
     }
 
     private void UpdatePrompts()
@@ -137,7 +165,7 @@ public class MainManager : MonoBehaviour
 
     private void CheckPause()
     {
-        if (!Input.GetKeyDown(KeyCode.Escape) || !CanPause) return;
+        if (!returnInput || !CanPause) return;
 
         if (IsPaused) Resume();
         else Pause();
@@ -182,7 +210,7 @@ public class MainManager : MonoBehaviour
 
     public void GetData()
     {
-        data.sensitivity = PlayerPrefs.GetFloat("Sensitivity", 10f);
+        data.sensitivity = PlayerPrefs.GetFloat("Sensitivity", 100f);
         data.musicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
         data.effectsVolume = PlayerPrefs.GetFloat("EffectsVolume", 1f);
         data.savedScene = PlayerPrefs.GetString("SavedScene", "");
@@ -359,8 +387,8 @@ public class MainManager : MonoBehaviour
                         case PlayerCanDoType.Move:
                             player.CanMove(trig.PlayerCanDoCanDo);
                             break;
-                        case PlayerCanDoType.Run:
-                            player.CanRun(trig.PlayerCanDoCanDo);
+                        case PlayerCanDoType.Sprint:
+                            player.CanSprint(trig.PlayerCanDoCanDo);
                             break;
                         case PlayerCanDoType.Jump:
                             player.CanJump(trig.PlayerCanDoCanDo);
@@ -499,7 +527,7 @@ public class MainManager : MonoBehaviour
                 else dialogueContent.text += content[idx];
                 idx++;
             }
-            if ((Input.GetMouseButtonDown(0)) && skippable)
+            if ((skipInput && skippable))
             {
                 if (sub) subdialogueContent.text = content;
                 else dialogueContent.text = content;
@@ -513,7 +541,7 @@ public class MainManager : MonoBehaviour
         effectsPlayer.Stop();
 
         if (flash) yield return new WaitForSeconds(flashLength);
-        else yield return new WaitUntil(() => Input.GetMouseButtonDown(0) && !IsPaused);
+        else yield return new WaitUntil(() => skipInput && !IsPaused);
 
         if (sub) subdialogueScreen.SetActive(false);
         else dialogueScreen.SetActive(false);
@@ -553,7 +581,7 @@ public class MainManager : MonoBehaviour
         if (flash)
             yield return new WaitForSeconds(flashLength);
         else
-            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Escape));
+            yield return new WaitUntil(() => returnInput);
 
         canvas.SetActive(false);
         PlayEffect(effect);
@@ -614,7 +642,7 @@ public class MainManager : MonoBehaviour
                 endingDescription.text += description[idx];
                 idx++;
             }
-            if (Input.GetMouseButtonDown(0))
+            if (skipInput)
             {
                 endingDescription.text = description;
                 break;
@@ -626,7 +654,7 @@ public class MainManager : MonoBehaviour
         yield return new WaitForSeconds(0.05f);
         effectsPlayer.Stop();
 
-        yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
+        yield return new WaitUntil(() => skipInput);
         effectsPlayer.Play();
 
         t = 0;
@@ -641,7 +669,7 @@ public class MainManager : MonoBehaviour
                 endingDescription.text = endingDescription.text.Substring(0, idx);
                 idx--;
             }
-            if (Input.GetMouseButtonDown(0))
+            if (skipInput)
             {
                 endingDescription.text = "";
                 break;

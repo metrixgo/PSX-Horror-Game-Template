@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json.Bson;
-using System.Collections;
+﻿using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public enum PlayerState
 {
@@ -29,8 +29,21 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 move = Vector3.zero;
 
+    private InputSystem input;
+
+    private InputAction lookAction;
+    private InputAction moveAction;
+    private InputAction sprintAction;
+    private InputAction jumpAction;
+    private InputAction crouchAction;
+    private InputAction interactAction;
+
     private Vector2 moveInput = Vector2.zero;
     private Vector2 lookInput = Vector2.zero;
+    private bool sprintInput = false;
+    private bool jumpInput = false;
+    private bool crouchInput = false;
+    private bool interactInput = false;
 
     private float walkSpeed = 3f;
     private float sprintSpeed = 6f;
@@ -53,7 +66,7 @@ public class PlayerController : MonoBehaviour
 
     public bool canLook { get; private set; } = true;
     public bool canMove { get; private set; } = true;
-    public bool canRun { get; private set; } = true;
+    public bool canSprint { get; private set; } = true;
     public bool canJump { get; private set; } = true;
     public bool canCrouch { get; private set; } = true;
     public bool canInteract { get; private set; } = true;
@@ -78,40 +91,60 @@ public class PlayerController : MonoBehaviour
         playerAd = GetComponent<AudioSource>();
         controller = GetComponent<CharacterController>();
         camController = playerCam.GetComponent<CinemachineInputAxisController>();
+
+        input = new InputSystem();
+
+        lookAction = input.Player.Look;
+        moveAction = input.Player.Move;
+        sprintAction = input.Player.Sprint;
+        jumpAction = input.Player.Jump;
+        crouchAction = input.Player.Crouch;
+        interactAction = input.Player.Interact;
+    }
+
+    private void OnEnable()
+    {
+        input.Enable();
+    }
+
+    private void OnDisable()
+    {
+        input.Disable();
     }
 
     private void Update()
     {
-        if (!MainManager.instance.IsPlayerActive || MainManager.instance.IsPaused)
-        {
-            sensitivity = 0f;
-            UpdateSensitivity();
-            return;
-        }
+        if (!MainManager.instance.IsPlayerActive) return;
 
+        GetInput();
         UpdateState();
         CameraBobbing();
 
-        if (canCrouch) HandleCrouch();
-        if (canJump) HandleJump();
         if (canMove) HandleMove();
+        if (canJump) HandleJump();
+        if (canCrouch) HandleCrouch();
         if (canInteract) HandleInteractions();
 
         MovePlayer();
+    }
 
+    private void GetInput()
+    {
+        moveInput = moveAction.ReadValue<Vector2>();
+        lookInput = lookAction.ReadValue<Vector2>();
+        sprintInput = sprintAction.IsPressed();
+        jumpInput = jumpAction.IsPressed();
+        crouchInput = crouchAction.IsPressed();
+        interactInput = interactAction.WasPressedThisFrame();
     }
 
     private void UpdateState()
     {
-        moveInput.x = Input.GetAxisRaw("Horizontal");
-        moveInput.y = Input.GetAxisRaw("Vertical");
-        lookInput.x = Input.GetAxis("Mouse X");
-        lookInput.y = Input.GetAxis("Mouse Y");
 
         if (moveInput.magnitude > 0.01f && canMove)
         {
             if (isCrouched) state = PlayerState.CrouchWalk;
-            else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && canRun) state = PlayerState.Sprint;
+            else if (sprintInput && canSprint) state = PlayerState.Sprint;
             else state = PlayerState.Walk;
         }
         else
@@ -149,8 +182,6 @@ public class PlayerController : MonoBehaviour
     {
         camBobbingT += Time.deltaTime;
 
-        playerCam.transform.localPosition = Vector3.up * camHeight;
-
         int curState = controller.isGrounded ? (int)state : (int)PlayerState.Idle;
 
         float[] bobSteps = { 0.002f, 0.004f, 0.01f, 0.002f, 0.004f };
@@ -158,8 +189,8 @@ public class PlayerController : MonoBehaviour
 
         float bobStep = bobSteps[curState];
         float bobSpeed = bobSpeeds[curState];
-        float swayStep = 0.03f;
-        float maxSwayStep = 0.3f;
+        float swayStep = 0.05f;
+        float maxSwayStep = 0.15f;
         float swaySpeed = 10f;
 
         Vector3 offset = Vector3.zero;
@@ -167,17 +198,17 @@ public class PlayerController : MonoBehaviour
         offset.x = (Mathf.Cos(camBobbingT * bobSpeed) * bobStep);
         offset.y = (Mathf.Sin(camBobbingT * 2f * bobSpeed) * bobStep);
 
-        offset.x += Mathf.Clamp(-swayStep * lookInput.x, -maxSwayStep, maxSwayStep);
-        offset.y += Mathf.Clamp(-swayStep * lookInput.y, -maxSwayStep, maxSwayStep);
+        offset.x += Mathf.Clamp(-swayStep * lookInput.x * sensitivity / 1000f, -maxSwayStep, maxSwayStep);
+        offset.y += Mathf.Clamp(-swayStep * lookInput.y * sensitivity / 1000f, -maxSwayStep, maxSwayStep);
 
         playerHold.localPosition = Vector3.Lerp(playerHold.localPosition, playerHoldPosition + offset, Time.deltaTime * swaySpeed);
     }
 
     private void HandleCrouch()
     {
-        if (Input.GetKey(KeyCode.C) && controller.isGrounded)
+        if (crouchInput && controller.isGrounded)
             isCrouched = true;
-        else if (!Input.GetKey(KeyCode.C))
+        else if (!crouchInput)
             isCrouched = false;
 
         bool hasCeiling = Physics.CheckCapsule(
@@ -201,11 +232,13 @@ public class PlayerController : MonoBehaviour
         playerBody.localPosition = controller.center;
 
         camHeight = Mathf.Lerp(standCamHeight, crouchCamHeight, crouchProgress);
+
+        playerCam.transform.localPosition = Vector3.up * camHeight;
     }
 
     private void HandleJump()
     {
-        if (controller.isGrounded && Input.GetKey(KeyCode.Space) && !isCrouched) velocityY = jumpStrength;
+        if (controller.isGrounded && jumpInput && !isCrouched) velocityY = jumpStrength;
     }
 
     private void HandleMove()
@@ -221,13 +254,13 @@ public class PlayerController : MonoBehaviour
         if (move.magnitude > 0.01f &&
             Physics.SphereCast(
                 transform.position + Vector3.up * (controller.height - controller.radius),
-                controller.radius,
-                move.normalized,
-                out RaycastHit hit,
+            controller.radius,
+            move.normalized,
+            out RaycastHit hit,
                 controller.skinWidth + 0.1f,
-                environmentLayer
+            environmentLayer
                 ) &&
-            hit.normal.y < -0.01f && 
+            hit.normal.y < -0.01f &&
             hit.normal.y > -0.99f)
         {
             Vector3 slideDirection = Vector3.Cross(Vector3.up, hit.normal).normalized;
@@ -264,7 +297,7 @@ public class PlayerController : MonoBehaviour
             curItem = null;
         }
 
-        if (Input.GetMouseButtonDown(0) && curItem != null)
+        if (interactInput && curItem != null)
             curItem.Interact();
     }
 
@@ -324,9 +357,9 @@ public class PlayerController : MonoBehaviour
         canMove = can;
     }
 
-    public void CanRun(bool can)
+    public void CanSprint(bool can)
     {
-        canRun = can;
+        canSprint = can;
     }
 
     public void CanJump(bool can)

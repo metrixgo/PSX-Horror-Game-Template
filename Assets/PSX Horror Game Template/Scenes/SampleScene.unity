@@ -3664,10 +3664,8 @@ MonoBehaviour:
       Owner: {fileID: 527400538}
       Enabled: 1
       Input:
-        InputAction: {fileID: -5630151704836100654, guid: 3cc4be51c704d1247a013c74edd67a6d, type: 3}
+        InputAction: {fileID: 2257561145955774128, guid: b17d6c3ad57338f4ab09ca83d09c0638, type: 3}
         Gain: 1
-        LegacyInput: 
-        LegacyGain: 1
         CancelDeltaTime: 0
       InputValue: 0
       Driver:
@@ -3677,10 +3675,8 @@ MonoBehaviour:
       Owner: {fileID: 527400538}
       Enabled: 1
       Input:
-        InputAction: {fileID: -5630151704836100654, guid: 3cc4be51c704d1247a013c74edd67a6d, type: 3}
+        InputAction: {fileID: 2257561145955774128, guid: b17d6c3ad57338f4ab09ca83d09c0638, type: 3}
         Gain: -1
-        LegacyInput: 
-        LegacyGain: 1
         CancelDeltaTime: 0
       InputValue: 0
       Driver:
@@ -6437,12 +6433,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a98acff204db6c043bcd38d38c9a448e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainManager
-  active: 1
   player: {fileID: 2027041989}
   musicPlayer: {fileID: 1958594138}
   effectsPlayer: {fileID: 1441228404}
   pausedScreen: {fileID: 8300452994925470562}
   pausedFrontScreen: {fileID: 1937060263}
+  sensitivity: {fileID: 2152685407380797775}
   dialogueScreen: {fileID: 1718033205498792130}
   dialogueSpeaker: {fileID: 7481590500203163649}
   dialogueContent: {fileID: 565674296774085029}
@@ -13580,9 +13576,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 250396442743361956}
   m_Direction: 0
   m_MinValue: 1
-  m_MaxValue: 30
+  m_MaxValue: 200
   m_WholeNumbers: 0
-  m_Value: 10
+  m_Value: 2
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
