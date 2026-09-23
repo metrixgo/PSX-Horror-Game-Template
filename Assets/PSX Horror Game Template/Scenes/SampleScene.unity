@@ -3620,6 +3620,7 @@ GameObject:
   - component: {fileID: 527400536}
   - component: {fileID: 527400539}
   - component: {fileID: 527400538}
+  - component: {fileID: 527400540}
   - component: {fileID: 527400537}
   m_Layer: 0
   m_Name: Camera
@@ -3761,6 +3762,23 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
+--- !u!114 &527400540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 527400535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineBasicMultiChannelPerlin
+  NoiseProfile: {fileID: 11400000, guid: e9ce97b7a206dc64d90931ea044e0c72, type: 2}
+  PivotOffset: {x: 0, y: 0, z: 0}
+  AmplitudeGain: 0.1
+  FrequencyGain: 0.1
+  m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &543778942
 GameObject:
   m_ObjectHideFlags: 0
@@ -13576,9 +13594,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 250396442743361956}
   m_Direction: 0
   m_MinValue: 1
-  m_MaxValue: 200
+  m_MaxValue: 100
   m_WholeNumbers: 0
-  m_Value: 2
+  m_Value: 50
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:

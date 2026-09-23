@@ -50,7 +50,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void GetData()
     {
-        data.sensitivity = PlayerPrefs.GetFloat("Sensitivity", 100f);
+        data.sensitivity = PlayerPrefs.GetFloat("Sensitivity", 50f);
         data.musicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
         data.effectsVolume = PlayerPrefs.GetFloat("EffectsVolume", 1f);
         data.savedScene = PlayerPrefs.GetString("SavedScene", "");

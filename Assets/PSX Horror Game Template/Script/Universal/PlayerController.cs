@@ -24,10 +24,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask interactableLayer;
 
     private AudioSource playerAd;
-    private CharacterController controller;
-    private CinemachineInputAxisController camController;
 
-    private Vector3 move = Vector3.zero;
+    private CharacterController controller;
+
+    private CinemachinePanTilt camPanTilt;
+    private CinemachineBasicMultiChannelPerlin camBob;
+    private CinemachineInputAxisController camController;
+    private InputAxisControllerBase<CinemachineInputAxisController.Reader>.Controller camX;
+    private InputAxisControllerBase<CinemachineInputAxisController.Reader>.Controller camY;
+
+    private Interactable curItem;
+    private Interactable newItem;
 
     private InputSystem input;
 
@@ -44,6 +51,8 @@ public class PlayerController : MonoBehaviour
     private bool jumpInput = false;
     private bool crouchInput = false;
     private bool interactInput = false;
+
+    private Vector3 move = Vector3.zero;
 
     private float walkSpeed = 3f;
     private float sprintSpeed = 6f;
@@ -72,7 +81,6 @@ public class PlayerController : MonoBehaviour
     public bool canInteract { get; private set; } = true;
     public bool isCrouched { get; private set; } = false;
 
-    private float rotationX = 0f;
     private float velocityY = -1f;
 
     private PlayerState state = PlayerState.Idle;
@@ -80,8 +88,16 @@ public class PlayerController : MonoBehaviour
     private float camBobbingT = 0f;
     private Vector3 playerHoldPosition = new Vector3(0.15f, -0.1f, 0.2f);
 
-    private Interactable curItem;
-    private Interactable newItem;
+
+    float[] bobAmplitudes = { 0.1f, 0.2f, 0.4f, 0.05f, 0.1f};
+    float[] bobFrequencies = { 0.1f, 0.2f, 0.3f, 0.1f, 0.2f};
+    float curAmplitude = 0.1f;
+    float curFrequency = 0.1f;
+    float[] bobSteps = { 0.002f, 0.004f, 0.01f, 0.002f, 0.004f };
+    float[] bobSpeeds = { 0.6f, 4f, 8f, 0.6f, 2f };
+    float swayStep = 0.05f;
+    float maxSwayStep = 0.15f;
+    float transitionSpeed = 10f;
 
     private void Awake()
     {
@@ -90,7 +106,16 @@ public class PlayerController : MonoBehaviour
 
         playerAd = GetComponent<AudioSource>();
         controller = GetComponent<CharacterController>();
+        camPanTilt = playerCam.GetComponent<CinemachinePanTilt>();
+        camBob = playerCam.GetComponent<CinemachineBasicMultiChannelPerlin>();
         camController = playerCam.GetComponent<CinemachineInputAxisController>();
+
+        foreach (InputAxisControllerBase<CinemachineInputAxisController.Reader>.Controller controller in camController.Controllers)
+        {
+            if (controller.Name == "Look X (Pan)") camX = controller;
+            else if (controller.Name == "Look Y (Tilt)") camY = controller;
+            else Debug.LogError("Unknown Cinemachine Controller Name: " + controller.Name);
+        }
 
         input = new InputSystem();
 
@@ -114,7 +139,12 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (!MainManager.instance.IsPlayerActive) return;
+        if (!MainManager.instance.IsPlayerActive)
+        {
+            sensitivity = 0;
+            UpdateSensitivity();
+            return;
+        }
 
         GetInput();
         UpdateState();
@@ -170,12 +200,8 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateSensitivity()
     {
-        foreach (var controller in camController.Controllers)
-        {
-            if (controller.Name == "Look X (Pan)") controller.Input.Gain = sensitivity;
-            else if (controller.Name == "Look Y (Tilt)") controller.Input.Gain = -sensitivity;
-            else Debug.LogError("Unknown Cinemachine Controller Name: " + controller.Name);
-        }
+        camX.Input.Gain = sensitivity;
+        camY.Input.Gain = -sensitivity;
     }
 
     private void CameraBobbing()
@@ -184,14 +210,17 @@ public class PlayerController : MonoBehaviour
 
         int curState = controller.isGrounded ? (int)state : (int)PlayerState.Idle;
 
-        float[] bobSteps = { 0.002f, 0.004f, 0.01f, 0.002f, 0.004f };
-        float[] bobSpeeds = { 0.6f, 4f, 8f, 0.6f, 2f };
+        float bobAmplitude = bobAmplitudes[curState];
+        float bobFrequency = bobFrequencies[curState];
+
+        curAmplitude = Mathf.Lerp(curAmplitude, bobAmplitude, Time.deltaTime * transitionSpeed);
+        curFrequency = Mathf.Lerp(curFrequency, bobFrequency, Time.deltaTime * transitionSpeed);
+
+        camBob.AmplitudeGain = curAmplitude;
+        camBob.FrequencyGain = curFrequency;
 
         float bobStep = bobSteps[curState];
         float bobSpeed = bobSpeeds[curState];
-        float swayStep = 0.05f;
-        float maxSwayStep = 0.15f;
-        float swaySpeed = 10f;
 
         Vector3 offset = Vector3.zero;
 
@@ -201,7 +230,7 @@ public class PlayerController : MonoBehaviour
         offset.x += Mathf.Clamp(-swayStep * lookInput.x * sensitivity / 1000f, -maxSwayStep, maxSwayStep);
         offset.y += Mathf.Clamp(-swayStep * lookInput.y * sensitivity / 1000f, -maxSwayStep, maxSwayStep);
 
-        playerHold.localPosition = Vector3.Lerp(playerHold.localPosition, playerHoldPosition + offset, Time.deltaTime * swaySpeed);
+        playerHold.localPosition = Vector3.Lerp(playerHold.localPosition, playerHoldPosition + offset, Time.deltaTime * transitionSpeed);
     }
 
     private void HandleCrouch()
@@ -238,7 +267,8 @@ public class PlayerController : MonoBehaviour
 
     private void HandleJump()
     {
-        if (controller.isGrounded && jumpInput && !isCrouched) velocityY = jumpStrength;
+        if (controller.isGrounded && jumpInput && !isCrouched)
+            velocityY = jumpStrength;
     }
 
     private void HandleMove()
@@ -323,28 +353,29 @@ public class PlayerController : MonoBehaviour
 
     public void LookAt(Vector3 position, float l)
     {
-        Vector3 dir = (position - playerCam.position).normalized;
-        float y = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
-        float x = -Mathf.Asin(dir.y) * Mathf.Rad2Deg;
-        StartCoroutine(TurnTo(x, y, l));
+        Quaternion rotation = Quaternion.LookRotation(position - playerCam.position);
+
+        StartCoroutine(TurnTo(rotation, l));
     }
 
-    private IEnumerator TurnTo(float x, float y, float l)
+    private IEnumerator TurnTo(Quaternion goal, float l)
     {
+        float startX = camPanTilt.TiltAxis.Value;
+        float startY = camPanTilt.PanAxis.Value;
+        float endX = goal.eulerAngles.x;
+        float endY = goal.eulerAngles.y;
+
         float t = 0;
-        float startX = rotationX;
-        float startY = transform.eulerAngles.y;
         while (t < l)
         {
-            rotationX = Mathf.LerpAngle(startX, x, t / l);
-            playerCam.localRotation = Quaternion.Euler(rotationX, 0, 0);
-            transform.rotation = Quaternion.Euler(0, Mathf.LerpAngle(startY, y, t / l), 0);
+            camPanTilt.TiltAxis.Value = Mathf.LerpAngle(startX, endX, t / l);
+            camPanTilt.PanAxis.Value = Mathf.LerpAngle(startY, endY, t / l);
             t += Time.deltaTime;
             yield return null;
         }
-        rotationX = x;
-        playerCam.localRotation = Quaternion.Euler(rotationX, 0, 0);
-        transform.rotation = Quaternion.Euler(0, y, 0);
+
+        camPanTilt.TiltAxis.Value = Mathf.LerpAngle(startX, endX, t / l);
+        camPanTilt.PanAxis.Value = Mathf.LerpAngle(startY, endY, t / l);
     }
 
     public void CanLook(bool can)
