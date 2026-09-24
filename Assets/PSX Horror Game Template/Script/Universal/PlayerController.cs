@@ -89,13 +89,13 @@ public class PlayerController : MonoBehaviour
     private Vector3 playerHoldPosition = new Vector3(0.15f, -0.1f, 0.2f);
 
 
-    float[] bobAmplitudes = { 0.1f, 0.2f, 0.4f, 0.05f, 0.1f};
-    float[] bobFrequencies = { 0.1f, 0.2f, 0.3f, 0.1f, 0.2f};
+    float[] bobAmplitudes = { 0.05f, 0.1f, 0.2f, 0.03f, 0.08f};
+    float[] bobFrequencies = { 0.05f, 0.1f, 0.2f, 0.05f, 0.1f};
     float curAmplitude = 0.1f;
     float curFrequency = 0.1f;
-    float[] bobSteps = { 0.002f, 0.004f, 0.01f, 0.002f, 0.004f };
+    float[] bobSteps = { 0.002f, 0.004f, 0.01f, 0.002f, 0.003f };
     float[] bobSpeeds = { 0.6f, 4f, 8f, 0.6f, 2f };
-    float swayStep = 0.05f;
+    float swayStep = 0.02f;
     float maxSwayStep = 0.15f;
     float transitionSpeed = 10f;
 
@@ -139,16 +139,16 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (!MainManager.instance.IsPlayerActive)
-        {
-            sensitivity = 0;
-            UpdateSensitivity();
-            return;
-        }
+        if (MainManager.instance.IsPaused) return;
 
         GetInput();
         UpdateState();
+        UpdateSensitivity();
         CameraBobbing();
+
+        if (!MainManager.instance.IsPlayerActive) return;
+
+        UpdateGravity();
 
         if (canMove) HandleMove();
         if (canJump) HandleJump();
@@ -170,8 +170,7 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateState()
     {
-
-        if (moveInput.magnitude > 0.01f && canMove)
+        if (moveInput.magnitude > 0.01f && canMove && MainManager.instance.IsPlayerActive)
         {
             if (isCrouched) state = PlayerState.CrouchWalk;
             else if (sprintInput && canSprint) state = PlayerState.Sprint;
@@ -182,24 +181,11 @@ public class PlayerController : MonoBehaviour
             if (isCrouched) state = PlayerState.CrouchIdle;
             else state = PlayerState.Idle;
         }
-
-        move = Vector3.zero;
-
-        if (controller.isGrounded) velocityY = groundGravity;
-        else velocityY += gravity * Time.deltaTime;
-
-        bool needChange = !canLook && sensitivity != 0 ||
-            canLook && sensitivity != MainManager.instance.data.sensitivity;
-
-        if (needChange)
-        {
-            sensitivity = canLook ? MainManager.instance.data.sensitivity : 0;
-            UpdateSensitivity();
-        }
     }
 
     private void UpdateSensitivity()
     {
+        sensitivity = (canLook && MainManager.instance.IsPlayerActive) ? MainManager.instance.data.sensitivity : 0;
         camX.Input.Gain = sensitivity;
         camY.Input.Gain = -sensitivity;
     }
@@ -208,7 +194,7 @@ public class PlayerController : MonoBehaviour
     {
         camBobbingT += Time.deltaTime;
 
-        int curState = controller.isGrounded ? (int)state : (int)PlayerState.Idle;
+        int curState = (controller.isGrounded && MainManager.instance.IsPlayerActive) ? (int)state : (int)PlayerState.Idle;
 
         float bobAmplitude = bobAmplitudes[curState];
         float bobFrequency = bobFrequencies[curState];
@@ -231,6 +217,45 @@ public class PlayerController : MonoBehaviour
         offset.y += Mathf.Clamp(-swayStep * lookInput.y * sensitivity / 1000f, -maxSwayStep, maxSwayStep);
 
         playerHold.localPosition = Vector3.Lerp(playerHold.localPosition, playerHoldPosition + offset, Time.deltaTime * transitionSpeed);
+    }
+
+    private void UpdateGravity()
+    {
+        if (controller.isGrounded) velocityY = groundGravity;
+        else velocityY += gravity * Time.deltaTime;
+    }
+
+    private void HandleMove()
+    {
+        float speed = state == PlayerState.Sprint ? sprintSpeed : walkSpeed;
+        speed = Mathf.Lerp(speed, crouchSpeed, crouchProgress);
+
+        Vector3 camRight = new Vector3(playerCam.right.x, 0f, playerCam.right.z).normalized;
+        Vector3 camForward = new Vector3(playerCam.forward.x, 0f, playerCam.forward.z).normalized;
+
+        move = (camRight * moveInput.x + camForward * moveInput.y).normalized * speed;
+
+        if (move.magnitude > 0.01f &&
+            Physics.SphereCast(
+                transform.position + Vector3.up * (controller.height - controller.radius),
+            controller.radius,
+            move.normalized,
+            out RaycastHit hit,
+                controller.skinWidth + 0.1f,
+            environmentLayer
+                ) &&
+            hit.normal.y < -0.01f &&
+            hit.normal.y > -0.99f)
+        {
+            Vector3 slideDirection = Vector3.Cross(Vector3.up, hit.normal).normalized;
+            move = slideDirection * Vector3.Dot(move, slideDirection);
+        }
+    }
+
+    private void HandleJump()
+    {
+        if (controller.isGrounded && jumpInput && !isCrouched)
+            velocityY = jumpStrength;
     }
 
     private void HandleCrouch()
@@ -263,39 +288,6 @@ public class PlayerController : MonoBehaviour
         camHeight = Mathf.Lerp(standCamHeight, crouchCamHeight, crouchProgress);
 
         playerCam.transform.localPosition = Vector3.up * camHeight;
-    }
-
-    private void HandleJump()
-    {
-        if (controller.isGrounded && jumpInput && !isCrouched)
-            velocityY = jumpStrength;
-    }
-
-    private void HandleMove()
-    {
-        float speed = state == PlayerState.Sprint ? sprintSpeed : walkSpeed;
-        speed = Mathf.Lerp(speed, crouchSpeed, crouchProgress);
-
-        Vector3 camRight = new Vector3(playerCam.right.x, 0f, playerCam.right.z).normalized;
-        Vector3 camForward = new Vector3(playerCam.forward.x, 0f, playerCam.forward.z).normalized;
-
-        move = (camRight * moveInput.x + camForward * moveInput.y).normalized * speed;
-
-        if (move.magnitude > 0.01f &&
-            Physics.SphereCast(
-                transform.position + Vector3.up * (controller.height - controller.radius),
-            controller.radius,
-            move.normalized,
-            out RaycastHit hit,
-                controller.skinWidth + 0.1f,
-            environmentLayer
-                ) &&
-            hit.normal.y < -0.01f &&
-            hit.normal.y > -0.99f)
-        {
-            Vector3 slideDirection = Vector3.Cross(Vector3.up, hit.normal).normalized;
-            move = slideDirection * Vector3.Dot(move, slideDirection);
-        }
     }
 
     private void HandleInteractions()
