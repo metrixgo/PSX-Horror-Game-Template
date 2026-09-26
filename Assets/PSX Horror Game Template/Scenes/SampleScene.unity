@@ -284,7 +284,7 @@ MonoBehaviour:
   selfDestructs: 0
   playerOnly: 1
   triggers:
-  - triggerType: 5
+  - triggerType: 6
     displayDialogueSpeaker: You
     displayDialogueContent: Hello!
     displayDialogueSpeakerColor: {r: 1, g: 1, b: 1, a: 1}
@@ -305,6 +305,8 @@ MonoBehaviour:
     displayPromptFlash: 0
     manageTasksType: 1
     manageTasksTask: Hello!
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 2
     playerCanDoCanDo: 1
     movePlayerType: 0
@@ -1389,7 +1391,7 @@ MonoBehaviour:
   selfDestructs: 0
   playerOnly: 1
   triggers:
-  - triggerType: 10
+  - triggerType: 11
     displayDialogueSpeaker: You
     displayDialogueContent: Hello!
     displayDialogueSpeakerColor: {r: 1, g: 1, b: 1, a: 1}
@@ -1410,6 +1412,8 @@ MonoBehaviour:
     displayPromptFlash: 0
     manageTasksType: 1
     manageTasksTask: Hello!
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 2
     playerCanDoCanDo: 1
     movePlayerType: 1
@@ -1584,7 +1588,7 @@ MonoBehaviour:
   selfDestructs: 0
   playerOnly: 1
   triggers:
-  - triggerType: 6
+  - triggerType: 7
     displayDialogueSpeaker: You
     displayDialogueContent: Hello!
     displayDialogueSpeakerColor: {r: 1, g: 1, b: 1, a: 1}
@@ -1605,6 +1609,8 @@ MonoBehaviour:
     displayPromptFlash: 0
     manageTasksType: 1
     manageTasksTask: Hello!
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 2
     playerCanDoCanDo: 1
     movePlayerType: 1
@@ -1891,7 +1897,7 @@ MonoBehaviour:
   selfDestructs: 0
   playerOnly: 1
   triggers:
-  - triggerType: 8
+  - triggerType: 9
     displayDialogueSpeaker: You
     displayDialogueContent: Hello!
     displayDialogueSpeakerColor: {r: 1, g: 1, b: 1, a: 1}
@@ -1912,6 +1918,8 @@ MonoBehaviour:
     displayPromptFlash: 0
     manageTasksType: 1
     manageTasksTask: Hello!
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 2
     playerCanDoCanDo: 1
     movePlayerType: 1
@@ -2086,7 +2094,7 @@ MonoBehaviour:
   selfDestructs: 0
   playerOnly: 1
   triggers:
-  - triggerType: 10
+  - triggerType: 11
     displayDialogueSpeaker: You
     displayDialogueContent: Hello!
     displayDialogueSpeakerColor: {r: 1, g: 1, b: 1, a: 1}
@@ -2107,6 +2115,8 @@ MonoBehaviour:
     displayPromptFlash: 0
     manageTasksType: 1
     manageTasksTask: Hello!
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 2
     playerCanDoCanDo: 1
     movePlayerType: 1
@@ -2302,6 +2312,8 @@ MonoBehaviour:
     displayPromptFlash: 0
     manageTasksType: 0
     manageTasksTask: 
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 0
     playerCanDoCanDo: 0
     movePlayerType: 0
@@ -2497,6 +2509,8 @@ MonoBehaviour:
     displayPromptFlash: 0
     manageTasksType: 0
     manageTasksTask: 
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 0
     playerCanDoCanDo: 0
     movePlayerType: 0
@@ -2910,7 +2924,7 @@ MonoBehaviour:
   selfDestructs: 0
   playerOnly: 1
   triggers:
-  - triggerType: 5
+  - triggerType: 6
     displayDialogueSpeaker: You
     displayDialogueContent: Hello!
     displayDialogueSpeakerColor: {r: 1, g: 1, b: 1, a: 1}
@@ -2931,6 +2945,8 @@ MonoBehaviour:
     displayPromptFlash: 0
     manageTasksType: 1
     manageTasksTask: Hello!
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 2
     playerCanDoCanDo: 0
     movePlayerType: 0
@@ -3286,7 +3302,7 @@ MonoBehaviour:
   selfDestructs: 0
   playerOnly: 1
   triggers:
-  - triggerType: 7
+  - triggerType: 8
     displayDialogueSpeaker: You
     displayDialogueContent: Hello!
     displayDialogueSpeakerColor: {r: 1, g: 1, b: 1, a: 1}
@@ -3307,6 +3323,8 @@ MonoBehaviour:
     displayPromptFlash: 0
     manageTasksType: 1
     manageTasksTask: Hello!
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 2
     playerCanDoCanDo: 1
     movePlayerType: 1
@@ -3853,6 +3871,8 @@ MonoBehaviour:
     displayPromptFlash: 0
     manageTasksType: 0
     manageTasksTask: Hello!
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 0
     playerCanDoCanDo: 0
     movePlayerType: 0
@@ -4048,11 +4068,11 @@ MonoBehaviour:
   closeLength: 0.5
   openDelay: 0
   closeDelay: 0.3
-  openEffect: {fileID: 8300000, guid: d61f87dc4c1bf2240970787724dd30da, type: 3}
-  closeEffect: {fileID: 8300000, guid: d42f41109e814134880ac198850b9e8c, type: 3}
   deltaPosition: {x: 0, y: 0, z: 0}
   deltaRotation: {x: 0, y: 0.7372773, z: 0, w: 0.6755902}
   deltaScale: {x: 1, y: 1, z: 1}
+  openEffect: {fileID: 8300000, guid: d61f87dc4c1bf2240970787724dd30da, type: 3}
+  closeEffect: {fileID: 8300000, guid: d42f41109e814134880ac198850b9e8c, type: 3}
 --- !u!114 &562649073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4589,6 +4609,8 @@ MonoBehaviour:
     displayPromptFlash: 0
     manageTasksType: 0
     manageTasksTask: 
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 0
     playerCanDoCanDo: 0
     movePlayerType: 0
@@ -5696,9 +5718,11 @@ MonoBehaviour:
     displayPromptPrompt: 
     displayPromptColor: {r: 1, g: 1, b: 1, a: 1}
     displayPromptSub: 1
-    displayPromptFlash: 0
+    displayPromptFlash: 1
     manageTasksType: 0
     manageTasksTask: 
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 0
     playerCanDoCanDo: 0
     movePlayerType: 0
@@ -6545,7 +6569,7 @@ MonoBehaviour:
   selfDestructs: 0
   playerOnly: 1
   triggers:
-  - triggerType: 9
+  - triggerType: 10
     displayDialogueSpeaker: You
     displayDialogueContent: Hello!
     displayDialogueSpeakerColor: {r: 1, g: 1, b: 1, a: 1}
@@ -6566,6 +6590,8 @@ MonoBehaviour:
     displayPromptFlash: 0
     manageTasksType: 1
     manageTasksTask: Hello!
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 2
     playerCanDoCanDo: 1
     movePlayerType: 1
@@ -7144,6 +7170,8 @@ MonoBehaviour:
     displayPromptFlash: 0
     manageTasksType: 0
     manageTasksTask: 
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 0
     playerCanDoCanDo: 0
     movePlayerType: 0
@@ -7187,6 +7215,8 @@ MonoBehaviour:
     displayPromptFlash: 0
     manageTasksType: 0
     manageTasksTask: 
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 0
     playerCanDoCanDo: 0
     movePlayerType: 0
@@ -7221,7 +7251,7 @@ MonoBehaviour:
     changeScreenStartColor: {r: 1, g: 0, b: 0, a: 1}
     changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
     changeScreenLength: 1
-    changeScreenSub: 0
+    changeScreenSub: 1
     changeScreenFlash: 0
     waitLength: 0
     displayPromptPrompt: 
@@ -7230,6 +7260,8 @@ MonoBehaviour:
     displayPromptFlash: 0
     manageTasksType: 0
     manageTasksTask: 
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 0
     playerCanDoCanDo: 0
     movePlayerType: 0
@@ -7273,6 +7305,8 @@ MonoBehaviour:
     displayPromptFlash: 0
     manageTasksType: 0
     manageTasksTask: 
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 0
     playerCanDoCanDo: 0
     movePlayerType: 0
@@ -7280,6 +7314,51 @@ MonoBehaviour:
     jumpscareAtObject: {fileID: 0}
     jumpscareAtLength: 0
     jumpscareAtEffect: {fileID: 0}
+    displayCanvasCanvas: {fileID: 0}
+    displayCanvasEffect: {fileID: 0}
+    displayCanvasFlash: 0
+    displayCanvasFlashLength: 0
+    playSoundSound: {fileID: 8300000, guid: bad4e1cbd5f77d34995bff0b5644c364, type: 3}
+    playSoundLocal: 0
+    playSoundIsEffect: 0
+    playSoundSource: {fileID: 0}
+    setObjectObject: {fileID: 1186276900}
+    setObjectSetActive: 1
+    loadSceneScene: 
+    loadSceneLength: 0
+    loadSceneSave: 0
+    displayEndingTitle: 
+    displayEndingDescription: 
+  - triggerType: 11
+    displayDialogueSpeaker: 
+    displayDialogueContent: Hello!
+    displayDialogueSpeakerColor: {r: 1, g: 0, b: 0, a: 1}
+    displayDialogueContentColor: {r: 1, g: 0, b: 0, a: 1}
+    displayDialogueSub: 1
+    displayDialogueFlash: 0
+    displayDialogueSkippable: 0
+    displayDialogueFlashLength: 0
+    changeScreenStartColor: {r: 1, g: 0, b: 0, a: 1}
+    changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
+    changeScreenLength: 1
+    changeScreenSub: 0
+    changeScreenFlash: 0
+    waitLength: 1
+    displayPromptPrompt: 
+    displayPromptColor: {r: 0, g: 0, b: 0, a: 0}
+    displayPromptSub: 0
+    displayPromptFlash: 0
+    manageTasksType: 0
+    manageTasksTask: 
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
+    playerCanDoType: 0
+    playerCanDoCanDo: 0
+    movePlayerType: 0
+    movePlayerVector: {x: 0, y: 0, z: 0}
+    jumpscareAtObject: {fileID: 1186276901}
+    jumpscareAtLength: 0.2
+    jumpscareAtEffect: {fileID: 8300000, guid: bad4e1cbd5f77d34995bff0b5644c364, type: 3}
     displayCanvasCanvas: {fileID: 0}
     displayCanvasEffect: {fileID: 0}
     displayCanvasFlash: 0
@@ -7295,7 +7374,7 @@ MonoBehaviour:
     loadSceneSave: 0
     displayEndingTitle: 
     displayEndingDescription: 
-  - triggerType: 7
+  - triggerType: 8
     displayDialogueSpeaker: You
     displayDialogueContent: Hello!
     displayDialogueSpeakerColor: {r: 1, g: 1, b: 1, a: 1}
@@ -7316,6 +7395,8 @@ MonoBehaviour:
     displayPromptFlash: 0
     manageTasksType: 0
     manageTasksTask: 
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 0
     playerCanDoCanDo: 0
     movePlayerType: 0
@@ -7339,11 +7420,11 @@ MonoBehaviour:
     displayEndingTitle: 
     displayEndingDescription: 
   - triggerType: 2
-    displayDialogueSpeaker: You
+    displayDialogueSpeaker: 
     displayDialogueContent: Hello!
-    displayDialogueSpeakerColor: {r: 1, g: 1, b: 1, a: 1}
-    displayDialogueContentColor: {r: 1, g: 1, b: 1, a: 1}
-    displayDialogueSub: 0
+    displayDialogueSpeakerColor: {r: 1, g: 0, b: 0, a: 1}
+    displayDialogueContentColor: {r: 1, g: 0, b: 0, a: 1}
+    displayDialogueSub: 1
     displayDialogueFlash: 0
     displayDialogueSkippable: 0
     displayDialogueFlashLength: 0
@@ -7352,13 +7433,15 @@ MonoBehaviour:
     changeScreenLength: 1
     changeScreenSub: 0
     changeScreenFlash: 0
-    waitLength: 0.2
+    waitLength: 0.1
     displayPromptPrompt: 
     displayPromptColor: {r: 0, g: 0, b: 0, a: 0}
     displayPromptSub: 0
     displayPromptFlash: 0
     manageTasksType: 0
     manageTasksTask: 
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 0
     playerCanDoCanDo: 0
     movePlayerType: 0
@@ -7381,12 +7464,12 @@ MonoBehaviour:
     loadSceneSave: 0
     displayEndingTitle: 
     displayEndingDescription: 
-  - triggerType: 10
-    displayDialogueSpeaker: You
+  - triggerType: 11
+    displayDialogueSpeaker: 
     displayDialogueContent: Hello!
-    displayDialogueSpeakerColor: {r: 1, g: 1, b: 1, a: 1}
-    displayDialogueContentColor: {r: 1, g: 1, b: 1, a: 1}
-    displayDialogueSub: 0
+    displayDialogueSpeakerColor: {r: 1, g: 0, b: 0, a: 1}
+    displayDialogueContentColor: {r: 1, g: 0, b: 0, a: 1}
+    displayDialogueSub: 1
     displayDialogueFlash: 0
     displayDialogueSkippable: 0
     displayDialogueFlashLength: 0
@@ -7395,13 +7478,15 @@ MonoBehaviour:
     changeScreenLength: 1
     changeScreenSub: 0
     changeScreenFlash: 0
-    waitLength: 0.2
+    waitLength: 1
     displayPromptPrompt: 
     displayPromptColor: {r: 0, g: 0, b: 0, a: 0}
     displayPromptSub: 0
     displayPromptFlash: 0
     manageTasksType: 0
     manageTasksTask: 
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 0
     playerCanDoCanDo: 0
     movePlayerType: 0
@@ -7445,6 +7530,8 @@ MonoBehaviour:
     displayPromptFlash: 0
     manageTasksType: 0
     manageTasksTask: 
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 0
     playerCanDoCanDo: 0
     movePlayerType: 0
@@ -7488,6 +7575,8 @@ MonoBehaviour:
     displayPromptFlash: 0
     manageTasksType: 0
     manageTasksTask: 
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 0
     playerCanDoCanDo: 0
     movePlayerType: 0
@@ -8572,6 +8661,8 @@ MonoBehaviour:
     displayPromptFlash: 0
     manageTasksType: 0
     manageTasksTask: 
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 0
     playerCanDoCanDo: 0
     movePlayerType: 0
@@ -9984,6 +10075,8 @@ MonoBehaviour:
     displayPromptFlash: 0
     manageTasksType: 1
     manageTasksTask: Hello!
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 0
     playerCanDoCanDo: 0
     movePlayerType: 0
@@ -11258,6 +11351,8 @@ MonoBehaviour:
     displayPromptFlash: 1
     manageTasksType: 0
     manageTasksTask: 
+    manageInventoryItem: 
+    manageInventoryAddItem: 0
     playerCanDoType: 0
     playerCanDoCanDo: 0
     movePlayerType: 0

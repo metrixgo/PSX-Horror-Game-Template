@@ -7,6 +7,7 @@ public enum TriggerType
     Wait,
     DisplayPrompt,
     ManageTasks,
+    ManageInventory,
     PlayerCanDo,
     MovePlayer,
     JumpscareAt,
@@ -44,103 +45,63 @@ public enum MovePlayerType
 [System.Serializable]
 public class Trigger
 {
-    [SerializeField] private TriggerType triggerType;
-    public TriggerType TriggerType => triggerType;
+    public TriggerType triggerType;
 
-    [SerializeField] private string displayDialogueSpeaker;
-    [SerializeField] private string displayDialogueContent;
-    [SerializeField] private Color displayDialogueSpeakerColor;
-    [SerializeField] private Color displayDialogueContentColor;
-    [SerializeField] private bool displayDialogueSub;
-    [SerializeField] private bool displayDialogueFlash;
-    [SerializeField] private bool displayDialogueSkippable;
-    [SerializeField] private float displayDialogueFlashLength;
-    public string DisplayDialogueSpeaker => displayDialogueSpeaker;
-    public string DisplayDialogueContent => displayDialogueContent;
-    public Color DisplayDialogueSpeakerColor => displayDialogueSpeakerColor;
-    public Color DisplayDialogueContentColor => displayDialogueContentColor;
-    public bool DisplayDialogueSub => displayDialogueSub;
-    public bool DisplayDialogueFlash => displayDialogueFlash;
-    public bool DisplayDialogueSkippable => displayDialogueSkippable;
-    public float DisplayDialogueFlashLength => displayDialogueFlashLength;
+    public string displayDialogueSpeaker;
+    public string displayDialogueContent;
+    public Color displayDialogueSpeakerColor = Color.white;
+    public Color displayDialogueContentColor = Color.white;
+    public bool displayDialogueSub = true;
+    public bool displayDialogueFlash;
+    public bool displayDialogueSkippable = true;
+    public float displayDialogueFlashLength;
 
-    [SerializeField] private Color changeScreenStartColor;
-    [SerializeField] private Color changeScreenEndColor;
-    [SerializeField] private float changeScreenLength;
-    [SerializeField] private bool changeScreenSub;
-    [SerializeField] private bool changeScreenFlash;
-    public Color ChangeScreenStartColor => changeScreenStartColor;
-    public Color ChangeScreenEndColor => changeScreenEndColor;
-    public float ChangeScreenLength => changeScreenLength;
-    public bool ChangeScreenSub => changeScreenSub;
-    public bool ChangeScreenFlash => changeScreenFlash;
+    public Color changeScreenStartColor = Color.white;
+    public Color changeScreenEndColor = Color.white;
+    public float changeScreenLength = 1.5f;
+    public bool changeScreenSub = true;
+    public bool changeScreenFlash;
 
-    [SerializeField] private float waitLength;
-    public float WaitLength => waitLength;
+    public float waitLength = 1.5f;
 
-    [SerializeField] private string displayPromptPrompt;
-    [SerializeField] private Color displayPromptColor;
-    [SerializeField] private bool displayPromptSub;
-    [SerializeField] private bool displayPromptFlash;
-    public string DisplayPromptPrompt => displayPromptPrompt;
-    public Color DisplayPromptColor => displayPromptColor;
-    public bool DisplayPromptSub => displayPromptSub;
-    public bool DisplayPromptFlash => displayPromptFlash;
+    public string displayPromptPrompt;
+    public Color displayPromptColor = Color.white;
+    public bool displayPromptSub = true;
+    public bool displayPromptFlash = true;
 
-    [SerializeField] private ManageTasksType manageTasksType;
-    [SerializeField] private string manageTasksTask;
-    public ManageTasksType ManageTasksType => manageTasksType;
-    public string ManageTasksTask => manageTasksTask;
+    public ManageTasksType manageTasksType;
+    public string manageTasksTask;
 
-    [SerializeField] private PlayerCanDoType playerCanDoType;
-    [SerializeField] private bool playerCanDoCanDo;
-    public PlayerCanDoType PlayerCanDoType => playerCanDoType;
-    public bool PlayerCanDoCanDo => playerCanDoCanDo;
+    public string manageInventoryItem;
+    public bool manageInventoryAddItem;
 
-    [SerializeField] private MovePlayerType movePlayerType;
-    [SerializeField] private Vector3 movePlayerVector;
-    public MovePlayerType MovePlayerType => movePlayerType;
-    public Vector3 MovePlayerVector => movePlayerVector;
+    public PlayerCanDoType playerCanDoType;
+    public bool playerCanDoCanDo;
 
-    [SerializeField] private Transform jumpscareAtObject;
-    [SerializeField] private float jumpscareAtLength;
-    [SerializeField] private AudioClip jumpscareAtEffect;
-    public Transform JumpscareAtObject => jumpscareAtObject;
-    public float JumpscareAtLength => jumpscareAtLength;
-    public AudioClip JumpscareAtEffect => jumpscareAtEffect;
+    public MovePlayerType movePlayerType;
+    public Vector3 movePlayerVector;
 
-    [SerializeField] private GameObject displayCanvasCanvas;
-    [SerializeField] private AudioClip displayCanvasEffect;
-    [SerializeField] private bool displayCanvasFlash;
-    [SerializeField] private float displayCanvasFlashLength;
-    public GameObject DisplayCanvasCanvas => displayCanvasCanvas;
-    public AudioClip DisplayCanvasEffect => displayCanvasEffect;
-    public bool DisplayCanvasFlash => displayCanvasFlash;
-    public float DisplayCanvasFlashLength => displayCanvasFlashLength;
+    public Transform jumpscareAtObject;
+    public float jumpscareAtLength = 1.5f;
+    public AudioClip jumpscareAtEffect;
 
-    [SerializeField] private AudioClip playSoundSound;
-    [SerializeField] private bool playSoundLocal;
-    [SerializeField] private bool playSoundIsEffect;
-    [SerializeField] private AudioSource playSoundSource;
-    public AudioClip PlaySoundSound => playSoundSound;
-    public bool PlaySoundLocal => playSoundLocal;
-    public bool PlaySoundIsEffect => playSoundIsEffect;
-    public AudioSource PlaySoundSource => playSoundSource;
+    public GameObject displayCanvasCanvas;
+    public AudioClip displayCanvasEffect;
+    public bool displayCanvasFlash;
+    public float displayCanvasFlashLength;
 
-    [SerializeField] private GameObject setObjectObject;
-    [SerializeField] private bool setObjectSetActive;
-    public GameObject SetObjectObject => setObjectObject;
-    public bool SetObjectSetActive => setObjectSetActive;
+    public AudioClip playSoundSound;
+    public bool playSoundLocal = true;
+    public bool playSoundIsEffect = true;
+    public AudioSource playSoundSource;
 
-    [SerializeField] private string loadSceneScene;
-    [SerializeField] private float loadSceneLength;
-    [SerializeField] private bool loadSceneSave;
-    public string LoadSceneScene => loadSceneScene;
-    public float LoadSceneLength => loadSceneLength;
-    public bool LoadSceneSave => loadSceneSave;
+    public GameObject setObjectObject;
+    public bool setObjectSetActive = true;
 
-    [SerializeField] private string displayEndingTitle;
-    [SerializeField] private string displayEndingDescription;
-    public string DisplayEndingTitle => displayEndingTitle;
-    public string DisplayEndingDescription => displayEndingDescription;
+    public string loadSceneScene;
+    public float loadSceneLength = 1.5f;
+    public bool loadSceneSave = true;
+
+    public string displayEndingTitle;
+    public string displayEndingDescription;
 }

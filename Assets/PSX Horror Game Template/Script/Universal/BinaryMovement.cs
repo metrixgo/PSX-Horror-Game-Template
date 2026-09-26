@@ -3,16 +3,21 @@ using UnityEngine;
 
 public class BinaryMovement : MonoBehaviour
 {
+    [Header("Animation")]
     [SerializeField] private bool opened = false;
     [SerializeField] private float openLength = 0.6f;
     [SerializeField] private float closeLength = 0.6f;
     [SerializeField] private float openDelay = 0f;
     [SerializeField] private float closeDelay = 0f;
-    [SerializeField] private AudioClip openEffect;
-    [SerializeField] private AudioClip closeEffect;
+
+    [Header("Movement")]
     [SerializeField] private Vector3 deltaPosition;
     [SerializeField] private Quaternion deltaRotation;
     [SerializeField] private Vector3 deltaScale = Vector3.one;
+
+    [Header("Sounds")]
+    [SerializeField] private AudioClip openEffect;
+    [SerializeField] private AudioClip closeEffect;
 
     private bool isMoving = false;
     private AudioSource ad;

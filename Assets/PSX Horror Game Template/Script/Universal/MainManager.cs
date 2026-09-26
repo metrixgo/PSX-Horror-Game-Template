@@ -98,6 +98,8 @@ public class MainManager : MonoBehaviour
 
     private List<Trigger> triggers = new List<Trigger>();
 
+    private List<string> inventory = new List<string>();
+
     private void Awake()
     {
         instance = this;
@@ -265,7 +267,6 @@ public class MainManager : MonoBehaviour
 
     public void AddTask(string s)
     {
-        if (tasks.Contains(s)) return;
         tasks.Add(s);
         UpdateTask();
     }
@@ -290,6 +291,31 @@ public class MainManager : MonoBehaviour
             s += "- " + Translate(task) + "\n";
         }
         tasksPrompt.text = s;
+    }
+
+    public void AddItem(string s)
+    {
+        inventory.Add(s);
+    }
+
+    public void RemoveItem(string s)
+    {
+        inventory.Remove(s);
+    }
+
+    public bool HasItem(string s)
+    {
+        return inventory.Contains(s);
+    }
+
+    public int ItemCount(string s)
+    {
+        int cnt = 0;
+        foreach (string item in inventory)
+        {
+            if (s == item) cnt++;
+        }
+        return cnt;
     }
 
     public void PlayMusic(AudioClip music)
@@ -323,19 +349,19 @@ public class MainManager : MonoBehaviour
             Trigger trig = triggers[0];
             triggers.RemoveAt(0);
 
-            switch (trig.TriggerType)
+            switch (trig.triggerType)
             {
                 case TriggerType.DisplayDialogue:
                     yield return StartCoroutine(
                         DisplayDialogue(
-                            trig.DisplayDialogueSpeaker,
-                            trig.DisplayDialogueContent,
-                            trig.DisplayDialogueSpeakerColor,
-                            trig.DisplayDialogueContentColor,
-                            trig.DisplayDialogueSub,
-                            trig.DisplayDialogueFlash,
-                            trig.DisplayDialogueSkippable,
-                            trig.DisplayDialogueFlashLength
+                            trig.displayDialogueSpeaker,
+                            trig.displayDialogueContent,
+                            trig.displayDialogueSpeakerColor,
+                            trig.displayDialogueContentColor,
+                            trig.displayDialogueSub,
+                            trig.displayDialogueFlash,
+                            trig.displayDialogueSkippable,
+                            trig.displayDialogueFlashLength
                         )
                     );
                     break;
@@ -343,143 +369,150 @@ public class MainManager : MonoBehaviour
                 case TriggerType.ChangeScreen:
                     yield return StartCoroutine(
                         ChangeScreen(
-                            trig.ChangeScreenStartColor,
-                            trig.ChangeScreenEndColor,
-                            trig.ChangeScreenLength,
-                            trig.ChangeScreenSub,
-                            trig.ChangeScreenFlash
+                            trig.changeScreenStartColor,
+                            trig.changeScreenEndColor,
+                            trig.changeScreenLength,
+                            trig.changeScreenSub,
+                            trig.changeScreenFlash
                         )
                     );
                     break;
 
                 case TriggerType.Wait:
-                    yield return new WaitForSeconds(trig.WaitLength);
+                    yield return new WaitForSeconds(trig.waitLength);
                     break;
 
                 case TriggerType.DisplayPrompt:
-                    SetPrompt(trig.DisplayPromptPrompt, trig.DisplayPromptColor, trig.DisplayPromptSub, trig.DisplayPromptFlash);
+                    SetPrompt(trig.displayPromptPrompt, trig.displayPromptColor, trig.displayPromptSub, trig.displayPromptFlash);
                     break;
 
                 case TriggerType.ManageTasks:
-                    switch (trig.ManageTasksType)
+                    switch (trig.manageTasksType)
                     {
                         case ManageTasksType.AddTask:
-                            AddTask(trig.ManageTasksTask);
+                            AddTask(trig.manageTasksTask);
                             break;
                         case ManageTasksType.RemoveTask:
-                            RemoveTask(trig.ManageTasksTask);
+                            RemoveTask(trig.manageTasksTask);
                             break;
                         case ManageTasksType.ClearTasks:
                             ClearTasks();
                             break;
                         default:
-                            Debug.LogError("Unimplemented Manage Tasks Type: " + trig.ManageTasksType);
+                            Debug.LogError("Unimplemented Manage Tasks Type: " + trig.manageTasksType);
                             break;
                     }
+                    break;
+
+                case TriggerType.ManageInventory:
+                    if (trig.manageInventoryAddItem)
+                        AddItem(trig.manageInventoryItem);
+                    else
+                        RemoveItem(trig.manageInventoryItem);
                     break;
 
                 case TriggerType.PlayerCanDo:
-                    switch (trig.PlayerCanDoType)
-                    {
-                        case PlayerCanDoType.Look:
-                            player.CanLook(trig.PlayerCanDoCanDo);
+                            switch (trig.playerCanDoType)
+                            {
+                                case PlayerCanDoType.Look:
+                                    player.CanLook(trig.playerCanDoCanDo);
+                                    break;
+                                case PlayerCanDoType.Move:
+                                    player.CanMove(trig.playerCanDoCanDo);
+                                    break;
+                                case PlayerCanDoType.Sprint:
+                                    player.CanSprint(trig.playerCanDoCanDo);
+                                    break;
+                                case PlayerCanDoType.Jump:
+                                    player.CanJump(trig.playerCanDoCanDo);
+                                    break;
+                                case PlayerCanDoType.Crouch:
+                                    player.CanCrouch(trig.playerCanDoCanDo);
+                                    break;
+                                case PlayerCanDoType.Interact:
+                                    player.CanInteract(trig.playerCanDoCanDo);
+                                    break;
+                                default:
+                                    Debug.LogError("Unimplemented Player Can Do Type: " + trig.playerCanDoType);
+                                    break;
+                            }
                             break;
-                        case PlayerCanDoType.Move:
-                            player.CanMove(trig.PlayerCanDoCanDo);
+
+                        case TriggerType.MovePlayer:
+                            switch (trig.movePlayerType)
+                            {
+                                case MovePlayerType.Location:
+                                    player.SetPosition(trig.movePlayerVector);
+                                    break;
+                                case MovePlayerType.Direction:
+                                    player.Move(trig.movePlayerVector);
+                                    break;
+                                default:
+                                    Debug.LogError("Unimplemented Move Player Type: " + trig.movePlayerType);
+                                    break;
+                            }
                             break;
-                        case PlayerCanDoType.Sprint:
-                            player.CanSprint(trig.PlayerCanDoCanDo);
+
+                        case TriggerType.JumpscareAt:
+                            player.LookAt(trig.jumpscareAtObject.position, trig.jumpscareAtLength);
+                            PlayEffect(trig.jumpscareAtEffect);
+                            yield return new WaitForSeconds(trig.jumpscareAtLength);
                             break;
-                        case PlayerCanDoType.Jump:
-                            player.CanJump(trig.PlayerCanDoCanDo);
+
+                        case TriggerType.DisplayCanvas:
+                            yield return StartCoroutine(
+                                DisplayCanvas(
+                                    trig.displayCanvasCanvas,
+                                    trig.displayCanvasEffect,
+                                    trig.displayCanvasFlash,
+                                    trig.displayCanvasFlashLength
+                                )
+                            );
                             break;
-                        case PlayerCanDoType.Crouch:
-                            player.CanCrouch(trig.PlayerCanDoCanDo);
+
+                        case TriggerType.PlaySound:
+                            if (trig.playSoundLocal)
+                            {
+                                trig.playSoundSource.clip = trig.playSoundSound;
+                                trig.playSoundSource.Play();
+                            }
+                            else
+                            {
+                                if (trig.playSoundIsEffect) PlayEffect(trig.playSoundSound);
+                                else PlayMusic(trig.playSoundSound);
+                            }
                             break;
-                        case PlayerCanDoType.Interact:
-                            player.CanInteract(trig.PlayerCanDoCanDo);
+
+                        case TriggerType.SetObject:
+                            trig.setObjectObject.SetActive(trig.setObjectSetActive);
                             break;
+
+                        case TriggerType.LoadScene:
+                            yield return StartCoroutine(
+                                LoadScene(
+                                    trig.loadSceneScene,
+                                    trig.loadSceneLength,
+                                    trig.loadSceneSave
+                                )
+                            );
+                            break;
+
+                        case TriggerType.DisplayEnding:
+                            yield return StartCoroutine(
+                                DisplayEnding(
+                                    trig.displayEndingTitle,
+                                    trig.displayEndingDescription
+                                )
+                            );
+                            break;
+
+                        case TriggerType.Custom:
+                            break;
+
                         default:
-                            Debug.LogError("Unimplemented Player Can Do Type: " + trig.PlayerCanDoType);
+                            Debug.LogError("Trigger Not Found: " + trig.triggerType);
                             break;
-                    }
-                    break;
-
-                case TriggerType.MovePlayer:
-                    switch (trig.MovePlayerType)
-                    {
-                        case MovePlayerType.Location:
-                            player.SetPosition(trig.MovePlayerVector);
-                            break;
-                        case MovePlayerType.Direction:
-                            player.Move(trig.MovePlayerVector);
-                            break;
-                        default:
-                            Debug.LogError("Unimplemented Move Player Type: " + trig.MovePlayerType);
-                            break;
-                    }
-                    break;
-
-                case TriggerType.JumpscareAt:
-                    player.LookAt(trig.JumpscareAtObject.position, trig.JumpscareAtLength);
-                    PlayEffect(trig.JumpscareAtEffect);
-                    yield return new WaitForSeconds(trig.JumpscareAtLength);
-                    break;
-
-                case TriggerType.DisplayCanvas:
-                    yield return StartCoroutine(
-                        DisplayCanvas(
-                            trig.DisplayCanvasCanvas,
-                            trig.DisplayCanvasEffect,
-                            trig.DisplayCanvasFlash,
-                            trig.DisplayCanvasFlashLength
-                        )
-                    );
-                    break;
-
-                case TriggerType.PlaySound:
-                    if (trig.PlaySoundLocal)
-                    {
-                        trig.PlaySoundSource.clip = trig.PlaySoundSound;
-                        trig.PlaySoundSource.Play();
-                    }
-                    else
-                    {
-                        if (trig.PlaySoundIsEffect) PlayEffect(trig.PlaySoundSound);
-                        else PlayMusic(trig.PlaySoundSound);
-                    }
-                    break;
-
-                case TriggerType.SetObject:
-                    trig.SetObjectObject.SetActive(trig.SetObjectSetActive);
-                    break;
-
-                case TriggerType.LoadScene:
-                    yield return StartCoroutine(
-                        LoadScene(
-                            trig.LoadSceneScene,
-                            trig.LoadSceneLength,
-                            trig.LoadSceneSave
-                        )
-                    );
-                    break;
-
-                case TriggerType.DisplayEnding:
-                    yield return StartCoroutine(
-                        DisplayEnding(
-                            trig.DisplayEndingTitle,
-                            trig.DisplayEndingDescription
-                        )
-                    );
-                    break;
-
-                case TriggerType.Custom:
-                    break;
-
-                default:
-                    Debug.LogError("Trigger Not Found: " + trig.TriggerType);
-                    break;
-            }
+                        }
         }
 
         IsPlayerActive = true;
@@ -588,7 +621,7 @@ public class MainManager : MonoBehaviour
 
         if (flash) IsPlayerActive = false;
 
-        if(!flash) CanPause = true;
+        if (!flash) CanPause = true;
     }
 
     private IEnumerator LoadScene(string scene, float length, bool save)

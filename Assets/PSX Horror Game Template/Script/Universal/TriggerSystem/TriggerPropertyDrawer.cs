@@ -57,6 +57,11 @@ public class TriggerPropertyDrawer : PropertyDrawer
                     DrawProperty(ref rect, property, "manageTasksTask", "Task");
                 break;
 
+            case TriggerType.ManageInventory:
+                DrawProperty(ref rect, property, "manageInventoryItem", "Item");
+                DrawProperty(ref rect, property, "manageInventoryAddItem", "Add Item");
+                break;
+
             case TriggerType.PlayerCanDo:
                 DrawProperty(ref rect, property, "playerCanDoType", "Type");
                 DrawProperty(ref rect, property, "playerCanDoCanDo", "Can Do");
@@ -172,6 +177,11 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 SerializedProperty manageTasksType = AddHeightOfProperty(ref height, property, "manageTasksType");
                 if ((ManageTasksType)manageTasksType.enumValueIndex != ManageTasksType.ClearTasks)
                     AddHeightOfProperty(ref height, property, "manageTasksTask");
+                break;
+
+            case TriggerType.ManageInventory:
+                AddHeightOfProperty(ref height, property, "manageInventoryItem");
+                AddHeightOfProperty(ref height, property, "manageInventoryAddItem");
                 break;
 
             case TriggerType.PlayerCanDo:
