@@ -1,29 +1,60 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PutDownItem : MonoBehaviour
 {
-    [SerializeField] private AudioClip soundEffect;
-    [SerializeField] private GameObject item;
+    [Header("References")]
+    [SerializeField] private AudioClip putDownEffect;
+    [SerializeField] private GameObject pickUpItem;
 
-    private Collider[] colls;
+    [Header("Additional Effect")]
+    [SerializeField] private bool oneTimeUse = true;
+    [SerializeField] private UnityEvent additionalEffect;
 
-    private void Start()
+    private bool putDownBefore = false;
+
+    private string itemName;
+    private int itemLayer;
+    private Transform itemParent;
+    private Transform[] allTransforms;
+    private Collider[] allColliders;
+
+    private void Update()
     {
-        colls = item.GetComponents<Collider>();
+        if (pickUpItem == null) Destroy(gameObject);
+    }
+
+    public void Configure(string s)
+    {
+        itemName = s;
+        itemLayer = pickUpItem.layer;
+        itemParent = pickUpItem.transform.parent;
+        allTransforms = pickUpItem.GetComponentsInChildren<Transform>(true);
+        allColliders = pickUpItem.GetComponentsInChildren<Collider>(true);
     }
 
     public void Putdown()
     {
-        if (MainManager.instance.IsPaused) return;
+        pickUpItem.transform.SetParent(itemParent);
+        pickUpItem.transform.position = transform.position;
+        pickUpItem.transform.rotation = transform.rotation;
+        pickUpItem.transform.localScale = transform.localScale;
 
-        MainManager.instance.RemoveItem(item.name);
-        MainManager.instance.PlayEffect(soundEffect);
+        foreach (Transform t in allTransforms)
+            t.gameObject.layer = itemLayer;
 
-        item.transform.SetParent(null);
-        item.transform.position = transform.position;
-        item.transform.rotation = transform.rotation;
-        item.tag = "Interactable";
-        foreach (Collider c in colls) c.enabled = true;
+        foreach (Collider c in allColliders)
+            c.enabled = true;
+
         gameObject.SetActive(false);
+
+        if (!putDownBefore || !oneTimeUse)
+        {
+            putDownBefore = true;
+            additionalEffect.Invoke();
+        }
+
+        MainManager.instance.RemoveItem(itemName);
+        MainManager.instance.PlayEffect(putDownEffect);
     }
 }

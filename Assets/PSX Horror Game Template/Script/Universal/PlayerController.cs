@@ -21,7 +21,6 @@ public class PlayerController : MonoBehaviour
 
     [Header("Layers")]
     [SerializeField] private LayerMask environmentLayer;
-    [SerializeField] private LayerMask interactableLayer;
 
     private AudioSource playerAd;
 
@@ -89,8 +88,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 playerHoldPosition = new Vector3(0.15f, -0.1f, 0.2f);
 
 
-    float[] bobAmplitudes = { 0.05f, 0.1f, 0.2f, 0.03f, 0.08f};
-    float[] bobFrequencies = { 0.05f, 0.1f, 0.2f, 0.05f, 0.1f};
+    float[] bobAmplitudes = { 0.08f, 0.15f, 0.3f, 0.05f, 0.12f};
+    float[] bobFrequencies = { 0.08f, 0.15f, 0.3f, 0.05f, 0.12f};
     float curAmplitude = 0.1f;
     float curFrequency = 0.1f;
     float[] bobSteps = { 0.002f, 0.004f, 0.01f, 0.002f, 0.003f };
@@ -294,7 +293,7 @@ public class PlayerController : MonoBehaviour
     {
         Ray ray = new Ray(playerCam.position, playerCam.forward);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, reachRange, interactableLayer, QueryTriggerInteraction.Collide) &&
+        if (Physics.Raycast(ray, out RaycastHit hit, reachRange, Physics.AllLayers, QueryTriggerInteraction.Collide) &&
             hit.collider.CompareTag("Interactable"))
         {
             newItem = hit.collider.GetComponent<Interactable>();

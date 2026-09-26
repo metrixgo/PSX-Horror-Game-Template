@@ -3,15 +3,18 @@ using UnityEngine.Events;
 
 public class PickUpItem : MonoBehaviour
 {
+    [Header("Item Name")]
+    [SerializeField] private string itemName;
+
     [Header("References")]
     [SerializeField] private AudioClip pickUpEffect;
     [SerializeField] private GameObject playerHold;
-    [SerializeField] private GameObject putBackItem;
+    [SerializeField] private PutDownItem putDownItem;
 
     [Header("Offsets")]
     [SerializeField] private Vector3 position;
     [SerializeField] private Quaternion rotation;
-    [SerializeField] private Vector3 scale = Vector3.one;
+    [SerializeField] private float scale = 1f;
 
     [Header("Additional Effect")]
     [SerializeField] private bool oneTimeUse = true;
@@ -19,17 +22,20 @@ public class PickUpItem : MonoBehaviour
 
     private bool pickedUpBefore = false;
 
-    private Collider[] colliders;
+    private Transform[] allTransforms;
+    private Collider[] allColliders;
 
-    private void Start()
+    private void Awake()
     {
-        colliders = GetComponents<Collider>();
+        allTransforms = gameObject.GetComponentsInChildren<Transform>(true);
+        allColliders = gameObject.GetComponentsInChildren<Collider>(true);
+
+        if (putDownItem != null)
+            putDownItem.Configure(itemName);
     }
 
     public void PickUp()
     {
-        if (MainManager.instance.IsPaused) return;
-
         if (playerHold != null)
         {
             if (playerHold.transform.childCount > 0)
@@ -42,33 +48,38 @@ public class PickUpItem : MonoBehaviour
             }
             else
             {
-                tag = "Untagged";
-
-                foreach(Collider collider in colliders)
-                    collider.enabled = false;
+                MainManager.instance.AddItem(itemName);
+                MainManager.instance.PlayEffect(pickUpEffect);
 
                 transform.SetParent(playerHold.transform);
                 transform.localPosition = position;
                 transform.localRotation = rotation;
-                transform.localScale = scale;
+                transform.localScale *= scale;
 
-                if(!pickedUpBefore && oneTimeUse)
+                foreach (Transform t in allTransforms)
+                    t.gameObject.layer = playerHold.layer;
+
+                foreach (Collider c in allColliders)
+                    c.enabled = false;
+
+                if (!pickedUpBefore || !oneTimeUse)
                 {
                     pickedUpBefore = true;
                     additionalEffect.Invoke();
                 }
 
-                if(putBackItem != null)
-                    putBackItem.SetActive(true);
+                if (putDownItem != null)
+                    putDownItem.gameObject.SetActive(true);
+
             }
         }
         else
         {
+            MainManager.instance.AddItem(itemName);
+            MainManager.instance.PlayEffect(pickUpEffect);
+
             additionalEffect.Invoke();
             Destroy(gameObject);
         }
-
-        MainManager.instance.AddItem(name);
-        MainManager.instance.PlayEffect(pickUpEffect);
     }
 }
