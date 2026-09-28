@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform playerBody;
 
     [Header("Layers")]
-    [SerializeField] private LayerMask environmentLayer;
+    [SerializeField] private LayerMask physicalLayer;
 
     private AudioSource playerAd;
 
@@ -241,7 +241,7 @@ public class PlayerController : MonoBehaviour
             move.normalized,
             out RaycastHit hit,
                 controller.skinWidth + 0.1f,
-            environmentLayer
+            physicalLayer
                 ) &&
             hit.normal.y < -0.01f &&
             hit.normal.y > -0.99f)
@@ -268,7 +268,7 @@ public class PlayerController : MonoBehaviour
                     transform.position + Vector3.up * controller.radius,
                     transform.position + Vector3.up * (standHeight - controller.radius),
                     controller.radius,
-                    environmentLayer
+                    physicalLayer
                 );
 
         if (hasCeiling && !isCrouched) isCrouched = true;
@@ -293,21 +293,26 @@ public class PlayerController : MonoBehaviour
     {
         Ray ray = new Ray(playerCam.position, playerCam.forward);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, reachRange, Physics.AllLayers, QueryTriggerInteraction.Collide) &&
-            hit.collider.CompareTag("Interactable"))
+        if (Physics.Raycast(ray, out RaycastHit hit, reachRange, Physics.AllLayers, QueryTriggerInteraction.Collide))
         {
-            newItem = hit.collider.GetComponent<Interactable>();
+            newItem = hit.collider.GetComponentInParent<Interactable>();
 
             if (newItem == null)
-                Debug.LogError("Interactable Object Not Having Interactable Script: " + hit.collider.name);
+            {
+                if (curItem != null) curItem.SetFocused(false);
 
-            if (curItem != null && curItem != newItem)
-                curItem.SetFocused(false);
+                curItem = null;
+            }
+            else
+            {
+                if (curItem != null && curItem != newItem)
+                    curItem.SetFocused(false);
 
-            curItem = newItem;
+                curItem = newItem;
 
-            if (curItem != null)
-                curItem.SetFocused(true);
+                if (curItem != null)
+                    curItem.SetFocused(true);
+            }
         }
         else
         {
