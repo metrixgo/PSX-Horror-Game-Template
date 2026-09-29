@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,6 +13,30 @@ public enum PlayerState
     CrouchWalk,
 }
 
+public enum SurfaceType
+{
+    DirtyGround,
+    Grass,
+    Gravel,
+    Leaves,
+    Metal,
+    Mud,
+    Rock,
+    Sand,
+    Snow,
+    Tile,
+    Water,
+    Wood,
+}
+
+[System.Serializable]
+public class SurfaceSound
+{
+    public SurfaceType surfaceTag;
+    public AudioClip[] walkSounds;
+    public AudioClip[] sprintSounds;
+}
+
 public class PlayerController : MonoBehaviour
 {
     [Header("Player")]
@@ -21,6 +46,9 @@ public class PlayerController : MonoBehaviour
 
     [Header("Layers")]
     [SerializeField] private LayerMask physicalLayer;
+
+    [Header("Footstep Sounds")]
+    [SerializeField] private SurfaceSound[] surfaceSounds;
 
     private AudioSource playerAd;
 
@@ -56,13 +84,14 @@ public class PlayerController : MonoBehaviour
     private float walkSpeed = 3f;
     private float sprintSpeed = 6f;
     private float crouchSpeed = 1.5f;
+        
+    private float curSpeed = 0f;
 
     private float camHeight = 1.75f;
     private float standHeight = 2f;
     private float crouchHeight = 1f;
     private float standCamHeight = 1.75f;
     private float crouchCamHeight = 0.9f;
-    private float crouchTransitionLength = 0.3f;
     private float crouchProgress = 0f;
 
     private float jumpStrength = 6f;
@@ -84,18 +113,19 @@ public class PlayerController : MonoBehaviour
 
     private PlayerState state = PlayerState.Idle;
 
+    private float stepT = 0f;
     private float camBobbingT = 0f;
     private Vector3 playerHoldPosition = new Vector3(0.15f, -0.1f, 0.2f);
 
-
     float[] bobAmplitudes = { 0.08f, 0.15f, 0.3f, 0.05f, 0.12f};
     float[] bobFrequencies = { 0.08f, 0.15f, 0.3f, 0.05f, 0.12f};
-    float curAmplitude = 0.1f;
-    float curFrequency = 0.1f;
+    float curBobAmplitude = 0.08f;
+    float curBobFrequency = 0.08f;
     float[] bobSteps = { 0.002f, 0.004f, 0.01f, 0.002f, 0.003f };
-    float[] bobSpeeds = { 0.6f, 4f, 8f, 0.6f, 2f };
+    float[] bobSpeeds = { 0.6f, 4f, 8f, 0.6f, 3f };
     float swayStep = 0.02f;
     float maxSwayStep = 0.15f;
+
     float transitionSpeed = 10f;
 
     private void Awake()
@@ -155,6 +185,7 @@ public class PlayerController : MonoBehaviour
         if (canInteract) HandleInteractions();
 
         MovePlayer();
+        FootstepSounds();
     }
 
     private void GetInput()
@@ -198,11 +229,11 @@ public class PlayerController : MonoBehaviour
         float bobAmplitude = bobAmplitudes[curState];
         float bobFrequency = bobFrequencies[curState];
 
-        curAmplitude = Mathf.Lerp(curAmplitude, bobAmplitude, Time.deltaTime * transitionSpeed);
-        curFrequency = Mathf.Lerp(curFrequency, bobFrequency, Time.deltaTime * transitionSpeed);
+        curBobAmplitude = Mathf.Lerp(curBobAmplitude, bobAmplitude, Time.deltaTime * transitionSpeed);
+        curBobFrequency = Mathf.Lerp(curBobFrequency, bobFrequency, Time.deltaTime * transitionSpeed);
 
-        camBob.AmplitudeGain = curAmplitude;
-        camBob.FrequencyGain = curFrequency;
+        camBob.AmplitudeGain = curBobAmplitude;
+        camBob.FrequencyGain = curBobFrequency;
 
         float bobStep = bobSteps[curState];
         float bobSpeed = bobSpeeds[curState];
@@ -226,13 +257,12 @@ public class PlayerController : MonoBehaviour
 
     private void HandleMove()
     {
-        float speed = state == PlayerState.Sprint ? sprintSpeed : walkSpeed;
-        speed = Mathf.Lerp(speed, crouchSpeed, crouchProgress);
+        curSpeed = Mathf.Lerp((state == PlayerState.Sprint ? sprintSpeed : walkSpeed), crouchSpeed, crouchProgress);
 
         Vector3 camRight = new Vector3(playerCam.right.x, 0f, playerCam.right.z).normalized;
         Vector3 camForward = new Vector3(playerCam.forward.x, 0f, playerCam.forward.z).normalized;
 
-        move = (camRight * moveInput.x + camForward * moveInput.y).normalized * speed;
+        move = (camRight * moveInput.x + camForward * moveInput.y).normalized * curSpeed;
 
         if (move.magnitude > 0.01f &&
             Physics.SphereCast(
@@ -274,7 +304,7 @@ public class PlayerController : MonoBehaviour
         if (hasCeiling && !isCrouched) isCrouched = true;
 
         float goalProgress = isCrouched ? 1f : 0f;
-        crouchProgress = Mathf.MoveTowards(crouchProgress, goalProgress, Time.deltaTime / crouchTransitionLength);
+        crouchProgress = Mathf.Lerp(crouchProgress, goalProgress, Time.deltaTime * transitionSpeed);
 
         controller.height = Mathf.Lerp(standHeight, crouchHeight, crouchProgress);
         controller.center = Vector3.up * controller.height * 0.5f;
@@ -291,9 +321,7 @@ public class PlayerController : MonoBehaviour
 
     private void HandleInteractions()
     {
-        Ray ray = new Ray(playerCam.position, playerCam.forward);
-
-        if (Physics.Raycast(ray, out RaycastHit hit, reachRange, Physics.AllLayers, QueryTriggerInteraction.Collide))
+        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, reachRange))
         {
             newItem = hit.collider.GetComponentInParent<Interactable>();
 
@@ -331,6 +359,32 @@ public class PlayerController : MonoBehaviour
     {
         CollisionFlags flags = controller.Move((move + Vector3.up * velocityY) * Time.deltaTime);
         if ((flags & CollisionFlags.Above) != 0 && velocityY > 0f) velocityY = groundGravity;
+    }
+
+    private void FootstepSounds()//NEED TO RAYCAST A SPHERE TO PREVENT NO SOUNDS ON EDGE!!!
+    {
+        stepT = Mathf.Clamp(stepT - Time.deltaTime, 0f, Mathf.PI / bobSpeeds[(int)state]);
+
+        if (!controller.isGrounded || state == PlayerState.Idle || state == PlayerState.CrouchIdle || stepT > 0) return;
+
+        stepT = Mathf.PI / bobSpeeds[(int)state];
+
+        if (Physics.Raycast(transform.position, -transform.up, out RaycastHit hit, 0.1f))
+        {
+            string surfaceTag = hit.collider.tag;
+            foreach (SurfaceSound surfaceSound in surfaceSounds)
+            {
+                if (surfaceSound.surfaceTag.ToString() == surfaceTag)
+                {
+                    if(state == PlayerState.Sprint)
+                        playerAd.PlayOneShot(surfaceSound.sprintSounds[Random.Range(0, surfaceSound.sprintSounds.Length)]);
+                    else
+                        playerAd.PlayOneShot(surfaceSound.walkSounds[Random.Range(0, surfaceSound.walkSounds.Length)]);
+
+                    break;
+                }
+            }
+        }
     }
 
     public void Move(Vector3 dir)

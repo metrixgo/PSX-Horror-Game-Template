@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -14,10 +15,9 @@ public class PutDownItem : MonoBehaviour
     private bool putDownBefore = false;
 
     private string itemName;
-    private int itemLayer;
     private Transform itemParent;
-    private Transform[] allTransforms;
-    private Collider[] allColliders;
+    private Dictionary<Transform, int> transformLayers = new Dictionary<Transform, int>();
+    private Dictionary<Collider, bool> colliderEnables = new Dictionary<Collider, bool>();
 
     private void Update()
     {
@@ -27,10 +27,13 @@ public class PutDownItem : MonoBehaviour
     public void Configure(string s)
     {
         itemName = s;
-        itemLayer = pickUpItem.layer;
         itemParent = pickUpItem.transform.parent;
-        allTransforms = pickUpItem.GetComponentsInChildren<Transform>(true);
-        allColliders = pickUpItem.GetComponentsInChildren<Collider>(true);
+
+        foreach (Transform t in pickUpItem.GetComponentsInChildren<Transform>(true))
+            transformLayers[t] = t.gameObject.layer;
+
+        foreach (Collider c in pickUpItem.GetComponentsInChildren<Collider>(true))
+            colliderEnables[c] = c.enabled;
     }
 
     public void Putdown()
@@ -40,11 +43,11 @@ public class PutDownItem : MonoBehaviour
         pickUpItem.transform.rotation = transform.rotation;
         pickUpItem.transform.localScale = transform.localScale;
 
-        foreach (Transform t in allTransforms)
-            t.gameObject.layer = itemLayer;
+        foreach (Transform t in transformLayers.Keys)
+            t.gameObject.layer = transformLayers[t];
 
-        foreach (Collider c in allColliders)
-            c.enabled = true;
+        foreach (Collider c in colliderEnables.Keys)
+            c.enabled = colliderEnables[c];
 
         gameObject.SetActive(false);
 
