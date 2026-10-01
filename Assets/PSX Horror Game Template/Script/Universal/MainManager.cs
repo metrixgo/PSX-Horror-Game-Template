@@ -34,11 +34,12 @@ public class MainManager : MonoBehaviour
     public bool IsPlayerActive { get; private set; } = true;
     public bool IsExecutingTriggers { get; private set; } = false;
     public bool IsPaused { get; private set; } = false;
-    public bool IsAtEnding { get; private set; } = false;
 
     private bool CanPause = true;
 
     private string mainMenuName = "MainMenu";
+
+    private string translationTableName = "TranslationTable";
 
     private InputSystem input;
 
@@ -51,13 +52,18 @@ public class MainManager : MonoBehaviour
     [Header("Player")]
     [SerializeField] private PlayerController player;
 
-    [Header("Sounds")]
+    [Header("Sound Players")]
     [SerializeField] private AudioSource musicPlayer;
     [SerializeField] private AudioSource effectsPlayer;
+    [SerializeField] private AudioSource writingEffectsPlayer;
+
+    [Header("Sounds")]
+    [SerializeField] private AudioClip writingEffect;
+    [SerializeField] private AudioClip endingEffect;
+    [SerializeField] private AudioClip selectEffect;
 
     [Header("Pause")]
     [SerializeField] private GameObject pausedScreen;
-    [SerializeField] private Image pausedFrontScreen;
     [SerializeField] private Slider sensitivity;
 
     [Header("Dialogue")]
@@ -67,12 +73,12 @@ public class MainManager : MonoBehaviour
     [SerializeField] private GameObject subdialogueScreen;
     [SerializeField] private TextMeshProUGUI subdialogueSpeaker;
     [SerializeField] private TextMeshProUGUI subdialogueContent;
-    private AudioClip writingEffect;
     private float[] displayGap = { 0.02f, 0.04f };
 
     [Header("Screen")]
-    [SerializeField] private Image screen;
     [SerializeField] private Image subscreen;
+    [SerializeField] private Image screen;
+    [SerializeField] private Image superscreen;
 
     [Header("Prompts")]
     [SerializeField] private TextMeshProUGUI prompt;
@@ -90,11 +96,12 @@ public class MainManager : MonoBehaviour
 
     [Header("Ending")]
     [SerializeField] private GameObject endingScreen;
-    [SerializeField] private Image endingFrontScreen;
     [SerializeField] private TextMeshProUGUI endingTitle;
     [SerializeField] private TextMeshProUGUI endingDescription;
     [SerializeField] private GameObject endingReturnMenuButton;
-    private AudioClip endingEffect;
+
+    [Header("Start Trigger")]
+    [SerializeField] private List<Trigger> startTriggers = new List<Trigger>();
 
     private List<Trigger> triggers = new List<Trigger>();
 
@@ -112,6 +119,13 @@ public class MainManager : MonoBehaviour
         GetData();
 
         sensitivity.value = data.sensitivity;
+        musicPlayer.volume = data.musicVolume;
+        effectsPlayer.volume = data.effectsVolume;
+        writingEffectsPlayer.volume = data.effectsVolume;
+        writingEffectsPlayer.clip = writingEffect;
+
+        foreach (Trigger trig in startTriggers)
+            triggers.Add(trig);
     }
 
     private void OnEnable()
@@ -126,12 +140,12 @@ public class MainManager : MonoBehaviour
 
     private void Update()
     {
-        if (!IsExecutingTriggers && triggers.Count > 0 && gameState == GameState.Normal)
-            StartCoroutine(ExecuteTriggers());
-
         GetInput();
         UpdatePrompts();
         CheckPause();
+
+        if (!IsExecutingTriggers && triggers.Count > 0 && gameState == GameState.Normal)
+            StartCoroutine(ExecuteTriggers());
     }
 
     private void GetInput()
@@ -184,6 +198,10 @@ public class MainManager : MonoBehaviour
         Time.timeScale = 0f;
 
         IsPaused = true;
+
+        musicPlayer.volume = 0;
+        effectsPlayer.volume = 0;
+        writingEffectsPlayer.volume = 0;
     }
 
     public void Resume()
@@ -197,6 +215,10 @@ public class MainManager : MonoBehaviour
         Time.timeScale = 1f;
 
         IsPaused = false;
+
+        musicPlayer.volume = data.musicVolume;
+        effectsPlayer.volume = data.effectsVolume;
+        writingEffectsPlayer.volume = data.effectsVolume;
     }
 
     public void ReturnToMainMenu()
@@ -237,10 +259,10 @@ public class MainManager : MonoBehaviour
 
     public string Translate(string s)
     {
-        StringTable table = LocalizationSettings.StringDatabase.GetTable("TranslationTable");
+        StringTable table = LocalizationSettings.StringDatabase.GetTable(translationTableName);
 
         if (table != null && table.GetEntry(s) != null)
-            return LocalizationSettings.StringDatabase.GetLocalizedString("TranslationTable", s);
+            return LocalizationSettings.StringDatabase.GetLocalizedString(translationTableName, s);
         else
             return s;
     }
@@ -334,11 +356,6 @@ public class MainManager : MonoBehaviour
         musicPlayer.Stop();
     }
 
-    public void StopEffect()
-    {
-        effectsPlayer.Stop();
-    }
-
     private IEnumerator ExecuteTriggers()
     {
         IsPlayerActive = false;
@@ -356,8 +373,6 @@ public class MainManager : MonoBehaviour
                         DisplayDialogue(
                             trig.displayDialogueSpeaker,
                             trig.displayDialogueContent,
-                            trig.displayDialogueSpeakerColor,
-                            trig.displayDialogueContentColor,
                             trig.displayDialogueSub,
                             trig.displayDialogueFlash,
                             trig.displayDialogueSkippable,
@@ -412,172 +427,154 @@ public class MainManager : MonoBehaviour
                     break;
 
                 case TriggerType.PlayerCanDo:
-                            switch (trig.playerCanDoType)
-                            {
-                                case PlayerCanDoType.Look:
-                                    player.CanLook(trig.playerCanDoCanDo);
-                                    break;
-                                case PlayerCanDoType.Move:
-                                    player.CanMove(trig.playerCanDoCanDo);
-                                    break;
-                                case PlayerCanDoType.Sprint:
-                                    player.CanSprint(trig.playerCanDoCanDo);
-                                    break;
-                                case PlayerCanDoType.Jump:
-                                    player.CanJump(trig.playerCanDoCanDo);
-                                    break;
-                                case PlayerCanDoType.Crouch:
-                                    player.CanCrouch(trig.playerCanDoCanDo);
-                                    break;
-                                case PlayerCanDoType.Interact:
-                                    player.CanInteract(trig.playerCanDoCanDo);
-                                    break;
-                                default:
-                                    Debug.LogError("Unimplemented Player Can Do Type: " + trig.playerCanDoType);
-                                    break;
-                            }
+                    switch (trig.playerCanDoType)
+                    {
+                        case PlayerCanDoType.Look:
+                            player.CanLook(trig.playerCanDoCanDo);
                             break;
-
-                        case TriggerType.MovePlayer:
-                            switch (trig.movePlayerType)
-                            {
-                                case MovePlayerType.Location:
-                                    player.SetPosition(trig.movePlayerVector);
-                                    break;
-                                case MovePlayerType.Direction:
-                                    player.Move(trig.movePlayerVector);
-                                    break;
-                                default:
-                                    Debug.LogError("Unimplemented Move Player Type: " + trig.movePlayerType);
-                                    break;
-                            }
+                        case PlayerCanDoType.Move:
+                            player.CanMove(trig.playerCanDoCanDo);
                             break;
-
-                        case TriggerType.JumpscareAt:
-                            player.LookAt(trig.jumpscareAtObject.position, trig.jumpscareAtLength);
-                            PlayEffect(trig.jumpscareAtEffect);
-                            yield return new WaitForSeconds(trig.jumpscareAtLength);
+                        case PlayerCanDoType.Sprint:
+                            player.CanSprint(trig.playerCanDoCanDo);
                             break;
-
-                        case TriggerType.DisplayCanvas:
-                            yield return StartCoroutine(
-                                DisplayCanvas(
-                                    trig.displayCanvasCanvas,
-                                    trig.displayCanvasEffect,
-                                    trig.displayCanvasFlash,
-                                    trig.displayCanvasFlashLength
-                                )
-                            );
+                        case PlayerCanDoType.Jump:
+                            player.CanJump(trig.playerCanDoCanDo);
                             break;
-
-                        case TriggerType.PlaySound:
-                            if (trig.playSoundLocal)
-                            {
-                                trig.playSoundSource.clip = trig.playSoundSound;
-                                trig.playSoundSource.Play();
-                            }
-                            else
-                            {
-                                if (trig.playSoundIsEffect) PlayEffect(trig.playSoundSound);
-                                else PlayMusic(trig.playSoundSound);
-                            }
+                        case PlayerCanDoType.Crouch:
+                            player.CanCrouch(trig.playerCanDoCanDo);
                             break;
-
-                        case TriggerType.SetObject:
-                            trig.setObjectObject.SetActive(trig.setObjectSetActive);
+                        case PlayerCanDoType.Interact:
+                            player.CanInteract(trig.playerCanDoCanDo);
                             break;
-
-                        case TriggerType.LoadScene:
-                            yield return StartCoroutine(
-                                LoadScene(
-                                    trig.loadSceneScene,
-                                    trig.loadSceneLength,
-                                    trig.loadSceneSave
-                                )
-                            );
-                            break;
-
-                        case TriggerType.DisplayEnding:
-                            yield return StartCoroutine(
-                                DisplayEnding(
-                                    trig.displayEndingTitle,
-                                    trig.displayEndingDescription
-                                )
-                            );
-                            break;
-
-                        case TriggerType.Custom:
-                            break;
-
                         default:
-                            Debug.LogError("Trigger Not Found: " + trig.triggerType);
+                            Debug.LogError("Unimplemented Player Can Do Type: " + trig.playerCanDoType);
                             break;
-                        }
+                    }
+                    break;
+
+                case TriggerType.MovePlayer:
+                    switch (trig.movePlayerType)
+                    {
+                        case MovePlayerType.Location:
+                            player.SetPosition(trig.movePlayerVector);
+                            break;
+                        case MovePlayerType.Direction:
+                            player.Move(trig.movePlayerVector);
+                            break;
+                        default:
+                            Debug.LogError("Unimplemented Move Player Type: " + trig.movePlayerType);
+                            break;
+                    }
+                    break;
+
+                case TriggerType.JumpscareAt:
+                    player.LookAt(trig.jumpscareAtObject.position, trig.jumpscareAtLength);
+                    PlayEffect(trig.jumpscareAtEffect);
+                    yield return new WaitForSeconds(trig.jumpscareAtLength);
+                    break;
+
+                case TriggerType.DisplayCanvas:
+                    yield return StartCoroutine(
+                        DisplayCanvas(
+                            trig.displayCanvasCanvas,
+                            trig.displayCanvasEffect,
+                            trig.displayCanvasFlash,
+                            trig.displayCanvasFlashLength
+                        )
+                    );
+                    break;
+
+                case TriggerType.PlaySound:
+                    if (trig.playSoundLocal)
+                    {
+                        trig.playSoundSource.clip = trig.playSoundSound;
+                        trig.playSoundSource.Play();
+                    }
+                    else
+                    {
+                        if (trig.playSoundIsEffect) PlayEffect(trig.playSoundSound);
+                        else PlayMusic(trig.playSoundSound);
+                    }
+                    break;
+
+                case TriggerType.SetObject:
+                    trig.setObjectObject.SetActive(trig.setObjectSetActive);
+                    break;
+
+                case TriggerType.LoadScene:
+                    yield return StartCoroutine(
+                        LoadScene(
+                            trig.loadSceneScene,
+                            trig.loadSceneLength,
+                            trig.loadSceneSave
+                        )
+                    );
+                    break;
+
+                case TriggerType.DisplayEnding:
+                    yield return StartCoroutine(
+                        DisplayEnding(
+                            trig.displayEndingTitle,
+                            trig.displayEndingDescription
+                        )
+                    );
+                    break;
+
+                default:
+                    Debug.LogError("Trigger Not Found: " + trig.triggerType);
+                    break;
+            }
         }
 
         IsPlayerActive = true;
         IsExecutingTriggers = false;
     }
 
-    private IEnumerator DisplayDialogue(string speaker, string content, Color speakerColor, Color contentColor, bool sub, bool flash, bool skippable, float flashLength)
+    private IEnumerator DisplayDialogue(string speaker, string content, bool sub, bool flash, bool skippable, float flashLength)
     {
-        effectsPlayer.clip = writingEffect;
-        effectsPlayer.Play();
+        if (flash) IsPlayerActive = true;
+
+        writingEffectsPlayer.Play();
+
+        TextMeshProUGUI targetSpeaker = sub ? subdialogueSpeaker : dialogueSpeaker;
+        TextMeshProUGUI targetContent = sub ? subdialogueContent : dialogueContent;
+        GameObject targetScreen = sub ? subdialogueScreen : dialogueScreen;
 
         speaker = Translate(speaker);
         content = Translate(content);
+        targetSpeaker.text = speaker;
+        targetContent.text = content;
+        targetContent.maxVisibleCharacters = 0;
+        targetScreen.SetActive(true);
 
-        if (flash) IsPlayerActive = true;
-
-        if (sub)
-        {
-            subdialogueSpeaker.text = speaker;
-            subdialogueContent.text = "";
-            subdialogueSpeaker.color = speakerColor;
-            subdialogueContent.color = contentColor;
-            subdialogueScreen.SetActive(true);
-        }
-        else
-        {
-            dialogueSpeaker.text = speaker;
-            dialogueContent.text = "";
-            dialogueSpeaker.color = speakerColor;
-            dialogueContent.color = contentColor;
-            dialogueScreen.SetActive(true);
-        }
-
-        int idx = 0;
+        targetContent.ForceMeshUpdate();
+        int contentLength = targetContent.textInfo.characterCount;
         float t = 0, gap = displayGap[data.language];
-
-        yield return new WaitForSeconds(0.05f);
-        while (idx < content.Length)
+        while (targetContent.maxVisibleCharacters < contentLength)
         {
             t += Time.deltaTime;
             if (t >= gap)
             {
                 t -= gap;
-                if (sub) subdialogueContent.text += content[idx];
-                else dialogueContent.text += content[idx];
-                idx++;
+                targetContent.maxVisibleCharacters++;
             }
-            if ((skipInput && skippable))
+            if ((skipInput && skippable && !IsPaused))
             {
-                if (sub) subdialogueContent.text = content;
-                else dialogueContent.text = content;
+                targetContent.maxVisibleCharacters = int.MaxValue;
                 break;
             }
-
             yield return null;
         }
 
-        yield return new WaitForSeconds(0.05f);
-        effectsPlayer.Stop();
+        writingEffectsPlayer.Stop();
+        targetContent.maxVisibleCharacters = int.MaxValue;
 
+        yield return new WaitForSeconds(0.05f);
         if (flash) yield return new WaitForSeconds(flashLength);
         else yield return new WaitUntil(() => skipInput && !IsPaused);
 
-        if (sub) subdialogueScreen.SetActive(false);
-        else dialogueScreen.SetActive(false);
+        targetScreen.SetActive(false);
 
         if (flash) IsPlayerActive = false;
     }
@@ -586,18 +583,17 @@ public class MainManager : MonoBehaviour
     {
         if (flash) IsPlayerActive = true;
 
+        Image targetScreen = sub ? subscreen : screen;
+
+        targetScreen.color = startColor;
         float t = 0;
-        if (sub) subscreen.color = startColor;
-        else screen.color = startColor;
         while (t < length)
         {
             yield return null;
             t += Time.deltaTime;
-            if (sub) subscreen.color = Color.Lerp(startColor, endColor, t / length);
-            else screen.color = Color.Lerp(startColor, endColor, t / length);
+            targetScreen.color = Color.Lerp(startColor, endColor, t / length);
         }
-        if (sub) subscreen.color = endColor;
-        else screen.color = endColor;
+        targetScreen.color = endColor;
 
         if (flash) IsPlayerActive = false;
     }
@@ -626,22 +622,31 @@ public class MainManager : MonoBehaviour
 
     private IEnumerator LoadScene(string scene, float length, bool save)
     {
+        if (save)
+        {
+            data.savedScene = scene;
+            SaveData();
+        }
+
         yield return StartCoroutine(ChangeScreen(Color.clear, Color.black, length, false, false));
+
         SceneManager.LoadScene(scene);
     }
 
     private IEnumerator LoadMainMenu()
     {
+        effectsPlayer.PlayOneShot(selectEffect);
+
         CanPause = false;
-        pausedFrontScreen.raycastTarget = true;
-        pausedFrontScreen.color = Color.clear;
+        superscreen.raycastTarget = true;
+        superscreen.color = Color.clear;
 
         float t = 0f;
         while (t < 2f)
         {
             yield return null;
             t += Time.unscaledDeltaTime;
-            pausedFrontScreen.color = Color.Lerp(Color.clear, Color.black, t / 2f);
+            superscreen.color = Color.Lerp(Color.clear, Color.black, t / 2f);
         }
 
         Time.timeScale = 1f;
@@ -651,71 +656,72 @@ public class MainManager : MonoBehaviour
 
     private IEnumerator DisplayEnding(string title, string description)
     {
-        IsAtEnding = true;
+        CanPause = false;
 
-        effectsPlayer.clip = writingEffect;
-        effectsPlayer.Play();
+        writingEffectsPlayer.Play();
+
+        screen.color = Color.black;
+        superscreen.color = Color.clear;
 
         title = Translate(title);
         description = Translate(description);
         endingTitle.text = "";
-        endingDescription.text = "";
+        endingDescription.text = description;
+        endingDescription.maxVisibleCharacters = 0;
         endingReturnMenuButton.SetActive(false);
         endingScreen.SetActive(true);
-        screen.color = Color.clear;
 
+        endingDescription.ForceMeshUpdate();
+        int endingDescriptionLength = endingDescription.textInfo.characterCount;
         float t = 0, gap = displayGap[data.language];
-        int idx = 0;
-        while (idx < description.Length)
+
+        endingDescription.alignment = TextAlignmentOptions.Center;
+        while (endingDescription.maxVisibleCharacters < endingDescriptionLength)
         {
             t += Time.deltaTime;
             if (t >= gap)
             {
                 t -= gap;
-                endingDescription.text += description[idx];
-                idx++;
+                endingDescription.maxVisibleCharacters++;
             }
             if (skipInput)
             {
-                endingDescription.text = description;
+                endingDescription.maxVisibleCharacters = endingDescriptionLength;
                 break;
             }
             yield return null;
         }
-        endingDescription.text = description;
+        endingDescription.maxVisibleCharacters = endingDescriptionLength;
+        writingEffectsPlayer.Stop();
 
         yield return new WaitForSeconds(0.05f);
-        effectsPlayer.Stop();
-
-        yield return new WaitUntil(() => skipInput);
-        effectsPlayer.Play();
+        yield return new WaitUntil(() => (skipInput));
+        yield return new WaitForSeconds(0.05f);
+        writingEffectsPlayer.Play();
 
         t = 0;
         gap /= 10f;
-        idx = description.Length;
-        while (idx >= 0)
+        while (endingDescription.maxVisibleCharacters >= 0)
         {
             t += Time.deltaTime;
             if (t >= gap)
             {
                 t -= gap;
-                endingDescription.text = endingDescription.text.Substring(0, idx);
-                idx--;
+                endingDescription.maxVisibleCharacters--;
             }
             if (skipInput)
             {
-                endingDescription.text = "";
+                endingDescription.maxVisibleCharacters = 0;
                 break;
             }
             yield return null;
         }
-        endingDescription.text = "";
-        effectsPlayer.Stop();
+        endingDescription.maxVisibleCharacters = 0;
+        writingEffectsPlayer.Stop();
 
         yield return new WaitForSeconds(1f);
         endingTitle.text = title;
-        effectsPlayer.clip = endingEffect;
-        effectsPlayer.Play();
+        writingEffectsPlayer.PlayOneShot(endingEffect);
 
         yield return new WaitForSeconds(1f);
         endingReturnMenuButton.SetActive(true);

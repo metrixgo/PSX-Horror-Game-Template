@@ -4,16 +4,15 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Interactable
   - DirtyGround
   - Grass
   - Gravel
   - Leaves
   - Metal
   - Mud
+  - Rock
   - Sand
   - Snow
-  - Stone
   - Tile
   - Water
   - Wood

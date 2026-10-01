@@ -16,7 +16,6 @@ public enum TriggerType
     SetObject,
     LoadScene,
     DisplayEnding,
-    Custom,
 }
 
 public enum ManageTasksType
@@ -49,8 +48,6 @@ public class Trigger
 
     public string displayDialogueSpeaker;
     public string displayDialogueContent;
-    public Color displayDialogueSpeakerColor = Color.white;
-    public Color displayDialogueContentColor = Color.white;
     public bool displayDialogueSub = true;
     public bool displayDialogueFlash;
     public bool displayDialogueSkippable = true;

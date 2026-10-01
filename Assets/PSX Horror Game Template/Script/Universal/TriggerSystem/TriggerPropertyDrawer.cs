@@ -22,8 +22,6 @@ public class TriggerPropertyDrawer : PropertyDrawer
             case TriggerType.DisplayDialogue:
                 DrawProperty(ref rect, property, "displayDialogueSpeaker", "Speaker");
                 DrawProperty(ref rect, property, "displayDialogueContent", "Content");
-                DrawProperty(ref rect, property, "displayDialogueSpeakerColor", "Speaker Color");
-                DrawProperty(ref rect, property, "displayDialogueContentColor", "Content Color");
                 DrawProperty(ref rect, property, "displayDialogueSub", "Sub");
                 SerializedProperty displayDialogueFlash = DrawProperty(ref rect, property, "displayDialogueFlash", "Flash");
                 if (!displayDialogueFlash.boolValue)
@@ -111,9 +109,6 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 DrawProperty(ref rect, property, "displayEndingDescription", "Description");
                 break;
 
-            case TriggerType.Custom:
-                break;
-
             default:
                 Debug.LogError("Unimplemented Trigger Type: " + (TriggerType)triggerType.enumValueIndex);
                 break;
@@ -144,8 +139,6 @@ public class TriggerPropertyDrawer : PropertyDrawer
             case TriggerType.DisplayDialogue:
                 AddHeightOfProperty(ref height, property, "displayDialogueSpeaker");
                 AddHeightOfProperty(ref height, property, "displayDialogueContent");
-                AddHeightOfProperty(ref height, property, "displayDialogueSpeakerColor");
-                AddHeightOfProperty(ref height, property, "displayDialogueContentColor");
                 AddHeightOfProperty(ref height, property, "displayDialogueSub");
                 SerializedProperty displayDialogueFlash = AddHeightOfProperty(ref height, property, "displayDialogueFlash");
                 if (!displayDialogueFlash.boolValue)
@@ -233,9 +226,6 @@ public class TriggerPropertyDrawer : PropertyDrawer
             case TriggerType.DisplayEnding:
                 AddHeightOfProperty(ref height, property, "displayEndingTitle");
                 AddHeightOfProperty(ref height, property, "displayEndingDescription");
-                break;
-
-            case TriggerType.Custom:
                 break;
 
             default:

@@ -3,6 +3,8 @@ using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
+using static UnityEngine.UI.Image;
 
 public enum PlayerState
 {
@@ -126,7 +128,7 @@ public class PlayerController : MonoBehaviour
     float swayStep = 0.02f;
     float maxSwayStep = 0.15f;
 
-    float transitionSpeed = 10f;
+    float transitionSpeed = 7f;
 
     private void Awake()
     {
@@ -361,7 +363,7 @@ public class PlayerController : MonoBehaviour
         if ((flags & CollisionFlags.Above) != 0 && velocityY > 0f) velocityY = groundGravity;
     }
 
-    private void FootstepSounds()//NEED TO RAYCAST A SPHERE TO PREVENT NO SOUNDS ON EDGE!!!
+    private void FootstepSounds()
     {
         stepT = Mathf.Clamp(stepT - Time.deltaTime, 0f, Mathf.PI / bobSpeeds[(int)state]);
 
@@ -369,7 +371,7 @@ public class PlayerController : MonoBehaviour
 
         stepT = Mathf.PI / bobSpeeds[(int)state];
 
-        if (Physics.Raycast(transform.position, -transform.up, out RaycastHit hit, 0.1f))
+        if (Physics.SphereCast(transform.position + transform.up * controller.radius, controller.radius, -transform.up, out RaycastHit hit, 0.1f))
         {
             string surfaceTag = hit.collider.tag;
             foreach (SurfaceSound surfaceSound in surfaceSounds)
