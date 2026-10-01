@@ -675,7 +675,6 @@ public class MainManager : MonoBehaviour
         int endingDescriptionLength = endingDescription.textInfo.characterCount;
         float t = 0, gap = displayGap[data.language];
 
-        endingDescription.alignment = TextAlignmentOptions.Center;
         while (endingDescription.maxVisibleCharacters < endingDescriptionLength)
         {
             t += Time.deltaTime;

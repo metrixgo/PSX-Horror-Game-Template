@@ -261,20 +261,21 @@ public class PlayerController : MonoBehaviour
     {
         curSpeed = Mathf.Lerp((state == PlayerState.Sprint ? sprintSpeed : walkSpeed), crouchSpeed, crouchProgress);
 
-        Vector3 camRight = new Vector3(playerCam.right.x, 0f, playerCam.right.z).normalized;
-        Vector3 camForward = new Vector3(playerCam.forward.x, 0f, playerCam.forward.z).normalized;
+        Quaternion yRot = Quaternion.Euler(0f, playerCam.eulerAngles.y, 0f);
+        Vector3 camForward = yRot * Vector3.forward;
+        Vector3 camRight = yRot * Vector3.right;
 
         move = (camRight * moveInput.x + camForward * moveInput.y).normalized * curSpeed;
 
         if (move.magnitude > 0.01f &&
             Physics.SphereCast(
                 transform.position + Vector3.up * (controller.height - controller.radius),
-            controller.radius,
-            move.normalized,
-            out RaycastHit hit,
+                controller.radius,
+                move.normalized,
+                out RaycastHit hit,
                 controller.skinWidth + 0.1f,
-            physicalLayer
-                ) &&
+                physicalLayer
+            ) &&
             hit.normal.y < -0.01f &&
             hit.normal.y > -0.99f)
         {
