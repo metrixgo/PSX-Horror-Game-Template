@@ -15,16 +15,16 @@ public class BinaryMovement : MonoBehaviour
     [SerializeField] private Quaternion deltaRotation;
     [SerializeField] private Vector3 deltaScale = Vector3.one;
 
-    [Header("Sounds")]
+    [Header("Effects")]
     [SerializeField] private AudioClip openEffect;
     [SerializeField] private AudioClip closeEffect;
 
     private bool isMoving = false;
-    private AudioSource ad;
+    private AudioSource effectsPlayer;
 
     private void Awake()
     {
-        ad = GetComponent<AudioSource>();
+        effectsPlayer = GetComponent<AudioSource>();
 
         if (Mathf.Abs(deltaScale.x * deltaScale.y * deltaScale.z) < 0.01f)
             Debug.LogError("Delta Scale of Binary Movement Cannot Be Zero: " + gameObject.name);
@@ -77,8 +77,8 @@ public class BinaryMovement : MonoBehaviour
 
         yield return new WaitForSeconds(!opened ? openDelay : closeDelay);
 
-        if (ad != null)
-            ad.PlayOneShot(!opened ? openEffect : closeEffect);
+        if (effectsPlayer != null)
+            effectsPlayer.PlayOneShot(!opened ? openEffect : closeEffect);
     }
 
 }

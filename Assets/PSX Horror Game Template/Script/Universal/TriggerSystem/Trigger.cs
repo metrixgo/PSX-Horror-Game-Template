@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public enum TriggerType
 {
@@ -16,6 +17,7 @@ public enum TriggerType
     SetObject,
     LoadScene,
     DisplayEnding,
+    Custom,
 }
 
 public enum ManageTasksType
@@ -58,8 +60,10 @@ public class Trigger
     public float changeScreenLength = 1.5f;
     public bool changeScreenSub = true;
     public bool changeScreenFlash;
+    public bool changeScreenWaitForCompletion = true;
 
     public float waitLength = 1.5f;
+    public bool waitFlash;
 
     public string displayPromptPrompt;
     public Color displayPromptColor = Color.white;
@@ -101,4 +105,6 @@ public class Trigger
 
     public string displayEndingTitle;
     public string displayEndingDescription;
+
+    public UnityEvent customFunction;
 }

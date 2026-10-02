@@ -11,16 +11,6 @@ public class TriggerSequences : MonoBehaviour
     [Header("Triggers")]
     [SerializeField] private List<Trigger> triggers = new List<Trigger>();
 
-    #if UNITY_EDITOR
-        [ContextMenu("Add Default Trigger")]
-        private void AddFreshTrigger()
-        {
-            UnityEditor.Undo.RecordObject(this, "Add Default Trigger");
-            triggers.Add(new Trigger());
-            UnityEditor.EditorUtility.SetDirty(this);
-        }
-    #endif
-
     private void OnTriggerEnter(Collider other)
     {
         if (isPhysical && (!playerOnly || other.CompareTag("Player"))) AddTriggers();

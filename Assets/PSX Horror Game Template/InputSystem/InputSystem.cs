@@ -347,6 +347,114 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Submit"",
+                    ""type"": ""Button"",
+                    ""id"": ""0404b296-fe9d-4b08-990b-1de2bb36c201"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Delete"",
+                    ""type"": ""Button"",
+                    ""id"": ""2a096c01-0684-4514-b817-96092940cd2a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Digit0"",
+                    ""type"": ""Button"",
+                    ""id"": ""4b4b3202-ae36-4f3b-997c-967922776b6f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Digit1"",
+                    ""type"": ""Button"",
+                    ""id"": ""747f1d94-0394-40f5-95cc-02806038e501"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Digit2"",
+                    ""type"": ""Button"",
+                    ""id"": ""0787598d-7345-4b52-b57c-b39af4eb00c5"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Digit3"",
+                    ""type"": ""Button"",
+                    ""id"": ""db34ec52-29a1-4fe9-bfe5-b8e5e1ecfd75"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Digit4"",
+                    ""type"": ""Button"",
+                    ""id"": ""fc896b1b-a686-4aa1-aead-a4a97265ce08"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Digit5"",
+                    ""type"": ""Button"",
+                    ""id"": ""b8635bc8-7538-44e1-a03b-fe83a37ce874"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Digit6"",
+                    ""type"": ""Button"",
+                    ""id"": ""35420504-090d-4182-8235-e0b355f8f775"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Digit7"",
+                    ""type"": ""Button"",
+                    ""id"": ""90fca443-b67e-490c-bc43-3394c24b6665"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Digit8"",
+                    ""type"": ""Button"",
+                    ""id"": ""577c9540-1b47-4914-b6c9-751717aca81f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Digit9"",
+                    ""type"": ""Button"",
+                    ""id"": ""97dd9b17-afe0-4613-baf9-008254848652"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -385,12 +493,276 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""cb9764a9-df97-4b2e-85d0-ee0991c965cc"",
+                    ""path"": ""<Keyboard>/numpadEnter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Skip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""81ad6e85-42ce-4ffd-a2cb-c03c1e8368ce"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Skip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""700b5bad-b1cb-47ad-b5f6-f5bfa463abf5"",
+                    ""path"": ""<Keyboard>/0"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Digit0"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2996bbe1-0ed2-4937-bac1-8e2cc168f86b"",
+                    ""path"": ""<Keyboard>/numpad0"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Digit0"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7cd7360b-2cf2-4861-aa07-e7f7bc21d583"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Digit1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c431a4d2-280e-41a8-a42e-5844a629eb67"",
+                    ""path"": ""<Keyboard>/numpad1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Digit1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""211dcfb5-b06b-4c43-96a5-e4cedf14c9d0"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Digit2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""59c1970b-c8fc-487d-81ea-9e44bad91d33"",
+                    ""path"": ""<Keyboard>/numpad2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Digit2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4582256f-0a4a-49e0-835b-416cebab6133"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Digit3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2ce8cfd3-dccb-4699-a676-3e7f2d64389b"",
+                    ""path"": ""<Keyboard>/numpad3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Digit3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""39c65be0-f764-431e-bfdf-576690c44116"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Digit4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d483061f-d407-4ca9-bbb4-68cd43d0d0aa"",
+                    ""path"": ""<Keyboard>/numpad4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Digit4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""684b6f7b-a18e-463f-aeaa-7083c703eda9"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Digit5"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""671952ee-f018-4731-9e41-a2acc1188491"",
+                    ""path"": ""<Keyboard>/numpad5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Digit5"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a551ce2b-6d58-432c-abbf-c3aaba735144"",
+                    ""path"": ""<Keyboard>/6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Digit6"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d2a24c98-0a16-49d5-a799-4fd5d51ccd88"",
+                    ""path"": ""<Keyboard>/numpad6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Digit6"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""153f8f05-a3d2-4535-a01f-a60a68ac7b05"",
+                    ""path"": ""<Keyboard>/7"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Digit7"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c864115c-664a-430c-b633-b395196c5cf4"",
+                    ""path"": ""<Keyboard>/numpad7"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Digit7"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8a2a4cc6-696b-4b22-8050-747a2bd593ac"",
+                    ""path"": ""<Keyboard>/8"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Digit8"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""baf92735-a742-491a-9c8c-b9fcccea90f0"",
+                    ""path"": ""<Keyboard>/numpad8"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Digit8"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a10e037e-4abe-476e-8295-d17272e1b179"",
+                    ""path"": ""<Keyboard>/9"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Digit9"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""22203554-b604-4499-be23-21c4219ce08a"",
+                    ""path"": ""<Keyboard>/numpad9"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Digit9"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""55475ef7-7df7-4d97-b861-7b5f496af4c4"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b6874d88-30a7-498e-93d3-57efa3647a65"",
+                    ""path"": ""<Keyboard>/numpadEnter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d9192689-acf2-445f-8935-f0e636ded2f2"",
+                    ""path"": ""<Keyboard>/backspace"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Delete"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -411,6 +783,18 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         m_Game = asset.FindActionMap("Game", throwIfNotFound: true);
         m_Game_Return = m_Game.FindAction("Return", throwIfNotFound: true);
         m_Game_Skip = m_Game.FindAction("Skip", throwIfNotFound: true);
+        m_Game_Submit = m_Game.FindAction("Submit", throwIfNotFound: true);
+        m_Game_Delete = m_Game.FindAction("Delete", throwIfNotFound: true);
+        m_Game_Digit0 = m_Game.FindAction("Digit0", throwIfNotFound: true);
+        m_Game_Digit1 = m_Game.FindAction("Digit1", throwIfNotFound: true);
+        m_Game_Digit2 = m_Game.FindAction("Digit2", throwIfNotFound: true);
+        m_Game_Digit3 = m_Game.FindAction("Digit3", throwIfNotFound: true);
+        m_Game_Digit4 = m_Game.FindAction("Digit4", throwIfNotFound: true);
+        m_Game_Digit5 = m_Game.FindAction("Digit5", throwIfNotFound: true);
+        m_Game_Digit6 = m_Game.FindAction("Digit6", throwIfNotFound: true);
+        m_Game_Digit7 = m_Game.FindAction("Digit7", throwIfNotFound: true);
+        m_Game_Digit8 = m_Game.FindAction("Digit8", throwIfNotFound: true);
+        m_Game_Digit9 = m_Game.FindAction("Digit9", throwIfNotFound: true);
     }
 
     ~@InputSystem()
@@ -645,6 +1029,18 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
     private List<IGameActions> m_GameActionsCallbackInterfaces = new List<IGameActions>();
     private readonly InputAction m_Game_Return;
     private readonly InputAction m_Game_Skip;
+    private readonly InputAction m_Game_Submit;
+    private readonly InputAction m_Game_Delete;
+    private readonly InputAction m_Game_Digit0;
+    private readonly InputAction m_Game_Digit1;
+    private readonly InputAction m_Game_Digit2;
+    private readonly InputAction m_Game_Digit3;
+    private readonly InputAction m_Game_Digit4;
+    private readonly InputAction m_Game_Digit5;
+    private readonly InputAction m_Game_Digit6;
+    private readonly InputAction m_Game_Digit7;
+    private readonly InputAction m_Game_Digit8;
+    private readonly InputAction m_Game_Digit9;
     /// <summary>
     /// Provides access to input actions defined in input action map "Game".
     /// </summary>
@@ -664,6 +1060,54 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Game/Skip".
         /// </summary>
         public InputAction @Skip => m_Wrapper.m_Game_Skip;
+        /// <summary>
+        /// Provides access to the underlying input action "Game/Submit".
+        /// </summary>
+        public InputAction @Submit => m_Wrapper.m_Game_Submit;
+        /// <summary>
+        /// Provides access to the underlying input action "Game/Delete".
+        /// </summary>
+        public InputAction @Delete => m_Wrapper.m_Game_Delete;
+        /// <summary>
+        /// Provides access to the underlying input action "Game/Digit0".
+        /// </summary>
+        public InputAction @Digit0 => m_Wrapper.m_Game_Digit0;
+        /// <summary>
+        /// Provides access to the underlying input action "Game/Digit1".
+        /// </summary>
+        public InputAction @Digit1 => m_Wrapper.m_Game_Digit1;
+        /// <summary>
+        /// Provides access to the underlying input action "Game/Digit2".
+        /// </summary>
+        public InputAction @Digit2 => m_Wrapper.m_Game_Digit2;
+        /// <summary>
+        /// Provides access to the underlying input action "Game/Digit3".
+        /// </summary>
+        public InputAction @Digit3 => m_Wrapper.m_Game_Digit3;
+        /// <summary>
+        /// Provides access to the underlying input action "Game/Digit4".
+        /// </summary>
+        public InputAction @Digit4 => m_Wrapper.m_Game_Digit4;
+        /// <summary>
+        /// Provides access to the underlying input action "Game/Digit5".
+        /// </summary>
+        public InputAction @Digit5 => m_Wrapper.m_Game_Digit5;
+        /// <summary>
+        /// Provides access to the underlying input action "Game/Digit6".
+        /// </summary>
+        public InputAction @Digit6 => m_Wrapper.m_Game_Digit6;
+        /// <summary>
+        /// Provides access to the underlying input action "Game/Digit7".
+        /// </summary>
+        public InputAction @Digit7 => m_Wrapper.m_Game_Digit7;
+        /// <summary>
+        /// Provides access to the underlying input action "Game/Digit8".
+        /// </summary>
+        public InputAction @Digit8 => m_Wrapper.m_Game_Digit8;
+        /// <summary>
+        /// Provides access to the underlying input action "Game/Digit9".
+        /// </summary>
+        public InputAction @Digit9 => m_Wrapper.m_Game_Digit9;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -696,6 +1140,42 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
             @Skip.started += instance.OnSkip;
             @Skip.performed += instance.OnSkip;
             @Skip.canceled += instance.OnSkip;
+            @Submit.started += instance.OnSubmit;
+            @Submit.performed += instance.OnSubmit;
+            @Submit.canceled += instance.OnSubmit;
+            @Delete.started += instance.OnDelete;
+            @Delete.performed += instance.OnDelete;
+            @Delete.canceled += instance.OnDelete;
+            @Digit0.started += instance.OnDigit0;
+            @Digit0.performed += instance.OnDigit0;
+            @Digit0.canceled += instance.OnDigit0;
+            @Digit1.started += instance.OnDigit1;
+            @Digit1.performed += instance.OnDigit1;
+            @Digit1.canceled += instance.OnDigit1;
+            @Digit2.started += instance.OnDigit2;
+            @Digit2.performed += instance.OnDigit2;
+            @Digit2.canceled += instance.OnDigit2;
+            @Digit3.started += instance.OnDigit3;
+            @Digit3.performed += instance.OnDigit3;
+            @Digit3.canceled += instance.OnDigit3;
+            @Digit4.started += instance.OnDigit4;
+            @Digit4.performed += instance.OnDigit4;
+            @Digit4.canceled += instance.OnDigit4;
+            @Digit5.started += instance.OnDigit5;
+            @Digit5.performed += instance.OnDigit5;
+            @Digit5.canceled += instance.OnDigit5;
+            @Digit6.started += instance.OnDigit6;
+            @Digit6.performed += instance.OnDigit6;
+            @Digit6.canceled += instance.OnDigit6;
+            @Digit7.started += instance.OnDigit7;
+            @Digit7.performed += instance.OnDigit7;
+            @Digit7.canceled += instance.OnDigit7;
+            @Digit8.started += instance.OnDigit8;
+            @Digit8.performed += instance.OnDigit8;
+            @Digit8.canceled += instance.OnDigit8;
+            @Digit9.started += instance.OnDigit9;
+            @Digit9.performed += instance.OnDigit9;
+            @Digit9.canceled += instance.OnDigit9;
         }
 
         /// <summary>
@@ -713,6 +1193,42 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
             @Skip.started -= instance.OnSkip;
             @Skip.performed -= instance.OnSkip;
             @Skip.canceled -= instance.OnSkip;
+            @Submit.started -= instance.OnSubmit;
+            @Submit.performed -= instance.OnSubmit;
+            @Submit.canceled -= instance.OnSubmit;
+            @Delete.started -= instance.OnDelete;
+            @Delete.performed -= instance.OnDelete;
+            @Delete.canceled -= instance.OnDelete;
+            @Digit0.started -= instance.OnDigit0;
+            @Digit0.performed -= instance.OnDigit0;
+            @Digit0.canceled -= instance.OnDigit0;
+            @Digit1.started -= instance.OnDigit1;
+            @Digit1.performed -= instance.OnDigit1;
+            @Digit1.canceled -= instance.OnDigit1;
+            @Digit2.started -= instance.OnDigit2;
+            @Digit2.performed -= instance.OnDigit2;
+            @Digit2.canceled -= instance.OnDigit2;
+            @Digit3.started -= instance.OnDigit3;
+            @Digit3.performed -= instance.OnDigit3;
+            @Digit3.canceled -= instance.OnDigit3;
+            @Digit4.started -= instance.OnDigit4;
+            @Digit4.performed -= instance.OnDigit4;
+            @Digit4.canceled -= instance.OnDigit4;
+            @Digit5.started -= instance.OnDigit5;
+            @Digit5.performed -= instance.OnDigit5;
+            @Digit5.canceled -= instance.OnDigit5;
+            @Digit6.started -= instance.OnDigit6;
+            @Digit6.performed -= instance.OnDigit6;
+            @Digit6.canceled -= instance.OnDigit6;
+            @Digit7.started -= instance.OnDigit7;
+            @Digit7.performed -= instance.OnDigit7;
+            @Digit7.canceled -= instance.OnDigit7;
+            @Digit8.started -= instance.OnDigit8;
+            @Digit8.performed -= instance.OnDigit8;
+            @Digit8.canceled -= instance.OnDigit8;
+            @Digit9.started -= instance.OnDigit9;
+            @Digit9.performed -= instance.OnDigit9;
+            @Digit9.canceled -= instance.OnDigit9;
         }
 
         /// <summary>
@@ -817,5 +1333,89 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSkip(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Submit" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSubmit(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Delete" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDelete(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Digit0" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDigit0(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Digit1" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDigit1(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Digit2" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDigit2(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Digit3" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDigit3(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Digit4" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDigit4(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Digit5" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDigit5(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Digit6" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDigit6(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Digit7" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDigit7(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Digit8" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDigit8(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Digit9" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDigit9(InputAction.CallbackContext context);
     }
 }

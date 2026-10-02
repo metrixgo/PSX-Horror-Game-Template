@@ -36,10 +36,12 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 DrawProperty(ref rect, property, "changeScreenLength", "Length");
                 DrawProperty(ref rect, property, "changeScreenSub", "Sub");
                 DrawProperty(ref rect, property, "changeScreenFlash", "Flash");
+                DrawProperty(ref rect, property, "changeScreenWaitForCompletion", "Wait For Completion");
                 break;
 
             case TriggerType.Wait:
                 DrawProperty(ref rect, property, "waitLength", "Length");
+                DrawProperty(ref rect, property, "waitFlash", "Flash");
                 break;
 
             case TriggerType.DisplayPrompt:
@@ -109,6 +111,10 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 DrawProperty(ref rect, property, "displayEndingDescription", "Description");
                 break;
 
+            case TriggerType.Custom:
+                DrawProperty(ref rect, property, "customFunction", "Function");
+                break;
+
             default:
                 Debug.LogError("Unimplemented Trigger Type: " + (TriggerType)triggerType.enumValueIndex);
                 break;
@@ -153,10 +159,12 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 AddHeightOfProperty(ref height, property, "changeScreenLength");
                 AddHeightOfProperty(ref height, property, "changeScreenSub");
                 AddHeightOfProperty(ref height, property, "changeScreenFlash");
+                AddHeightOfProperty(ref height, property, "changeScreenWaitForCompletion");
                 break;
 
             case TriggerType.Wait:
                 AddHeightOfProperty(ref height, property, "waitLength");
+                AddHeightOfProperty(ref height, property, "waitFlash");
                 break;
 
             case TriggerType.DisplayPrompt:
@@ -226,6 +234,10 @@ public class TriggerPropertyDrawer : PropertyDrawer
             case TriggerType.DisplayEnding:
                 AddHeightOfProperty(ref height, property, "displayEndingTitle");
                 AddHeightOfProperty(ref height, property, "displayEndingDescription");
+                break;
+
+            case TriggerType.Custom:
+                AddHeightOfProperty(ref height, property, "customFunction");
                 break;
 
             default:

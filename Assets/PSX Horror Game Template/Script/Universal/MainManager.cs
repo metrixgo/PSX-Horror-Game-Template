@@ -42,10 +42,8 @@ public class MainManager : MonoBehaviour
     private string translationTableName = "TranslationTable";
 
     private InputSystem input;
-
     private InputAction returnAction;
     private InputAction skipAction;
-
     private bool returnInput;
     private bool skipInput;
 
@@ -112,7 +110,6 @@ public class MainManager : MonoBehaviour
         instance = this;
 
         input = new InputSystem();
-
         returnAction = input.Game.Return;
         skipAction = input.Game.Skip;
 
@@ -340,6 +337,16 @@ public class MainManager : MonoBehaviour
         return cnt;
     }
 
+    public void SetPlayerActive(bool b)
+    {
+        IsPlayerActive = b;
+    }
+
+    public void CanPauseGame(bool b)
+    {
+        CanPause = b;
+    }
+
     public void PlayMusic(AudioClip music)
     {
         musicPlayer.clip = music;
@@ -382,19 +389,27 @@ public class MainManager : MonoBehaviour
                     break;
 
                 case TriggerType.ChangeScreen:
-                    yield return StartCoroutine(
+
+                    IEnumerator changeScreenCoroutine =
                         ChangeScreen(
                             trig.changeScreenStartColor,
                             trig.changeScreenEndColor,
                             trig.changeScreenLength,
                             trig.changeScreenSub,
                             trig.changeScreenFlash
-                        )
-                    );
+                        );
+
+                    if (trig.changeScreenWaitForCompletion)
+                        yield return StartCoroutine(changeScreenCoroutine);
+                    else
+                        StartCoroutine(changeScreenCoroutine);
+
                     break;
 
                 case TriggerType.Wait:
+                    if (trig.waitFlash) IsPlayerActive = true;
                     yield return new WaitForSeconds(trig.waitLength);
+                    if (trig.waitFlash) IsPlayerActive = false;
                     break;
 
                 case TriggerType.DisplayPrompt:
@@ -519,6 +534,10 @@ public class MainManager : MonoBehaviour
                             trig.displayEndingDescription
                         )
                     );
+                    break;
+
+                case TriggerType.Custom:
+                    trig.customFunction.Invoke();
                     break;
 
                 default:

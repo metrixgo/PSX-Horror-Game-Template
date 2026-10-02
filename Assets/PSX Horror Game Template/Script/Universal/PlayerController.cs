@@ -1,10 +1,7 @@
 ﻿using System.Collections;
 using Unity.Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
-using static UnityEngine.UI.Image;
 
 public enum PlayerState
 {
@@ -149,7 +146,6 @@ public class PlayerController : MonoBehaviour
         }
 
         input = new InputSystem();
-
         lookAction = input.Player.Look;
         moveAction = input.Player.Move;
         sprintAction = input.Player.Sprint;
