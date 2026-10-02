@@ -12,7 +12,7 @@ public class FocusOnObject : MonoBehaviour
     [SerializeField] private GameObject playerCamera;
 
     [Header("Rendering")]
-    [SerializeField] private RectTransform gameView;
+    [SerializeField] private RenderTexture gameRenderTexture;
 
     [Header("Settings")]
     [SerializeField] private float transitionLength = 1f;
@@ -28,6 +28,7 @@ public class FocusOnObject : MonoBehaviour
     private InputAction returnAction;
     private InputAction interactAction;
 
+    private bool focused = false;
     private bool transitioning = false;
 
     private void Awake()
@@ -54,20 +55,20 @@ public class FocusOnObject : MonoBehaviour
 
     private void Update()
     {
-        if (returnAction.WasPressedThisFrame() && !transitioning)
+        if (returnAction.WasPressedThisFrame() && !transitioning && focused)
             FocusOff();
     }
 
     public void FocusOn()
     {
-        if (!transitioning)
-            StartCoroutine(Focus(true));
+        if (!transitioning && !focused)
+            StartCoroutine(Focus());
     }
 
     public void FocusOff()
     {
-        if (!transitioning)
-            StartCoroutine(Focus(false));
+        if (!transitioning && focused)
+            StartCoroutine(Focus());
     }
 
     public GameObject InteractedObject()
@@ -75,9 +76,9 @@ public class FocusOnObject : MonoBehaviour
         if(interactAction.WasPressedThisFrame())
         {
             Vector2 mousePos = Mouse.current.position.ReadValue();
-            float x = mousePos.x / Screen.width * gameView.rect.width;
-            float y = mousePos.y / Screen.height * gameView.rect.height;
-            Vector3 texPos = new Vector3(x, y, 0);// NEED FIX AND CHECK!!! PROBABLY NEED RENDER TEXTURE
+            float x = mousePos.x / Screen.width * gameRenderTexture.width;
+            float y = mousePos.y / Screen.height * gameRenderTexture.height;
+            Vector3 texPos = new Vector3(x, y, 0);
             if (Physics.Raycast(Camera.main.ScreenPointToRay(texPos), out RaycastHit hit))
                 return hit.collider.gameObject;
         }
@@ -85,14 +86,16 @@ public class FocusOnObject : MonoBehaviour
         return null;
     }
 
-    private IEnumerator Focus(bool focus)
+    private IEnumerator Focus()
     {
+        focused = !focused;
+
         transitioning = true;
         brain.DefaultBlend = blendStyle;
-        focusCamera.SetActive(focus);
-        playerCamera.SetActive(!focus);
+        focusCamera.SetActive(focused);
+        playerCamera.SetActive(!focused);
 
-        if (focus)
+        if (focused)
         {
             MainManager.instance.SetPlayerActive(false);
         }
@@ -111,7 +114,7 @@ public class FocusOnObject : MonoBehaviour
 
         yield return new WaitForSeconds(transitionLength);
 
-        if (focus)
+        if (focused)
         {
             focusOnEvent.Invoke();
             MainManager.instance.CanPauseGame(false);
