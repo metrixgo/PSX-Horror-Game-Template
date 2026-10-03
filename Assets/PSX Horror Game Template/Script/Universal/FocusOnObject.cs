@@ -97,13 +97,13 @@ public class FocusOnObject : MonoBehaviour
 
         if (focused)
         {
-            MainManager.instance.SetPlayerActive(false);
+            MainManager.Instance.SetPlayerActive(false);
         }
         else
         {
             focusOffEvent.Invoke();
             yield return new WaitForEndOfFrame();
-            MainManager.instance.CanPauseGame(true);
+            MainManager.Instance.CanPauseGame(true);
 
             if (enableMouse)
             {
@@ -117,7 +117,7 @@ public class FocusOnObject : MonoBehaviour
         if (focused)
         {
             focusOnEvent.Invoke();
-            MainManager.instance.CanPauseGame(false);
+            MainManager.Instance.CanPauseGame(false);
 
             if (enableMouse)
             {
@@ -127,7 +127,7 @@ public class FocusOnObject : MonoBehaviour
         }
         else
         {
-            MainManager.instance.SetPlayerActive(true);
+            MainManager.Instance.SetPlayerActive(true);
         }
 
         transitioning = false;

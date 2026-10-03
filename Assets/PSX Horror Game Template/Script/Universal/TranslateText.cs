@@ -17,12 +17,12 @@ public class TranslateText : MonoBehaviour
 
     private void OnEnable()
     {
-        if(MainManager.instance != null)
+        if(MainManager.Instance != null)
             Translate();
     }
 
     public void Translate()
     {
-        txt.text = MainManager.instance.Translate(gameObject.name);
+        txt.text = MainManager.Instance.Translate(gameObject.name);
     }
 }

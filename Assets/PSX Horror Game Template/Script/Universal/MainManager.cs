@@ -25,11 +25,11 @@ public class GameData
 
 public class MainManager : MonoBehaviour
 {
-    public static MainManager instance { get; private set; }
+    public static MainManager Instance { get; private set; }
 
-    public GameState gameState { get; private set; } = GameState.Normal;
+    public GameState GameState { get; private set; } = GameState.Normal;
 
-    public GameData data { get; private set; } = new GameData();
+    public GameData Data { get; private set; } = new GameData();
 
     public bool IsPlayerActive { get; private set; } = true;
     public bool IsExecutingTriggers { get; private set; } = false;
@@ -107,7 +107,7 @@ public class MainManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        Instance = this;
 
         input = new InputSystem();
         returnAction = input.Game.Return;
@@ -115,10 +115,10 @@ public class MainManager : MonoBehaviour
 
         GetData();
 
-        sensitivity.value = data.sensitivity;
-        musicPlayer.volume = data.musicVolume;
-        effectsPlayer.volume = data.effectsVolume;
-        writingEffectsPlayer.volume = data.effectsVolume;
+        sensitivity.value = Data.sensitivity;
+        musicPlayer.volume = Data.musicVolume;
+        effectsPlayer.volume = Data.effectsVolume;
+        writingEffectsPlayer.volume = Data.effectsVolume;
         writingEffectsPlayer.clip = writingEffect;
 
         foreach (Trigger trig in startTriggers)
@@ -141,7 +141,7 @@ public class MainManager : MonoBehaviour
         UpdatePrompts();
         CheckPause();
 
-        if (!IsExecutingTriggers && triggers.Count > 0 && gameState == GameState.Normal)
+        if (!IsExecutingTriggers && triggers.Count > 0 && GameState == GameState.Normal)
             StartCoroutine(ExecuteTriggers());
     }
 
@@ -213,9 +213,9 @@ public class MainManager : MonoBehaviour
 
         IsPaused = false;
 
-        musicPlayer.volume = data.musicVolume;
-        effectsPlayer.volume = data.effectsVolume;
-        writingEffectsPlayer.volume = data.effectsVolume;
+        musicPlayer.volume = Data.musicVolume;
+        effectsPlayer.volume = Data.effectsVolume;
+        writingEffectsPlayer.volume = Data.effectsVolume;
     }
 
     public void ReturnToMainMenu()
@@ -225,26 +225,26 @@ public class MainManager : MonoBehaviour
 
     public void ChangeSensitivity(float sensitivity)
     {
-        data.sensitivity = sensitivity;
+        Data.sensitivity = sensitivity;
         SaveData();
     }
 
     public void GetData()
     {
-        data.sensitivity = PlayerPrefs.GetFloat("Sensitivity", 50f);
-        data.musicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
-        data.effectsVolume = PlayerPrefs.GetFloat("EffectsVolume", 1f);
-        data.savedScene = PlayerPrefs.GetString("SavedScene", "");
-        data.language = PlayerPrefs.GetInt("Language", 0);
+        Data.sensitivity = PlayerPrefs.GetFloat("Sensitivity", 50f);
+        Data.musicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        Data.effectsVolume = PlayerPrefs.GetFloat("EffectsVolume", 1f);
+        Data.savedScene = PlayerPrefs.GetString("SavedScene", "");
+        Data.language = PlayerPrefs.GetInt("Language", 0);
     }
 
     public void SaveData()
     {
-        PlayerPrefs.SetFloat("Sensitivity", data.sensitivity);
-        PlayerPrefs.SetFloat("MusicVolume", data.musicVolume);
-        PlayerPrefs.SetFloat("EffectsVolume", data.effectsVolume);
-        PlayerPrefs.SetString("SavedScene", data.savedScene);
-        PlayerPrefs.SetInt("Language", data.language);
+        PlayerPrefs.SetFloat("Sensitivity", Data.sensitivity);
+        PlayerPrefs.SetFloat("MusicVolume", Data.musicVolume);
+        PlayerPrefs.SetFloat("EffectsVolume", Data.effectsVolume);
+        PlayerPrefs.SetString("SavedScene", Data.savedScene);
+        PlayerPrefs.SetInt("Language", Data.language);
 
         PlayerPrefs.Save();
     }
@@ -569,7 +569,7 @@ public class MainManager : MonoBehaviour
 
         targetContent.ForceMeshUpdate();
         int contentLength = targetContent.textInfo.characterCount;
-        float t = 0, gap = displayGap[data.language];
+        float t = 0, gap = displayGap[Data.language];
         while (targetContent.maxVisibleCharacters < contentLength)
         {
             t += Time.deltaTime;
@@ -643,7 +643,7 @@ public class MainManager : MonoBehaviour
     {
         if (save)
         {
-            data.savedScene = scene;
+            Data.savedScene = scene;
             SaveData();
         }
 
@@ -692,7 +692,7 @@ public class MainManager : MonoBehaviour
 
         endingDescription.ForceMeshUpdate();
         int endingDescriptionLength = endingDescription.textInfo.characterCount;
-        float t = 0, gap = displayGap[data.language];
+        float t = 0, gap = displayGap[Data.language];
 
         while (endingDescription.maxVisibleCharacters < endingDescriptionLength)
         {

@@ -83,7 +83,7 @@ public class PlayerController : MonoBehaviour
     private float walkSpeed = 3f;
     private float sprintSpeed = 6f;
     private float crouchSpeed = 1.5f;
-        
+
     private float curSpeed = 0f;
 
     private float camHeight = 1.75f;
@@ -116,8 +116,8 @@ public class PlayerController : MonoBehaviour
     private float camBobbingT = 0f;
     private Vector3 playerHoldPosition = new Vector3(0.15f, -0.1f, 0.2f);
 
-    float[] bobAmplitudes = { 0.08f, 0.15f, 0.3f, 0.05f, 0.12f};
-    float[] bobFrequencies = { 0.08f, 0.15f, 0.3f, 0.05f, 0.12f};
+    float[] bobAmplitudes = { 0.08f, 0.15f, 0.3f, 0.05f, 0.12f };
+    float[] bobFrequencies = { 0.08f, 0.15f, 0.3f, 0.05f, 0.12f };
     float curBobAmplitude = 0.08f;
     float curBobFrequency = 0.08f;
     float[] bobSteps = { 0.002f, 0.004f, 0.01f, 0.002f, 0.003f };
@@ -166,14 +166,22 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (MainManager.instance.IsPaused) return;
+        if (MainManager.Instance.IsPaused) return;
 
         GetInput();
         UpdateState();
         UpdateSensitivity();
         CameraBobbing();
 
-        if (!MainManager.instance.IsPlayerActive) return;
+        if (!MainManager.Instance.IsPlayerActive)
+        {
+            if (controller.enabled) controller.enabled = false;
+            return;
+        }
+        else if (!controller.enabled)
+        {
+            controller.enabled = true;
+        }
 
         UpdateGravity();
 
@@ -198,7 +206,7 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateState()
     {
-        if (moveInput.magnitude > 0.01f && canMove && MainManager.instance.IsPlayerActive)
+        if (moveInput.magnitude > 0.01f && canMove && MainManager.Instance.IsPlayerActive)
         {
             if (isCrouched) state = PlayerState.CrouchWalk;
             else if (sprintInput && canSprint) state = PlayerState.Sprint;
@@ -213,7 +221,7 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateSensitivity()
     {
-        sensitivity = (canLook && MainManager.instance.IsPlayerActive) ? MainManager.instance.data.sensitivity : 0;
+        sensitivity = (canLook && MainManager.Instance.IsPlayerActive) ? MainManager.Instance.Data.sensitivity : 0;
         camX.Input.Gain = sensitivity;
         camY.Input.Gain = -sensitivity;
     }
@@ -222,7 +230,7 @@ public class PlayerController : MonoBehaviour
     {
         camBobbingT += Time.deltaTime;
 
-        int curState = (controller.isGrounded && MainManager.instance.IsPlayerActive) ? (int)state : (int)PlayerState.Idle;
+        int curState = (controller.isGrounded && MainManager.Instance.IsPlayerActive) ? (int)state : (int)PlayerState.Idle;
 
         float bobAmplitude = bobAmplitudes[curState];
         float bobFrequency = bobFrequencies[curState];
@@ -375,7 +383,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (surfaceSound.surfaceTag.ToString() == surfaceTag)
                 {
-                    if(state == PlayerState.Sprint)
+                    if (state == PlayerState.Sprint)
                         playerAd.PlayOneShot(surfaceSound.sprintSounds[Random.Range(0, surfaceSound.sprintSounds.Length)]);
                     else
                         playerAd.PlayOneShot(surfaceSound.walkSounds[Random.Range(0, surfaceSound.walkSounds.Length)]);

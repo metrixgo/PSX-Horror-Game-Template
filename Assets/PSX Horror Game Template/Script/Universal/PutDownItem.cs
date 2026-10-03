@@ -57,7 +57,7 @@ public class PutDownItem : MonoBehaviour
             additionalEffect.Invoke();
         }
 
-        MainManager.instance.RemoveItem(itemName);
-        MainManager.instance.PlayEffect(putDownEffect);
+        MainManager.Instance.RemoveItem(itemName);
+        MainManager.Instance.PlayEffect(putDownEffect);
     }
 }

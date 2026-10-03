@@ -44,12 +44,12 @@ public class PickUpItem : MonoBehaviour
                 trig.triggerType = TriggerType.DisplayDialogue;
                 trig.displayDialogueSpeaker = "You";
                 trig.displayDialogueContent = "My hands are full...";
-                MainManager.instance.AddTrigger(trig);
+                MainManager.Instance.AddTrigger(trig);
             }
             else
             {
-                MainManager.instance.AddItem(itemName);
-                MainManager.instance.PlayEffect(pickUpEffect);
+                MainManager.Instance.AddItem(itemName);
+                MainManager.Instance.PlayEffect(pickUpEffect);
 
                 transform.SetParent(playerHold.transform);
                 transform.localPosition = position;
@@ -75,8 +75,8 @@ public class PickUpItem : MonoBehaviour
         }
         else
         {
-            MainManager.instance.AddItem(itemName);
-            MainManager.instance.PlayEffect(pickUpEffect);
+            MainManager.Instance.AddItem(itemName);
+            MainManager.Instance.PlayEffect(pickUpEffect);
 
             additionalEffect.Invoke();
             Destroy(gameObject);
