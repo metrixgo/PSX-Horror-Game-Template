@@ -365,6 +365,7 @@ public class MainManager : MonoBehaviour
 
     private IEnumerator ExecuteTriggers()
     {
+        bool playerWasActive = IsPlayerActive;
         IsPlayerActive = false;
         IsExecutingTriggers = true;
 
@@ -435,10 +436,8 @@ public class MainManager : MonoBehaviour
                     break;
 
                 case TriggerType.ManageInventory:
-                    if (trig.manageInventoryAddItem)
-                        AddItem(trig.manageInventoryItem);
-                    else
-                        RemoveItem(trig.manageInventoryItem);
+                    if (trig.manageInventoryAddItem) AddItem(trig.manageInventoryItem);
+                    else RemoveItem(trig.manageInventoryItem);
                     break;
 
                 case TriggerType.PlayerCanDo:
@@ -536,6 +535,33 @@ public class MainManager : MonoBehaviour
                     );
                     break;
 
+                case TriggerType.GlitchEffect:
+                    switch (trig.glitchEffectType)
+                    {
+                        case GlitchEffectType.DigitalGlitch:
+                            player.SetDigitalGlitch(trig.glitchEffectIntensity);
+                            break;
+                        case GlitchEffectType.ScanLineJitter:
+                            player.SetScanLineJitter(trig.glitchEffectIntensity);
+                            break;
+                        case GlitchEffectType.VerticalJump:
+                            player.SetVerticalJump(trig.glitchEffectIntensity);
+                            break;
+                        case GlitchEffectType.HorizontalShake:
+                            player.SetHorizontalShake(trig.glitchEffectIntensity);
+                            break;
+                        case GlitchEffectType.ColorDrift:
+                            player.SetColorDrift(trig.glitchEffectIntensity);
+                            break;
+                        case GlitchEffectType.HorizontalRipple:
+                            player.SetHorizontalRipple(trig.glitchEffectIntensity);
+                            break;
+                        default:
+                            Debug.LogError("Unimplemented Glitch Effect Type: " + trig.glitchEffectType);
+                            break;
+                    }
+                    break;
+
                 case TriggerType.Custom:
                     trig.customFunction.Invoke();
                     break;
@@ -546,7 +572,7 @@ public class MainManager : MonoBehaviour
             }
         }
 
-        IsPlayerActive = true;
+        IsPlayerActive = playerWasActive;
         IsExecutingTriggers = false;
     }
 

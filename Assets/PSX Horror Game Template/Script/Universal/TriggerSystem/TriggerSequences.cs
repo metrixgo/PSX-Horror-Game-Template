@@ -13,7 +13,11 @@ public class TriggerSequences : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (isPhysical && (!playerOnly || other.CompareTag("Player"))) AddTriggers();
+        if (isPhysical && (!playerOnly || other.CompareTag("Player")))
+        {
+            Debug.Log("ENTER!!! " + other.name);
+            AddTriggers();
+        }
     }
 
     public void AddTriggers()

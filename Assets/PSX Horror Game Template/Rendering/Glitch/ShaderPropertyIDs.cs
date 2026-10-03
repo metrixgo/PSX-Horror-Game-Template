@@ -9,7 +9,7 @@ namespace Glitch
         public static readonly int HorizontalRipple = Shader.PropertyToID("_HorizontalRipple");
         public static readonly int HorizontalShake = Shader.PropertyToID("_HorizontalShake");
         public static readonly int ColorDrift = Shader.PropertyToID("_ColorDrift");
-        public static readonly int Intensity = Shader.PropertyToID("_Intensity");
+        public static readonly int ColorDamage = Shader.PropertyToID("_ColorDamage");
         public static readonly int NoiseTex = Shader.PropertyToID("_NoiseTex");
         public static readonly int HistoryTex = Shader.PropertyToID("_HistoryTex");
         public static readonly int BlockCols = Shader.PropertyToID("_BlockCols");

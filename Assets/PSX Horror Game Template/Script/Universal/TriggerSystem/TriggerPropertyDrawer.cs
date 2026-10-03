@@ -111,6 +111,11 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 DrawProperty(ref rect, property, "displayEndingDescription", "Description");
                 break;
 
+            case TriggerType.GlitchEffect:
+                DrawProperty(ref rect, property, "glitchEffectType", "Type");
+                DrawProperty(ref rect, property, "glitchEffectIntensity", "Intensity");
+                break;
+
             case TriggerType.Custom:
                 DrawProperty(ref rect, property, "customFunction", "Function");
                 break;
@@ -126,6 +131,13 @@ public class TriggerPropertyDrawer : PropertyDrawer
     private SerializedProperty DrawProperty(ref Rect rect, SerializedProperty property, string name, string label)
     {
         SerializedProperty prop = property.FindPropertyRelative(name);
+
+        if (prop == null)
+        {
+            Debug.LogError("Property Name " + name + " Not Found!");
+            return null;
+        }
+
         rect.height = EditorGUI.GetPropertyHeight(prop, new GUIContent(label));
         EditorGUI.PropertyField(rect, prop, new GUIContent(label));
         rect.y += rect.height + gap;
@@ -236,6 +248,11 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 AddHeightOfProperty(ref height, property, "displayEndingDescription");
                 break;
 
+            case TriggerType.GlitchEffect:
+                AddHeightOfProperty(ref height, property, "glitchEffectType");
+                AddHeightOfProperty(ref height, property, "glitchEffectIntensity");
+                break;
+
             case TriggerType.Custom:
                 AddHeightOfProperty(ref height, property, "customFunction");
                 break;
@@ -250,10 +267,16 @@ public class TriggerPropertyDrawer : PropertyDrawer
     private SerializedProperty AddHeightOfProperty(ref float height, SerializedProperty property, string name)
     {
         SerializedProperty prop = property.FindPropertyRelative(name);
+
+        if(prop == null)
+        {
+            Debug.LogError("Property Name " + name + " Not Found!");
+            return null;
+        }
+
         height += EditorGUI.GetPropertyHeight(prop) + gap;
 
         return prop;
     }
 }
-
 #endif

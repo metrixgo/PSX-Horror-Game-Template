@@ -12,20 +12,20 @@ namespace Glitch
     {
         public static AnalogGlitchController Instance { get; private set; }
 
-        [field: SerializeField, Range(0, 1)]
-        public float ScanLineJitter { get; set; }
+        [Range(0, 1)]
+        public float ScanLineJitter;
 
-        [field: SerializeField, Range(0, 1)]
-        public float VerticalJump { get; set; }
+        [Range(0, 1)]
+        public float VerticalJump;
 
-        [field: SerializeField, Range(0, 1)]
-        public float HorizontalShake { get; set; }
+        [Range(0, 1)]
+        public float HorizontalShake;
 
-        [field: SerializeField, Range(0, 1)]
-        public float ColorDrift { get; set; }
+        [Range(0, 1)]
+        public float ColorDrift;
 
-        [field: SerializeField, Range(0, 1)]
-        public float HorizontalRipple { get; set; }
+        [Range(0, 1)]
+        public float HorizontalRipple;
 
         [SerializeField, HideInInspector] Shader _shader = null;
 

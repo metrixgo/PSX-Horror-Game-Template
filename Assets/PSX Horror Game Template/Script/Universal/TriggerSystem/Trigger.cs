@@ -17,6 +17,7 @@ public enum TriggerType
     SetObject,
     LoadScene,
     DisplayEnding,
+    GlitchEffect,
     Custom,
 }
 
@@ -41,6 +42,16 @@ public enum MovePlayerType
 {
     Location,
     Direction,
+}
+
+public enum GlitchEffectType
+{
+    DigitalGlitch,
+    ScanLineJitter,
+    VerticalJump,
+    HorizontalShake,
+    ColorDrift,
+    HorizontalRipple,
 }
 
 [System.Serializable]
@@ -105,6 +116,9 @@ public class Trigger
 
     public string displayEndingTitle;
     public string displayEndingDescription;
+
+    public GlitchEffectType glitchEffectType;
+    public float glitchEffectIntensity = 0.1f;
 
     public UnityEvent customFunction;
 }

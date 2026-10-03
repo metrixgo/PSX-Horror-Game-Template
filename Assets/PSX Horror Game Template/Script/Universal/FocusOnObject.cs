@@ -11,12 +11,15 @@ public class FocusOnObject : MonoBehaviour
     [SerializeField] private GameObject focusCamera;
     [SerializeField] private GameObject playerCamera;
 
-    [Header("Rendering")]
-    [SerializeField] private RenderTexture gameRenderTexture;
-
     [Header("Settings")]
     [SerializeField] private float transitionLength = 1f;
     [SerializeField] private bool enableMouse = true;
+
+    [Header("Rendering")]
+    [SerializeField] private RenderTexture gameRenderTexture;
+
+    [Header("IgnoreLayer")]
+    [SerializeField] private LayerMask ignoreLayer;
 
     [Header("Events")]
     [SerializeField] private UnityEvent focusOnEvent;
@@ -79,7 +82,7 @@ public class FocusOnObject : MonoBehaviour
             float x = mousePos.x / Screen.width * gameRenderTexture.width;
             float y = mousePos.y / Screen.height * gameRenderTexture.height;
             Vector3 texPos = new Vector3(x, y, 0);
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(texPos), out RaycastHit hit))
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(texPos), out RaycastHit hit, Mathf.Infinity, ~ignoreLayer))
                 return hit.collider.gameObject;
         }
 

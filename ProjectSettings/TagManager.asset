@@ -16,6 +16,7 @@ TagManager:
   - Tile
   - Water
   - Wood
+  - Interactable
   layers:
   - Default
   - TransparentFX
@@ -27,7 +28,7 @@ TagManager:
   - PlayerHold
   - Physical
   - Trigger
-  - 
+  - Ignore
   - 
   - 
   - 

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Glitch;
+using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -31,9 +32,19 @@ public enum SurfaceType
 [System.Serializable]
 public class SurfaceSound
 {
-    public SurfaceType surfaceTag;
-    public AudioClip[] walkSounds;
-    public AudioClip[] sprintSounds;
+    public SurfaceType SurfaceTag;
+    public AudioClip[] WalkSounds;
+    public AudioClip[] SprintSounds;
+}
+
+public class PlayerCanDo
+{
+    public bool Look = true;
+    public bool Move = true;
+    public bool Sprint = true;
+    public bool Jump = true;
+    public bool Crouch = true;
+    public bool Interact = true;
 }
 
 public class PlayerController : MonoBehaviour
@@ -45,6 +56,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Layers")]
     [SerializeField] private LayerMask physicalLayer;
+    [SerializeField] private LayerMask ignoreLayer;
 
     [Header("Footstep Sounds")]
     [SerializeField] private SurfaceSound[] surfaceSounds;
@@ -58,6 +70,9 @@ public class PlayerController : MonoBehaviour
     private CinemachineInputAxisController camController;
     private InputAxisControllerBase<CinemachineInputAxisController.Reader>.Controller camX;
     private InputAxisControllerBase<CinemachineInputAxisController.Reader>.Controller camY;
+
+    private AnalogGlitchController analogGlitchController;
+    private DigitalGlitchController digitalGlitchController;
 
     private Interactable curItem;
     private Interactable newItem;
@@ -100,12 +115,8 @@ public class PlayerController : MonoBehaviour
     private float reachRange = 1.5f;
     private float sensitivity = 5f;
 
-    public bool canLook { get; private set; } = true;
-    public bool canMove { get; private set; } = true;
-    public bool canSprint { get; private set; } = true;
-    public bool canJump { get; private set; } = true;
-    public bool canCrouch { get; private set; } = true;
-    public bool canInteract { get; private set; } = true;
+    public PlayerCanDo CanDo = new PlayerCanDo();
+
     public bool isCrouched { get; private set; } = false;
 
     private float velocityY = -1f;
@@ -137,6 +148,9 @@ public class PlayerController : MonoBehaviour
         camPanTilt = playerCam.GetComponent<CinemachinePanTilt>();
         camBob = playerCam.GetComponent<CinemachineBasicMultiChannelPerlin>();
         camController = playerCam.GetComponent<CinemachineInputAxisController>();
+
+        analogGlitchController = Camera.main.GetComponent<AnalogGlitchController>();
+        digitalGlitchController = Camera.main.GetComponent<DigitalGlitchController>();
 
         foreach (InputAxisControllerBase<CinemachineInputAxisController.Reader>.Controller controller in camController.Controllers)
         {
@@ -175,20 +189,18 @@ public class PlayerController : MonoBehaviour
 
         if (!MainManager.Instance.IsPlayerActive)
         {
-            if (controller.enabled) controller.enabled = false;
+            if (curItem != null) curItem.SetFocused(false);
+            newItem = null;
+            curItem = null;
             return;
-        }
-        else if (!controller.enabled)
-        {
-            controller.enabled = true;
         }
 
         UpdateGravity();
 
-        if (canMove) HandleMove();
-        if (canJump) HandleJump();
-        if (canCrouch) HandleCrouch();
-        if (canInteract) HandleInteractions();
+        if (CanDo.Move) HandleMove();
+        if (CanDo.Jump) HandleJump();
+        if (CanDo.Crouch) HandleCrouch();
+        if (CanDo.Interact) HandleInteractions();
 
         MovePlayer();
         FootstepSounds();
@@ -206,10 +218,10 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateState()
     {
-        if (moveInput.magnitude > 0.01f && canMove && MainManager.Instance.IsPlayerActive)
+        if (moveInput.magnitude > 0.01f && CanDo.Move && MainManager.Instance.IsPlayerActive)
         {
             if (isCrouched) state = PlayerState.CrouchWalk;
-            else if (sprintInput && canSprint) state = PlayerState.Sprint;
+            else if (sprintInput && CanDo.Sprint) state = PlayerState.Sprint;
             else state = PlayerState.Walk;
         }
         else
@@ -221,7 +233,7 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateSensitivity()
     {
-        sensitivity = (canLook && MainManager.Instance.IsPlayerActive) ? MainManager.Instance.Data.sensitivity : 0;
+        sensitivity = (CanDo.Look && MainManager.Instance.IsPlayerActive) ? MainManager.Instance.Data.sensitivity : 0;
         camX.Input.Gain = sensitivity;
         camY.Input.Gain = -sensitivity;
     }
@@ -328,7 +340,7 @@ public class PlayerController : MonoBehaviour
 
     private void HandleInteractions()
     {
-        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, reachRange))
+        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, reachRange, ~ignoreLayer))
         {
             newItem = hit.collider.GetComponentInParent<Interactable>();
 
@@ -376,17 +388,18 @@ public class PlayerController : MonoBehaviour
 
         stepT = Mathf.PI / bobSpeeds[(int)state];
 
-        if (Physics.SphereCast(transform.position + transform.up * controller.radius, controller.radius, -transform.up, out RaycastHit hit, 0.1f))
+        if (Physics.SphereCast(transform.position + transform.up * controller.radius, 
+            controller.radius, -transform.up, out RaycastHit hit, 0.1f, ~ignoreLayer))
         {
             string surfaceTag = hit.collider.tag;
             foreach (SurfaceSound surfaceSound in surfaceSounds)
             {
-                if (surfaceSound.surfaceTag.ToString() == surfaceTag)
+                if (surfaceSound.SurfaceTag.ToString() == surfaceTag)
                 {
                     if (state == PlayerState.Sprint)
-                        playerAd.PlayOneShot(surfaceSound.sprintSounds[Random.Range(0, surfaceSound.sprintSounds.Length)]);
+                        playerAd.PlayOneShot(surfaceSound.SprintSounds[Random.Range(0, surfaceSound.SprintSounds.Length)]);
                     else
-                        playerAd.PlayOneShot(surfaceSound.walkSounds[Random.Range(0, surfaceSound.walkSounds.Length)]);
+                        playerAd.PlayOneShot(surfaceSound.WalkSounds[Random.Range(0, surfaceSound.WalkSounds.Length)]);
 
                     break;
                 }
@@ -435,34 +448,17 @@ public class PlayerController : MonoBehaviour
         camPanTilt.PanAxis.Value = Mathf.LerpAngle(startY, endY, t / l);
     }
 
-    public void CanLook(bool can)
-    {
-        canLook = can;
-    }
+    public void CanLook(bool can) => CanDo.Look = can;
+    public void CanMove(bool can) => CanDo.Move = can;
+    public void CanSprint(bool can) => CanDo.Sprint = can;
+    public void CanJump(bool can) => CanDo.Jump = can;
+    public void CanCrouch(bool can) => CanDo.Crouch = can;
+    public void CanInteract(bool can) => CanDo.Interact = can;
 
-    public void CanMove(bool can)
-    {
-        canMove = can;
-    }
-
-    public void CanSprint(bool can)
-    {
-        canSprint = can;
-    }
-
-    public void CanJump(bool can)
-    {
-        canJump = can;
-    }
-
-    public void CanCrouch(bool can)
-    {
-        canCrouch = can;
-    }
-
-    public void CanInteract(bool can)
-    {
-        canInteract = can;
-    }
-
+    public void SetDigitalGlitch(float intensity) => digitalGlitchController.Intensity = intensity;
+    public void SetScanLineJitter(float intensity) => analogGlitchController.ScanLineJitter = intensity;
+    public void SetVerticalJump(float intensity) => analogGlitchController.VerticalJump = intensity;
+    public void SetHorizontalShake(float intensity) => analogGlitchController.HorizontalShake = intensity;
+    public void SetColorDrift(float intensity) => analogGlitchController.ColorDrift = intensity;
+    public void SetHorizontalRipple(float intensity) => analogGlitchController.HorizontalRipple = intensity;
 }

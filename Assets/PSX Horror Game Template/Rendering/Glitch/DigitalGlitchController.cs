@@ -13,8 +13,8 @@ namespace Glitch
     {
         public static DigitalGlitchController Instance { get; private set; }
 
-        [field: SerializeField, Range(0, 1)]
-        public float Intensity { get; set; }
+        [Range(0, 1)]
+        public float Intensity;
 
         [SerializeField, HideInInspector] Shader _shader = null;
 
@@ -78,5 +78,4 @@ namespace Glitch
             return _material;
         }
     }
-
 }
