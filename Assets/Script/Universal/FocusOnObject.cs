@@ -58,19 +58,19 @@ public class FocusOnObject : MonoBehaviour
 
     private void Update()
     {
-        if (returnAction.WasPressedThisFrame() && !transitioning && focused)
+        if (returnAction.WasPressedThisFrame() && !transitioning && focused && focusCamera.activeSelf)
             FocusOff();
     }
 
     public void FocusOn()
     {
-        if (!transitioning && !focused)
+        if (!transitioning && !focused && playerCamera.activeSelf)
             StartCoroutine(Focus());
     }
 
     public void FocusOff()
     {
-        if (!transitioning && focused)
+        if (!transitioning && focused && focusCamera.activeSelf)
             StartCoroutine(Focus());
     }
 
@@ -100,13 +100,13 @@ public class FocusOnObject : MonoBehaviour
 
         if (focused)
         {
-            MainManager.Instance.SetPlayerActive(false);
+            MainManager.Instance.BlockPlayer(true);
         }
         else
         {
             focusOffEvent.Invoke();
             yield return new WaitForEndOfFrame();
-            MainManager.Instance.CanPauseGame(true);
+            MainManager.Instance.BlockPause(false);
 
             if (enableMouse)
             {
@@ -120,7 +120,7 @@ public class FocusOnObject : MonoBehaviour
         if (focused)
         {
             focusOnEvent.Invoke();
-            MainManager.Instance.CanPauseGame(false);
+            MainManager.Instance.BlockPause(true);
 
             if (enableMouse)
             {
@@ -130,7 +130,7 @@ public class FocusOnObject : MonoBehaviour
         }
         else
         {
-            MainManager.Instance.SetPlayerActive(true);
+            MainManager.Instance.BlockPlayer(false);
         }
 
         transitioning = false;

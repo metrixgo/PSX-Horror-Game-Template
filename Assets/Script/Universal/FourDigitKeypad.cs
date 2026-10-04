@@ -74,6 +74,8 @@ public class FourDigitKeypad : MonoBehaviour
 
     private void Update()
     {
+        if (MainManager.Instance.IsExecutingTriggers) return;
+
         playSound = false;
 
         for (int i = 0; i <= 9; i++) if (digitActions[i].WasPressedThisFrame()) PressDigit(i);
@@ -83,7 +85,7 @@ public class FourDigitKeypad : MonoBehaviour
         GameObject interactedKey = focusOn.InteractedObject();
         if (interactedKey != null)
         {
-            for (int i = 0; i <= 9; i++) if(interactedKey == digitKeys[i]) PressDigit(i);
+            for (int i = 0; i <= 9; i++) if (interactedKey == digitKeys[i]) PressDigit(i);
             if (interactedKey == deleteKey) PressDelete();
             if (interactedKey == submitKey) PressSubmit();
         }

@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.AI;
@@ -60,22 +61,31 @@ public class KillerAI : MonoBehaviour
 
         agent.SetDestination(player.position);
 
-        if (agent.remainingDistance < reachRange && agent.pathStatus == NavMeshPathStatus.PathComplete && !agent.pathPending)
-            Kill();
+        if (agent.remainingDistance < reachRange &&
+            agent.pathStatus == NavMeshPathStatus.PathComplete &&
+            Vector3.Distance(transform.position, player.position) < reachRange &&
+            !agent.pathPending)
+            StartCoroutine(Kill());
     }
 
-    private void Kill()
+    private IEnumerator Kill()
     {
-        Debug.Log("YES KILLED");
-        Debug.Log(agent.remainingDistance);
         if (animator != null) animator.SetBool("Killed", true);
         state = KillerState.Killing;
 
+        yield return new WaitUntil(() => 
+            !MainManager.Instance.IsExecutingTriggers &&
+            !MainManager.Instance.IsPaused);
+
         effectsPlayer.PlayOneShot(jumpScareSound);
+
+        agent.isStopped = true;
 
         brain.DefaultBlend = blendStyle;
         jumpscareCamera.SetActive(true);
         ((MonoBehaviour)brain.ActiveVirtualCamera).gameObject.SetActive(false);
+
+        MainManager.Instance.BlockPlayer(true);
 
         killEvent.Invoke();
     }

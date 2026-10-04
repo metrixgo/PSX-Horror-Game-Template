@@ -25,28 +25,6 @@ public class GameData
 
 public class MainManager : MonoBehaviour
 {
-    public static MainManager Instance { get; private set; }
-
-    public GameState GameState { get; private set; } = GameState.Normal;
-
-    public GameData Data { get; private set; } = new GameData();
-
-    public bool IsPlayerActive { get; private set; } = true;
-    public bool IsExecutingTriggers { get; private set; } = false;
-    public bool IsPaused { get; private set; } = false;
-
-    private bool CanPause = true;
-
-    private string mainMenuName = "MainMenu";
-
-    private string translationTableName = "TranslationTable";
-
-    private InputSystem input;
-    private InputAction returnAction;
-    private InputAction skipAction;
-    private bool returnInput;
-    private bool skipInput;
-
     [Header("Player")]
     [SerializeField] private PlayerController player;
 
@@ -102,8 +80,27 @@ public class MainManager : MonoBehaviour
     [Header("Start Trigger")]
     [SerializeField] private List<Trigger> startTriggers = new List<Trigger>();
 
-    private List<Trigger> triggers = new List<Trigger>();
+    public static MainManager Instance { get; private set; }
 
+    public GameState GameState { get; private set; } = GameState.Normal;
+    public GameData Data { get; private set; } = new GameData();
+    public int PlayerBlockLayers { get; private set; } = 0;
+    public bool IsExecutingTriggers { get; private set; } = false;
+    public bool IsPaused { get; private set; } = false;
+
+    private int pauseBlockLayers = 0;
+
+    private string mainMenuName = "MainMenu";
+
+    private string translationTableName = "TranslationTable";
+
+    private InputSystem input;
+    private InputAction returnAction;
+    private InputAction skipAction;
+    private bool returnInput;
+    private bool skipInput;
+
+    private List<Trigger> triggers = new List<Trigger>();
     private List<string> inventory = new List<string>();
 
     private void Awake()
@@ -186,7 +183,7 @@ public class MainManager : MonoBehaviour
 
     private void CheckPause()
     {
-        if (!returnInput || !CanPause) return;
+        if (!returnInput || pauseBlockLayers > 0) return;
 
         if (IsPaused) Resume();
         else Pause();
@@ -194,7 +191,7 @@ public class MainManager : MonoBehaviour
 
     public void Pause()
     {
-        if (!CanPause || IsPaused) return;
+        if (pauseBlockLayers > 0 || IsPaused) return;
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -211,7 +208,7 @@ public class MainManager : MonoBehaviour
 
     public void Resume()
     {
-        if (!CanPause || !IsPaused) return;
+        if (pauseBlockLayers > 0 || !IsPaused) return;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -345,14 +342,16 @@ public class MainManager : MonoBehaviour
         return cnt;
     }
 
-    public void SetPlayerActive(bool b)
+    public void BlockPlayer(bool b)
     {
-        IsPlayerActive = b;
+        if(b) PlayerBlockLayers++;
+        else PlayerBlockLayers = Mathf.Max(0, PlayerBlockLayers - 1);
     }
 
-    public void CanPauseGame(bool b)
+    public void BlockPause(bool b)
     {
-        CanPause = b;
+        if (b) pauseBlockLayers++;
+        else pauseBlockLayers = Mathf.Max(pauseBlockLayers - 1, 0);
     }
 
     public void PlayMusic(AudioClip music)
@@ -373,8 +372,7 @@ public class MainManager : MonoBehaviour
 
     private IEnumerator ExecuteTriggers()
     {
-        bool playerWasActive = IsPlayerActive;
-        IsPlayerActive = false;
+        BlockPlayer(true);
         IsExecutingTriggers = true;
 
         while (triggers.Count > 0)
@@ -416,9 +414,9 @@ public class MainManager : MonoBehaviour
                     break;
 
                 case TriggerType.Wait:
-                    if (trig.waitFlash) IsPlayerActive = true;
+                    if (trig.waitFlash) BlockPlayer(false);
                     yield return new WaitForSeconds(trig.waitLength);
-                    if (trig.waitFlash) IsPlayerActive = false;
+                    if (trig.waitFlash) BlockPlayer(true);
                     break;
 
                 case TriggerType.DisplayPrompt:
@@ -579,14 +577,13 @@ public class MainManager : MonoBehaviour
                     break;
             }
         }
-
-        IsPlayerActive = playerWasActive;
+        BlockPlayer(false);
         IsExecutingTriggers = false;
     }
 
     private IEnumerator DisplayDialogue(string speaker, string content, bool sub, bool flash, bool skippable, float flashLength)
     {
-        if (flash) IsPlayerActive = true;
+        if (flash) BlockPlayer(false);
 
         writingEffectsPlayer.Play();
 
@@ -629,12 +626,12 @@ public class MainManager : MonoBehaviour
 
         targetScreen.SetActive(false);
 
-        if (flash) IsPlayerActive = false;
+        if (flash) BlockPlayer(true);
     }
 
     private IEnumerator ChangeScreen(Color startColor, Color endColor, float length, bool sub, bool flash)
     {
-        if (flash) IsPlayerActive = true;
+        if (flash) BlockPlayer(false);
 
         Image targetScreen = sub ? subscreen : screen;
 
@@ -648,14 +645,13 @@ public class MainManager : MonoBehaviour
         }
         targetScreen.color = endColor;
 
-        if (flash) IsPlayerActive = false;
+        if (flash) BlockPlayer(true);
     }
 
     private IEnumerator DisplayCanvas(GameObject canvas, AudioClip effect, bool flash, float flashLength)
     {
-        if (!flash) CanPause = false;
-
-        if (flash) IsPlayerActive = true;
+        if (flash) BlockPlayer(false);
+        else BlockPause(true);
 
         canvas.SetActive(true);
         PlayEffect(effect);
@@ -668,9 +664,8 @@ public class MainManager : MonoBehaviour
         canvas.SetActive(false);
         PlayEffect(effect);
 
-        if (flash) IsPlayerActive = false;
-
-        if (!flash) CanPause = true;
+        if (flash) BlockPlayer(true);
+        else BlockPause(false);
     }
 
     private IEnumerator LoadScene(string scene, float length, bool save)
@@ -690,7 +685,7 @@ public class MainManager : MonoBehaviour
     {
         effectsPlayer.PlayOneShot(selectEffect);
 
-        CanPause = false;
+        BlockPause(true);
         superscreen.raycastTarget = true;
         superscreen.color = Color.clear;
 
@@ -707,7 +702,8 @@ public class MainManager : MonoBehaviour
 
     private IEnumerator DisplayEnding(string title, string description)
     {
-        CanPause = false;
+        BlockPause(true);
+        IsPaused = true;
 
         writingEffectsPlayer.Play();
 

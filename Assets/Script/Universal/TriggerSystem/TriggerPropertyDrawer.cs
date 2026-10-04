@@ -268,7 +268,7 @@ public class TriggerPropertyDrawer : PropertyDrawer
     {
         SerializedProperty prop = property.FindPropertyRelative(name);
 
-        if(prop == null)
+        if (prop == null)
         {
             Debug.LogError("Property Name " + name + " Not Found!");
             return null;

@@ -184,7 +184,7 @@ public class PlayerController : MonoBehaviour
         UpdateSensitivity();
         CameraBobbing();
 
-        if (!MainManager.Instance.IsPlayerActive)
+        if (MainManager.Instance.PlayerBlockLayers > 0)
         {
             if (curItem != null) curItem.SetFocused(false);
             newItem = null;
@@ -215,7 +215,7 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateState()
     {
-        if (moveInput.magnitude > 0.01f && CanDo.Move && MainManager.Instance.IsPlayerActive)
+        if (moveInput.magnitude > 0.01f && CanDo.Move && MainManager.Instance.PlayerBlockLayers == 0)
         {
             if (isCrouched) state = PlayerState.CrouchWalk;
             else if (sprintInput && CanDo.Sprint) state = PlayerState.Sprint;
@@ -230,7 +230,7 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateSensitivity()
     {
-        sensitivity = (CanDo.Look && MainManager.Instance.IsPlayerActive) ? MainManager.Instance.Data.sensitivity : 0;
+        sensitivity = (CanDo.Look && MainManager.Instance.PlayerBlockLayers == 0) ? MainManager.Instance.Data.sensitivity : 0;
         camX.Input.Gain = sensitivity;
         camY.Input.Gain = -sensitivity;
     }
@@ -239,7 +239,7 @@ public class PlayerController : MonoBehaviour
     {
         camBobbingT += Time.deltaTime;
 
-        int curState = (controller.isGrounded && MainManager.Instance.IsPlayerActive) ? (int)state : (int)PlayerState.Idle;
+        int curState = (controller.isGrounded && MainManager.Instance.PlayerBlockLayers == 0) ? (int)state : (int)PlayerState.Idle;
 
         float bobAmplitude = bobAmplitudes[curState];
         float bobFrequency = bobFrequencies[curState];
