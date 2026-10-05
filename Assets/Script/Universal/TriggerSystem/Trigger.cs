@@ -118,7 +118,7 @@ public class Trigger
     public string displayEndingDescription;
 
     public GlitchEffectType glitchEffectType;
-    public float glitchEffectIntensity = 0.1f;
+    [Range(0f, 1f)] public float glitchEffectIntensity = 0.1f;
 
     public UnityEvent customFunction;
 }

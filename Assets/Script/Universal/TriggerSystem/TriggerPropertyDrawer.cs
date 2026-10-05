@@ -35,8 +35,8 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 DrawProperty(ref rect, property, "changeScreenEndColor", "End Color");
                 DrawProperty(ref rect, property, "changeScreenLength", "Length");
                 DrawProperty(ref rect, property, "changeScreenSub", "Sub");
-                DrawProperty(ref rect, property, "changeScreenFlash", "Flash");
-                DrawProperty(ref rect, property, "changeScreenWaitForCompletion", "Wait For Completion");
+                SerializedProperty changeScreenFlash = DrawProperty(ref rect, property, "changeScreenFlash", "Flash");
+                if (!changeScreenFlash.boolValue) DrawProperty(ref rect, property, "changeScreenWaitForCompletion", "Wait For Completion");
                 break;
 
             case TriggerType.Wait:
@@ -170,8 +170,8 @@ public class TriggerPropertyDrawer : PropertyDrawer
                 AddHeightOfProperty(ref height, property, "changeScreenEndColor");
                 AddHeightOfProperty(ref height, property, "changeScreenLength");
                 AddHeightOfProperty(ref height, property, "changeScreenSub");
-                AddHeightOfProperty(ref height, property, "changeScreenFlash");
-                AddHeightOfProperty(ref height, property, "changeScreenWaitForCompletion");
+                SerializedProperty changeScreenFlash = AddHeightOfProperty(ref height, property, "changeScreenFlash");
+                if (!changeScreenFlash.boolValue) AddHeightOfProperty(ref height, property, "changeScreenWaitForCompletion");
                 break;
 
             case TriggerType.Wait:

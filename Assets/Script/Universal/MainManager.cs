@@ -8,12 +8,6 @@ using UnityEngine.Localization.Tables;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public enum GameState
-{
-    Normal,
-    Paused,
-}
-
 public class GameData
 {
     public float sensitivity;
@@ -23,6 +17,7 @@ public class GameData
     public int language;
 }
 
+[DefaultExecutionOrder(-100)]
 public class MainManager : MonoBehaviour
 {
     [Header("Player")]
@@ -82,7 +77,6 @@ public class MainManager : MonoBehaviour
 
     public static MainManager Instance { get; private set; }
 
-    public GameState GameState { get; private set; } = GameState.Normal;
     public GameData Data { get; private set; } = new GameData();
     public int PlayerBlockLayers { get; private set; } = 0;
     public bool IsExecutingTriggers { get; private set; } = false;
@@ -94,9 +88,11 @@ public class MainManager : MonoBehaviour
 
     private string translationTableName = "TranslationTable";
 
-    private InputSystem input;
+    private GameInput input;
+    private InputAction pauseAction;
     private InputAction returnAction;
     private InputAction skipAction;
+    private bool pauseInput;
     private bool returnInput;
     private bool skipInput;
 
@@ -108,11 +104,13 @@ public class MainManager : MonoBehaviour
         Instance = this;
 
         Time.timeScale = 1f;
+        AudioListener.pause = false;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        input = new InputSystem();
+        input = new GameInput();
+        pauseAction = input.Game.Pause;
         returnAction = input.Game.Return;
         skipAction = input.Game.Skip;
 
@@ -120,7 +118,9 @@ public class MainManager : MonoBehaviour
 
         sensitivity.value = Data.sensitivity;
         musicPlayer.volume = Data.musicVolume;
+        musicPlayer.ignoreListenerPause = true;
         effectsPlayer.volume = Data.effectsVolume;
+        effectsPlayer.ignoreListenerPause = true;
         writingEffectsPlayer.volume = Data.effectsVolume;
         writingEffectsPlayer.clip = writingEffect;
 
@@ -143,17 +143,29 @@ public class MainManager : MonoBehaviour
     private void Update()
     {
         GetInput();
-        UpdatePrompts();
         CheckPause();
 
-        if (!IsExecutingTriggers && triggers.Count > 0 && GameState == GameState.Normal)
+        if (IsPaused) return;
+
+        UpdatePrompts();
+
+        if (!IsExecutingTriggers && triggers.Count > 0)
             StartCoroutine(ExecuteTriggers());
     }
 
     private void GetInput()
     {
+        pauseInput = pauseAction.WasPressedThisFrame();
         returnInput = returnAction.WasPressedThisFrame();
         skipInput = skipAction.WasPressedThisFrame();
+    }
+
+    private void CheckPause()
+    {
+        if (!pauseInput || pauseBlockLayers > 0) return;
+
+        if (IsPaused) Resume();
+        else Pause();
     }
 
     private void UpdatePrompts()
@@ -181,46 +193,32 @@ public class MainManager : MonoBehaviour
         }
     }
 
-    private void CheckPause()
-    {
-        if (!returnInput || pauseBlockLayers > 0) return;
-
-        if (IsPaused) Resume();
-        else Pause();
-    }
-
     public void Pause()
     {
         if (pauseBlockLayers > 0 || IsPaused) return;
 
+        IsPaused = true;
+        pausedScreen.SetActive(true);
+
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        pausedScreen.SetActive(true);
         Time.timeScale = 0f;
-
-        IsPaused = true;
-
-        musicPlayer.volume = 0;
-        effectsPlayer.volume = 0;
-        writingEffectsPlayer.volume = 0;
+        AudioListener.pause = true;
     }
 
     public void Resume()
     {
         if (pauseBlockLayers > 0 || !IsPaused) return;
 
+        IsPaused = false;
+        pausedScreen.SetActive(false);
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        pausedScreen.SetActive(false);
         Time.timeScale = 1f;
-
-        IsPaused = false;
-
-        musicPlayer.volume = Data.musicVolume;
-        effectsPlayer.volume = Data.effectsVolume;
-        writingEffectsPlayer.volume = Data.effectsVolume;
+        AudioListener.pause = false;
     }
 
     public void ReturnToMainMenu()
@@ -406,7 +404,7 @@ public class MainManager : MonoBehaviour
                             trig.changeScreenFlash
                         );
 
-                    if (trig.changeScreenWaitForCompletion)
+                    if (trig.changeScreenWaitForCompletion || trig.changeScreenFlash)
                         yield return StartCoroutine(changeScreenCoroutine);
                     else
                         StartCoroutine(changeScreenCoroutine);

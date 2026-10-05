@@ -5,6 +5,7 @@ using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+[DefaultExecutionOrder(-100)]
 public class MainMenuManager : MonoBehaviour
 {
     private string firstScene = "SampleScene";
@@ -34,6 +35,7 @@ public class MainMenuManager : MonoBehaviour
     private void Awake()
     {
         Time.timeScale = 1f;
+        AudioListener.pause = false;
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;

@@ -1,6 +1,6 @@
 {
     "version": 1,
-    "name": "InputSystem",
+    "name": "GameInput",
     "maps": [
         {
             "name": "Player",
@@ -245,6 +245,15 @@
             "id": "617fa4a2-4852-4433-8030-9750fd4b9595",
             "actions": [
                 {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "bdfb3195-820b-4c97-be6e-c820bb7abef8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Return",
                     "type": "Button",
                     "id": "6edd49d7-bac1-47f8-ae88-9d4af5044ed4",
@@ -385,6 +394,28 @@
                 },
                 {
                     "name": "",
+                    "id": "5ddc9ce1-93b6-4971-906c-3edc7510bf24",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Return",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "55e01d8b-0893-471a-a65c-708e83a47d95",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "624409da-d403-413f-8aff-6a401804bf38",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
@@ -409,17 +440,6 @@
                     "name": "",
                     "id": "cb9764a9-df97-4b2e-85d0-ee0991c965cc",
                     "path": "<Keyboard>/numpadEnter",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Skip",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "81ad6e85-42ce-4ffd-a2cb-c03c1e8368ce",
-                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

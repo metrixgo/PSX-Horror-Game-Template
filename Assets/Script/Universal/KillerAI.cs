@@ -35,7 +35,6 @@ public class KillerAI : MonoBehaviour
     private KillerState state = KillerState.Idle;
 
     private NavMeshAgent agent;
-    private Animator animator;
     private AudioSource effectsPlayer;
 
     private CinemachineBlendDefinition blendStyle;
@@ -43,7 +42,6 @@ public class KillerAI : MonoBehaviour
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
         effectsPlayer = GetComponent<AudioSource>();
 
         effectsPlayer.clip = movingSound;
@@ -70,7 +68,6 @@ public class KillerAI : MonoBehaviour
 
     private IEnumerator Kill()
     {
-        if (animator != null) animator.SetBool("Killed", true);
         state = KillerState.Killing;
 
         yield return new WaitUntil(() => 

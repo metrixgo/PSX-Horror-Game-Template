@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour
     private Interactable curItem;
     private Interactable newItem;
 
-    private InputSystem input;
+    private GameInput input;
 
     private InputAction lookAction;
     private InputAction moveAction;
@@ -156,7 +156,7 @@ public class PlayerController : MonoBehaviour
             else Debug.LogError("Unknown Cinemachine Controller Name: " + controller.Name);
         }
 
-        input = new InputSystem();
+        input = new GameInput();
         lookAction = input.Player.Look;
         moveAction = input.Player.Move;
         sprintAction = input.Player.Sprint;
@@ -192,12 +192,10 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        UpdateGravity();
-
-        if (CanDo.Move) HandleMove();
-        if (CanDo.Jump) HandleJump();
-        if (CanDo.Crouch) HandleCrouch();
-        if (CanDo.Interact) HandleInteractions();
+        HandleMove();
+        HandleJump();
+        HandleCrouch();
+        HandleInteractions();
 
         MovePlayer();
         FootstepSounds();
@@ -264,50 +262,54 @@ public class PlayerController : MonoBehaviour
         playerHold.localPosition = Vector3.Lerp(playerHold.localPosition, playerHoldPosition + offset, Time.deltaTime * transitionSpeed);
     }
 
-    private void UpdateGravity()
-    {
-        if (controller.isGrounded) velocityY = groundGravity;
-        else velocityY += gravity * Time.deltaTime;
-    }
-
     private void HandleMove()
     {
-        curSpeed = Mathf.Lerp((state == PlayerState.Sprint ? sprintSpeed : walkSpeed), crouchSpeed, crouchProgress);
-
-        Quaternion yRot = Quaternion.Euler(0f, playerCam.eulerAngles.y, 0f);
-        Vector3 camForward = yRot * Vector3.forward;
-        Vector3 camRight = yRot * Vector3.right;
-
-        move = (camRight * moveInput.x + camForward * moveInput.y).normalized * curSpeed;
-
-        if (move.magnitude > 0.01f &&
-            Physics.SphereCast(
-                transform.position + Vector3.up * (controller.height - controller.radius),
-                controller.radius,
-                move.normalized,
-                out RaycastHit hit,
-                controller.skinWidth + 0.1f,
-                physicalLayer
-            ) &&
-            hit.normal.y < -0.01f &&
-            hit.normal.y > -0.99f)
+        if (CanDo.Move)
         {
-            Vector3 slideDirection = Vector3.Cross(Vector3.up, hit.normal).normalized;
-            move = slideDirection * Vector3.Dot(move, slideDirection);
+            curSpeed = Mathf.Lerp((state == PlayerState.Sprint ? sprintSpeed : walkSpeed), crouchSpeed, crouchProgress);
+
+            Quaternion yRot = Quaternion.Euler(0f, playerCam.eulerAngles.y, 0f);
+            Vector3 camForward = yRot * Vector3.forward;
+            Vector3 camRight = yRot * Vector3.right;
+
+            move = (camRight * moveInput.x + camForward * moveInput.y).normalized * curSpeed;
+
+            if (move.magnitude > 0.01f &&
+                Physics.SphereCast(
+                    transform.position + Vector3.up * (controller.height - controller.radius),
+                    controller.radius,
+                    move.normalized,
+                    out RaycastHit hit,
+                    controller.skinWidth + 0.1f,
+                    physicalLayer
+                ) &&
+                hit.normal.y < -0.01f &&
+                hit.normal.y > -0.99f)
+            {
+                Vector3 slideDirection = Vector3.Cross(Vector3.up, hit.normal).normalized;
+                move = slideDirection * Vector3.Dot(move, slideDirection);
+            }
+        }
+        else
+        {
+            move = Vector2.zero;
         }
     }
 
     private void HandleJump()
     {
-        if (controller.isGrounded && jumpInput && !isCrouched)
+        if (controller.isGrounded) velocityY = groundGravity;
+        else velocityY += gravity * Time.deltaTime;
+
+        if (controller.isGrounded && jumpInput && !isCrouched && CanDo.Jump)
             velocityY = jumpStrength;
     }
 
     private void HandleCrouch()
     {
-        if (crouchInput && controller.isGrounded)
+        if (crouchInput && controller.isGrounded && CanDo.Crouch)
             isCrouched = true;
-        else if (!crouchInput)
+        else if (!crouchInput || !CanDo.Crouch)
             isCrouched = false;
 
         bool hasCeiling = Physics.CheckCapsule(
@@ -337,7 +339,9 @@ public class PlayerController : MonoBehaviour
 
     private void HandleInteractions()
     {
-        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, reachRange, ~ignoreLayer))
+        if (CanDo.Interact &&
+            !MainManager.Instance.IsExecutingTriggers &&
+            Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, reachRange, ~ignoreLayer))
         {
             newItem = hit.collider.GetComponentInParent<Interactable>();
 
@@ -360,10 +364,8 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            newItem = null;
-
             if (curItem != null) curItem.SetFocused(false);
-
+            newItem = null;
             curItem = null;
         }
 

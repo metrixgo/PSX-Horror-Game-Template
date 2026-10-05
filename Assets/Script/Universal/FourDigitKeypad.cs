@@ -17,9 +17,10 @@ public class FourDigitKeypad : MonoBehaviour
 
     [Header("Displays")]
     [SerializeField] private TextMeshPro[] displays;
+    [SerializeField] private int[] correctCode = { 0, 0, 0, 0 };
     private int displayIndex = -1;
     private int[] displayNumbers = { -1, -1, -1, -1 };
-    private int[] correctCode = { 0, 0, 0, 0 };
+    
 
     [Header("Keys")]
     [SerializeField] private GameObject[] digitKeys;
@@ -28,7 +29,7 @@ public class FourDigitKeypad : MonoBehaviour
 
     private FocusOnObject focusOn;
 
-    private InputSystem input;
+    private GameInput input;
     private InputAction submitAction;
     private InputAction deleteAction;
     private InputAction[] digitActions;
@@ -41,7 +42,7 @@ public class FourDigitKeypad : MonoBehaviour
     {
         focusOn = GetComponent<FocusOnObject>();
 
-        input = new InputSystem();
+        input = new GameInput();
         submitAction = input.Game.Submit;
         deleteAction = input.Game.Delete;
 
@@ -74,7 +75,7 @@ public class FourDigitKeypad : MonoBehaviour
 
     private void Update()
     {
-        if (MainManager.Instance.IsExecutingTriggers) return;
+        if (MainManager.Instance.IsPaused || MainManager.Instance.IsExecutingTriggers) return;
 
         playSound = false;
 

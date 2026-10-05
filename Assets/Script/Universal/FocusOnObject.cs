@@ -27,7 +27,7 @@ public class FocusOnObject : MonoBehaviour
 
     private CinemachineBlendDefinition blendStyle;
 
-    private InputSystem input;
+    private GameInput input;
     private InputAction returnAction;
     private InputAction interactAction;
 
@@ -36,7 +36,7 @@ public class FocusOnObject : MonoBehaviour
 
     private void Awake()
     {
-        input = new InputSystem();
+        input = new GameInput();
         returnAction = input.Game.Return;
         interactAction = input.Player.Interact;
 

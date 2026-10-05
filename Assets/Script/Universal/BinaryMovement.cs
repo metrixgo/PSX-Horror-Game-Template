@@ -11,8 +11,8 @@ public class BinaryMovement : MonoBehaviour
     [SerializeField] private float closeDelay = 0f;
 
     [Header("Movement")]
-    [SerializeField] private Vector3 deltaPosition;
-    [SerializeField] private Quaternion deltaRotation;
+    [SerializeField] private Vector3 deltaPosition = Vector3.zero;
+    [SerializeField] private Quaternion deltaRotation = Quaternion.identity;
     [SerializeField] private Vector3 deltaScale = Vector3.one;
 
     [Header("Sounds")]

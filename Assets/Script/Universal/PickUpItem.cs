@@ -12,8 +12,8 @@ public class PickUpItem : MonoBehaviour
     [SerializeField] private PutDownItem putDownItem;
 
     [Header("Offsets")]
-    [SerializeField] private Vector3 position;
-    [SerializeField] private Quaternion rotation;
+    [SerializeField] private Vector3 position = Vector3.zero;
+    [SerializeField] private Quaternion rotation = Quaternion.identity;
     [SerializeField] private float scale = 1f;
 
     [Header("Additional Effect")]

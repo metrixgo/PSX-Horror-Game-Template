@@ -21,7 +21,11 @@ public class PutDownItem : MonoBehaviour
 
     private void Update()
     {
-        if (pickUpItem == null) Destroy(gameObject);
+        if (pickUpItem == null)
+        {
+            MainManager.Instance.RemoveItem(itemName);
+            Destroy(gameObject);
+        }
     }
 
     public void Configure(string s)
