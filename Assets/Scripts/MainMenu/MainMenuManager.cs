@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -17,11 +18,13 @@ public class MainMenuManager : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private TMP_Dropdown language;
-    [SerializeField] private Slider sensitivity;
-    [SerializeField] private Slider music;
-    [SerializeField] private Slider effects;
+    [SerializeField] private Slider sensitivitySlider;
+    [SerializeField] private Slider masterSlider;
+    [SerializeField] private Slider musicSlider;
+    [SerializeField] private Slider effectsSlider;
 
     [Header("Sounds")]
+    [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private AudioClip menuMusic;
     [SerializeField] private AudioClip selectEffect;
     [SerializeField] private AudioSource musicPlayer;
@@ -48,8 +51,8 @@ public class MainMenuManager : MonoBehaviour
 
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[data.language];
 
-        musicPlayer.volume = data.musicVolume;
-        effectsPlayer.volume = data.effectsVolume;
+        SaveMusic(data.musicVolume);
+        SaveEffects(data.effectsVolume);
 
         musicPlayer.clip = menuMusic;
         musicPlayer.Play();
@@ -96,9 +99,9 @@ public class MainMenuManager : MonoBehaviour
     public void UpdateOptions()
     {
         language.value = data.language;
-        sensitivity.value = data.sensitivity;
-        music.value = data.musicVolume;
-        effects.value = data.effectsVolume;
+        sensitivitySlider.value = data.sensitivity;
+        musicSlider.value = data.musicVolume;
+        effectsSlider.value = data.effectsVolume;
     }
 
     public void SaveLanguage(int language)
@@ -118,6 +121,7 @@ public class MainMenuManager : MonoBehaviour
     {
         musicPlayer.volume = music;
         data.musicVolume = music;
+        audioMixer.SetFloat("MusicVolume", music);
         SaveData();
     }
 
@@ -125,6 +129,7 @@ public class MainMenuManager : MonoBehaviour
     {
         effectsPlayer.volume = effects;
         data.effectsVolume = effects;
+        audioMixer.SetFloat("EffectsVolume", effects);
         SaveData();
     }
 
@@ -135,8 +140,8 @@ public class MainMenuManager : MonoBehaviour
         PlayerPrefs.DeleteAll();
         GetData();
 
-        musicPlayer.volume = data.musicVolume;
-        effectsPlayer.volume = data.effectsVolume;
+        SaveMusic(data.musicVolume);
+        SaveEffects(data.effectsVolume);
 
         UpdateOptions();
 

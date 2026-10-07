@@ -11,6 +11,7 @@ using UnityEngine.UI;
 public class GameData
 {
     public float sensitivity;
+    public float masterVolume;
     public float musicVolume;
     public float effectsVolume;
     public string savedScene;
