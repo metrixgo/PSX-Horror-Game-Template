@@ -51,6 +51,10 @@ MonoBehaviour:
     m_Key: Sensitivity
     m_Metadata:
       m_Items: []
+  - m_Id: 8327063465635840
+    m_Key: Volume
+    m_Metadata:
+      m_Items: []
   - m_Id: 8319918569435136
     m_Key: Master
     m_Metadata:

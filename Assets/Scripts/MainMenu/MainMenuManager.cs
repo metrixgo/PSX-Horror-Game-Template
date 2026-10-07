@@ -5,6 +5,7 @@ using UnityEngine.Audio;
 using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 [DefaultExecutionOrder(-100)]
 public class MainMenuManager : MonoBehaviour
@@ -51,8 +52,9 @@ public class MainMenuManager : MonoBehaviour
 
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[data.language];
 
-        SaveMusic(data.musicVolume);
-        SaveEffects(data.effectsVolume);
+        audioMixer.SetFloat("MasterVolume", ToDb(data.masterVolume));
+        audioMixer.SetFloat("MusicVolume", ToDb(data.musicVolume));
+        audioMixer.SetFloat("EffectsVolume", ToDb(data.effectsVolume));
 
         musicPlayer.clip = menuMusic;
         musicPlayer.Play();
@@ -61,6 +63,7 @@ public class MainMenuManager : MonoBehaviour
     public void GetData()
     {
         data.sensitivity = PlayerPrefs.GetFloat("Sensitivity", 50f);
+        data.masterVolume = PlayerPrefs.GetFloat("MasterVolume", 1f);
         data.musicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
         data.effectsVolume = PlayerPrefs.GetFloat("EffectsVolume", 1f);
         data.savedScene = PlayerPrefs.GetString("SavedScene", "");
@@ -70,6 +73,7 @@ public class MainMenuManager : MonoBehaviour
     public void SaveData()
     {
         PlayerPrefs.SetFloat("Sensitivity", data.sensitivity);
+        PlayerPrefs.SetFloat("MasterVolume", data.masterVolume);
         PlayerPrefs.SetFloat("MusicVolume", data.musicVolume);
         PlayerPrefs.SetFloat("EffectsVolume", data.effectsVolume);
         PlayerPrefs.SetString("SavedScene", data.savedScene);
@@ -100,15 +104,16 @@ public class MainMenuManager : MonoBehaviour
     {
         language.value = data.language;
         sensitivitySlider.value = data.sensitivity;
+        masterSlider.value = data.masterVolume;
         musicSlider.value = data.musicVolume;
         effectsSlider.value = data.effectsVolume;
     }
 
     public void SaveLanguage(int language)
     {
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[language];
         data.language = language;
         SaveData();
-        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[language];
     }
 
     public void SaveSensitivity(float sensitivity)
@@ -117,21 +122,28 @@ public class MainMenuManager : MonoBehaviour
         SaveData();
     }
 
+    public void SaveMaster(float master)
+    {
+        audioMixer.SetFloat("MasterVolume", ToDb(master));
+        data.masterVolume = master;
+        SaveData();
+    }
+
     public void SaveMusic(float music)
     {
-        musicPlayer.volume = music;
+        audioMixer.SetFloat("MusicVolume", ToDb(music));
         data.musicVolume = music;
-        audioMixer.SetFloat("MusicVolume", music);
         SaveData();
     }
 
     public void SaveEffects(float effects)
     {
-        effectsPlayer.volume = effects;
+        audioMixer.SetFloat("EffectsVolume", ToDb(effects));
         data.effectsVolume = effects;
-        audioMixer.SetFloat("EffectsVolume", effects);
         SaveData();
     }
+
+    private float ToDb(float volume) => volume <= 0.0001f ? -80f : 20f * Mathf.Log10(volume);
 
     public void ClearData()
     {
@@ -140,8 +152,9 @@ public class MainMenuManager : MonoBehaviour
         PlayerPrefs.DeleteAll();
         GetData();
 
-        SaveMusic(data.musicVolume);
-        SaveEffects(data.effectsVolume);
+        audioMixer.SetFloat("MasterVolume", ToDb(data.masterVolume));
+        audioMixer.SetFloat("MusicVolume", ToDb(data.musicVolume));
+        audioMixer.SetFloat("EffectsVolume", ToDb(data.effectsVolume));
 
         UpdateOptions();
 

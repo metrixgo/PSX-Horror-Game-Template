@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
@@ -10,12 +11,12 @@ using UnityEngine.UI;
 
 public class GameData
 {
+    public int language;
     public float sensitivity;
     public float masterVolume;
     public float musicVolume;
     public float effectsVolume;
     public string savedScene;
-    public int language;
 }
 
 [DefaultExecutionOrder(-100)]
@@ -28,8 +29,10 @@ public class MainManager : MonoBehaviour
     [SerializeField] private AudioSource musicPlayer;
     [SerializeField] private AudioSource effectsPlayer;
     [SerializeField] private AudioSource writingEffectsPlayer;
+    [SerializeField] private AudioSource buttonEffectsPlayer;
 
     [Header("Sounds")]
+    [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private AudioClip backGroundMusic;
     [SerializeField] private AudioClip writingEffect;
     [SerializeField] private AudioClip endingEffect;
@@ -37,7 +40,11 @@ public class MainManager : MonoBehaviour
 
     [Header("Pause")]
     [SerializeField] private GameObject pausedScreen;
-    [SerializeField] private Slider sensitivity;
+    [SerializeField] private TMP_Dropdown language;
+    [SerializeField] private Slider sensitivitySlider;
+    [SerializeField] private Slider masterSlider;
+    [SerializeField] private Slider musicSlider;
+    [SerializeField] private Slider effectsSlider;
 
     [Header("Dialogue")]
     [SerializeField] private GameObject dialogueScreen;
@@ -117,13 +124,17 @@ public class MainManager : MonoBehaviour
 
         GetData();
 
-        sensitivity.value = Data.sensitivity;
-        musicPlayer.volume = Data.musicVolume;
-        musicPlayer.ignoreListenerPause = true;
-        effectsPlayer.volume = Data.effectsVolume;
-        effectsPlayer.ignoreListenerPause = true;
-        writingEffectsPlayer.volume = Data.effectsVolume;
+        language.value = Data.language;
+        sensitivitySlider.value = Data.sensitivity;
+        masterSlider.value = Data.masterVolume;
+        musicSlider.value = Data.musicVolume;
+        effectsSlider.value = Data.effectsVolume;
+        audioMixer.SetFloat("MasterVolume", ToDb(Data.masterVolume));
+        audioMixer.SetFloat("MusicVolume", ToDb(Data.musicVolume));
+        audioMixer.SetFloat("EffectsVolume", ToDb(Data.effectsVolume));
+
         writingEffectsPlayer.clip = writingEffect;
+        buttonEffectsPlayer.ignoreListenerPause = true;
 
         PlayMusic(backGroundMusic);
 
@@ -227,15 +238,46 @@ public class MainManager : MonoBehaviour
         StartCoroutine(LoadMainMenu());
     }
 
-    public void ChangeSensitivity(float sensitivity)
+    public void SaveLanguage(int language)
+    {
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[language];
+        Data.language = language;
+        SaveData();
+    }
+
+    public void SaveSensitivity(float sensitivity)
     {
         Data.sensitivity = sensitivity;
         SaveData();
     }
 
+    public void SaveMaster(float master)
+    {
+        audioMixer.SetFloat("MasterVolume", ToDb(master));
+        Data.masterVolume = master;
+        SaveData();
+    }
+
+    public void SaveMusic(float music)
+    {
+        audioMixer.SetFloat("MusicVolume", ToDb(music));
+        Data.musicVolume = music;
+        SaveData();
+    }
+
+    public void SaveEffects(float effects)
+    {
+        audioMixer.SetFloat("EffectsVolume", ToDb(effects));
+        Data.effectsVolume = effects;
+        SaveData();
+    }
+
+    private float ToDb(float volume) => volume <= 0.0001f ? -80f : 20f * Mathf.Log10(volume);
+
     public void GetData()
     {
         Data.sensitivity = PlayerPrefs.GetFloat("Sensitivity", 50f);
+        Data.masterVolume = PlayerPrefs.GetFloat("MasterVolume", 1f);
         Data.musicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
         Data.effectsVolume = PlayerPrefs.GetFloat("EffectsVolume", 1f);
         Data.savedScene = PlayerPrefs.GetString("SavedScene", "");
@@ -245,6 +287,7 @@ public class MainManager : MonoBehaviour
     public void SaveData()
     {
         PlayerPrefs.SetFloat("Sensitivity", Data.sensitivity);
+        PlayerPrefs.SetFloat("MasterVolume", Data.masterVolume);
         PlayerPrefs.SetFloat("MusicVolume", Data.musicVolume);
         PlayerPrefs.SetFloat("EffectsVolume", Data.effectsVolume);
         PlayerPrefs.SetString("SavedScene", Data.savedScene);
@@ -682,7 +725,7 @@ public class MainManager : MonoBehaviour
 
     private IEnumerator LoadMainMenu()
     {
-        effectsPlayer.PlayOneShot(selectEffect);
+        buttonEffectsPlayer.PlayOneShot(selectEffect);
 
         BlockPause(true);
         superscreen.raycastTarget = true;
