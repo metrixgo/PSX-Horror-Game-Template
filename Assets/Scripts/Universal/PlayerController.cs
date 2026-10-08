@@ -323,13 +323,13 @@ public class PlayerController : MonoBehaviour
 
         float goalProgress = isCrouched ? 1f : 0f;
         crouchProgress = Mathf.Lerp(crouchProgress, goalProgress, Time.deltaTime * transitionSpeed);
+        controller.height = isCrouched ? crouchHeight : standHeight;
+        controller.center = Vector3.up * controller.height * 0.5f;
 
         float visualHeight = Mathf.Lerp(standHeight, crouchHeight, crouchProgress);
-        controller.height = isCrouched ? crouchHeight : standHeight;
-        controller.center = Vector3.up * visualHeight * 0.5f;
-
+        Vector3 visualCenter = Vector3.up * visualHeight * 0.5f;
         playerBody.localScale = new Vector3(controller.radius * 2f, visualHeight * 0.5f, controller.radius * 2f) * 1.1f;
-        playerBody.localPosition = controller.center;
+        playerBody.localPosition = visualCenter;
 
         camHeight = Mathf.Lerp(standCamHeight, crouchCamHeight, crouchProgress);
         playerCam.transform.localPosition = Vector3.up * camHeight;
