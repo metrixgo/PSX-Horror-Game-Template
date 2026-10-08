@@ -280,7 +280,7 @@ public class PlayerController : MonoBehaviour
                     controller.radius,
                     move.normalized,
                     out RaycastHit hit,
-                    controller.skinWidth + 0.1f,
+                    controller.skinWidth + controller.radius * 0.1f,
                     physicalLayer
                 ) &&
                 hit.normal.y < -0.01f &&
@@ -307,11 +307,6 @@ public class PlayerController : MonoBehaviour
 
     private void HandleCrouch()
     {
-        if (crouchInput && controller.isGrounded && CanDo.Crouch)
-            isCrouched = true;
-        else if (!crouchInput || !CanDo.Crouch)
-            isCrouched = false;
-
         bool hasCeiling = Physics.CheckCapsule(
                     transform.position + Vector3.up * controller.radius,
                     transform.position + Vector3.up * (standHeight - controller.radius),
@@ -319,21 +314,24 @@ public class PlayerController : MonoBehaviour
                     physicalLayer
                 );
 
-        if (hasCeiling && !isCrouched) isCrouched = true;
+        if (hasCeiling && isCrouched && !crouchInput)
+            isCrouched = true;
+        else if (crouchInput && controller.isGrounded && CanDo.Crouch)
+            isCrouched = true;
+        else if (!crouchInput || !CanDo.Crouch)
+            isCrouched = false;
 
         float goalProgress = isCrouched ? 1f : 0f;
         crouchProgress = Mathf.Lerp(crouchProgress, goalProgress, Time.deltaTime * transitionSpeed);
 
-        controller.height = Mathf.Lerp(standHeight, crouchHeight, crouchProgress);
-        controller.center = Vector3.up * controller.height * 0.5f;
+        float visualHeight = Mathf.Lerp(standHeight, crouchHeight, crouchProgress);
+        controller.height = isCrouched ? crouchHeight : standHeight;
+        controller.center = Vector3.up * visualHeight * 0.5f;
 
-        float margin = 1.1f;
-
-        playerBody.localScale = new Vector3(controller.radius * 2f, controller.height * 0.5f, controller.radius * 2f) * margin;
+        playerBody.localScale = new Vector3(controller.radius * 2f, visualHeight * 0.5f, controller.radius * 2f) * 1.1f;
         playerBody.localPosition = controller.center;
 
         camHeight = Mathf.Lerp(standCamHeight, crouchCamHeight, crouchProgress);
-
         playerCam.transform.localPosition = Vector3.up * camHeight;
     }
 
@@ -388,7 +386,7 @@ public class PlayerController : MonoBehaviour
         stepT = Mathf.PI / bobSpeeds[(int)state];
 
         if (Physics.SphereCast(transform.position + transform.up * controller.radius, 
-            controller.radius, -transform.up, out RaycastHit hit, 0.1f, ~ignoreLayer))
+            controller.radius, -transform.up, out RaycastHit hit, controller.radius * 0.5f, ~ignoreLayer))
         {
             string surfaceTag = hit.collider.tag;
             foreach (SurfaceSound surfaceSound in surfaceSounds)
