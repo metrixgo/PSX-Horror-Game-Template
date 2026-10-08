@@ -17584,8 +17584,8 @@ MonoBehaviour:
   jumpscareCamera: {fileID: 613061688}
   reachRange: 2
   jumpscareTime: 0.1
-  movingSound: {fileID: 8300000, guid: 2c27e02a691c1f04da7183e8d1bb27f0, type: 3}
-  jumpScareSound: {fileID: 8300000, guid: b0d803c2f11ce244f9c686d4b5b1205c, type: 3}
+  movingEffect: {fileID: 8300000, guid: 2c27e02a691c1f04da7183e8d1bb27f0, type: 3}
+  jumpScareEffect: {fileID: 8300000, guid: b0d803c2f11ce244f9c686d4b5b1205c, type: 3}
   killEvent:
     m_PersistentCalls:
       m_Calls:
@@ -23482,7 +23482,7 @@ MonoBehaviour:
     m_Bits: 256
   ignoreLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
   surfaceSounds: []
 --- !u!82 &2027041990
 AudioSource:
@@ -29557,7 +29557,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0

@@ -19,6 +19,8 @@ public class TriggerSequences : MonoBehaviour
 
     public void AddTriggers()
     {
+        if (MainManager.Instance.IsExecutingTriggers) return;
+
         foreach (Trigger trigger in triggers)
             MainManager.Instance.AddTrigger(trigger);
 

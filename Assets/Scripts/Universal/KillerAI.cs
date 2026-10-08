@@ -4,14 +4,6 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
 
-public enum KillerState
-{
-    Idle,
-    Patrol,
-    Chase,
-    Killing,
-}
-
 public class KillerAI : MonoBehaviour
 {
     [Header("Target")]
@@ -26,13 +18,13 @@ public class KillerAI : MonoBehaviour
     [SerializeField] private float jumpscareTime = 0.1f;
 
     [Header("Sounds")]
-    [SerializeField] private AudioClip movingSound;
-    [SerializeField] private AudioClip jumpScareSound;
+    [SerializeField] private AudioClip movingEffect;
+    [SerializeField] private AudioClip jumpScareEffect;
 
     [Header("Kill Event")]
     [SerializeField] private UnityEvent killEvent;
 
-    private KillerState state = KillerState.Idle;
+    private bool isKilling = false;
 
     private NavMeshAgent agent;
     private AudioSource effectsPlayer;
@@ -44,7 +36,7 @@ public class KillerAI : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         effectsPlayer = GetComponent<AudioSource>();
 
-        effectsPlayer.clip = movingSound;
+        effectsPlayer.clip = movingEffect;
         effectsPlayer.Play();
 
         blendStyle = new CinemachineBlendDefinition(
@@ -55,7 +47,7 @@ public class KillerAI : MonoBehaviour
 
     private void Update()
     {
-        if (MainManager.Instance.IsPaused || state == KillerState.Killing) return;
+        if (MainManager.Instance.IsPaused || isKilling) return;
 
         agent.SetDestination(player.position);
 
@@ -68,13 +60,13 @@ public class KillerAI : MonoBehaviour
 
     private IEnumerator Kill()
     {
-        state = KillerState.Killing;
+        isKilling = true;
 
-        yield return new WaitUntil(() => 
+        yield return new WaitUntil(() =>
             !MainManager.Instance.IsExecutingTriggers &&
             !MainManager.Instance.IsPaused);
 
-        effectsPlayer.PlayOneShot(jumpScareSound);
+        effectsPlayer.PlayOneShot(jumpScareEffect);
 
         agent.isStopped = true;
 
