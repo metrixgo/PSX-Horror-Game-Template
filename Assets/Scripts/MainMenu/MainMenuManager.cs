@@ -5,7 +5,6 @@ using UnityEngine.Audio;
 using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI;
 
 [DefaultExecutionOrder(-100)]
 public class MainMenuManager : MonoBehaviour

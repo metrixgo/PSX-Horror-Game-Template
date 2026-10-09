@@ -16,7 +16,6 @@ TagManager:
   - Tile
   - Water
   - Wood
-  - Interactable
   layers:
   - Default
   - TransparentFX

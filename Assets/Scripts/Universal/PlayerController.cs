@@ -301,7 +301,7 @@ public class PlayerController : MonoBehaviour
         if (controller.isGrounded) velocityY = groundGravity;
         else velocityY += gravity * Time.deltaTime;
 
-        if (controller.isGrounded && jumpInput && crouchProgress < 0.01f && CanDo.Jump)
+        if (controller.isGrounded && jumpInput && crouchProgress < 0.1f && CanDo.Jump)
             velocityY = jumpStrength;
     }
 
