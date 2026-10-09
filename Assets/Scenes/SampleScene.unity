@@ -11169,7 +11169,7 @@ MonoBehaviour:
     displayDialogueSub: 1
     displayDialogueFlash: 0
     displayDialogueSkippable: 1
-    displayDialogueFlashLength: 0
+    displayDialogueFlashLength: 2
     changeScreenStartColor: {r: 0, g: 0, b: 0, a: 0}
     changeScreenEndColor: {r: 0, g: 0, b: 0, a: 0}
     changeScreenLength: 0

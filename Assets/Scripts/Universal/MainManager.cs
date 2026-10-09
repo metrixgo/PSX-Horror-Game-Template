@@ -651,7 +651,7 @@ public class MainManager : MonoBehaviour
                 t -= gap;
                 targetContent.maxVisibleCharacters++;
             }
-            if ((skipInput && skippable && !IsPaused))
+            if ((skipInput && skippable && !flash && !IsPaused))
             {
                 targetContent.maxVisibleCharacters = int.MaxValue;
                 break;
