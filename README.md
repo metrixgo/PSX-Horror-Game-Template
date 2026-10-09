@@ -37,9 +37,9 @@ This is a PSX horror game template made for Unity. Although intended for horror 
 Download the zip file, extract the folder and name it whatever you want. Then go to Unity Hub -> Add -> Add Project  From Disk -> Select The Folder. Click to open the project and Unity will create the game.
 
 ### Trigger System:
-A TriggerSequence component is all you need to perform the majority of the triggers in your game.
+A TriggerSequences component is all you need to perform the majority of the triggers in your game.
 
-To use, attach a TriggerSequence to an object. Then add any triggers you want to the sequence. You can customize the settings of the sequence:
+To use, attach a TriggerSequences to an object. Then add any triggers you want to the sequence. You can customize the settings of the sequence:
 
 - Is Physical: If checked, the triggers will fire once something enters the collider. Requires an Is Trigger collider on the object.
 - Self Destructs: If checked, the object is destroyed after the trigger fires, regardless if it’s physical or not.
@@ -171,7 +171,7 @@ Calls functions on objects.
 ### BinaryMovement.cs:
 Smoothly changes an object from one state to another state. Useful if you want to make interactions such as drawers, doors, curtains, windows, anything that has open and close states.
 
-- opened: Whether the initial state of the object is opened or closed. If it is opened, it will apply the delta movements in the positive direction. Otherwise it will apply it in the negative direction.
+- opened: Whether the initial state of the object is opened or closed. If it is not opened, it will apply the delta movements in the positive direction. Otherwise it will apply it in the negative direction.
 - openLength: How many seconds it takes for the object to go from closed to opened.
 - closeLength: How many seconds it takes for the object to go from opened to closed.
 - openDelay: How many seconds after opening will the openEffect play.
@@ -207,7 +207,7 @@ A simple implementation of a four-digit keypad. Must be used with FocusOnObject.
 - wrongEvent: The event gets executed when you enter the wrong code.
 - displays: The four display digits from left to right indexed 0, 1, 2, 3.
 - correctCode: The correct code for this keypad.
-- digitKeys: The 9 digits keys labeled from 0 through 9.
+- digitKeys: The 10 digits keys labeled from 0 through 9.
 - submitKey: The submit key.
 - deleteKey: The delete key.
 
@@ -327,6 +327,12 @@ If this object is meant to be stepped on by the player, you should consider tag 
 
 ### Adding more layers/triggers/tags...
 Remember ALWAYS add new layers/triggers/tags AFTER the existing ones. If you haven't set up anything yet, I guess it's fine, but if you already set up a lot of stuff, I suggest you to just add the new things after everything else, this way you don't scramble up the existing objects.
+
+### Translating...
+If you wish to implement translation in your game, or localization, please use the localization string table. You first need to create the locales (languages) you want at Edit -> Project Settings -> Localization. Then, go to the translation table to add the new locale. For each translation, please use the raw English text as the key, this makes everything easier.
+
+### Input System...
+​This template uses the new input system. Very clumsy but needed for organization. You can access the game input system in the folder. You can customize the inputs to whatever you need. Reference other scripts to check it out how to use this.
 
 ### Learning...
 The two sample scenes is perfect for understanding how everything works in this template. It contains examples for basically everything. Try to experiment with it, play around with it, and change something to get the hang of it.
