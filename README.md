@@ -337,4 +337,5 @@ If you wish to implement translation in your game, or localization, please use t
 ### Learning...
 The two sample scenes is perfect for understanding how everything works in this template. It contains examples for basically everything. Try to experiment with it, play around with it, and change something to get the hang of it.
 
-If you still don't understand how to use some scripts/functions or how to set up a scene, or perhaps some general questions, feel free to ask in the comments below. I will be more than happy to help you!
+## License
+​This game template is under the [CC0 license](https://creativecommons.org/publicdomain/zero/1.0/)​​. You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission.​ Credit is not required, but appreciated if you want to support this template ;)
